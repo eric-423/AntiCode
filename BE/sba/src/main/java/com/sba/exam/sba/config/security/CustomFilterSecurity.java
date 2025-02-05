@@ -30,7 +30,8 @@ public class CustomFilterSecurity {
 
 
     public static final String[] url = {
-            "/user/signin/**"
+            "/user/signin/**",
+            "/h2-console/**",
     };
 
 

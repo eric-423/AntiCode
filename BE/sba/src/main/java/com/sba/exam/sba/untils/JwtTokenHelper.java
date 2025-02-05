@@ -20,7 +20,7 @@ public class JwtTokenHelper {
         String token = Jwts.builder()
                 .setIssuer("ATDStore")
                 .setSubject("JWT Token")
-                .claim("role", users.getRole())
+                .claim("role", users.getRole().getName())
                 .claim("name", users.getUserName())
                 .claim("address", users.getUserAddress())
                 .claim("id", users.getId())
