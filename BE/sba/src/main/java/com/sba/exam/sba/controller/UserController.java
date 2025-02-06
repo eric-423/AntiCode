@@ -27,15 +27,15 @@ public class UserController {
     UserRepository usersRepository;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestParam String email, @RequestParam String password){
+    public ResponseEntity<?> signin(@RequestParam String email, @RequestParam String password) {
         ResponseData responseData = new ResponseData();
-        boolean checkLogin = loginServiceImp.checkLogin(email,password);
+        boolean checkLogin = loginServiceImp.checkLogin(email, password);
         String token;
 
-        if(checkLogin){
+        if (checkLogin) {
             token = jwtTokenHelper.generateToken(usersRepository.findByUserEmail(email));
             responseData.setData(token);
-        } else{
+        } else {
             responseData.setData("");
         }
 
