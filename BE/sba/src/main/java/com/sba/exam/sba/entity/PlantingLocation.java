@@ -39,6 +39,7 @@ public class PlantingLocation {
     @Column(name = "end_date")
     private Date endDate;
 
-
+    @Column(name = "is_harvest")
+    private boolean isHarvest;
 
 }
