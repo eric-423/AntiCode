@@ -1,0 +1,13 @@
+.button-common{
+    width: 100%;
+    background-color: #F28705;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.375rem;
+    cursor: pointer;
+}
+.text-login{
+    color: #FFFFFF;
+}

@@ -1,14 +1,17 @@
 package com.sba.exam.sba.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
+
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
-@Entity(name = "role")
+@AllArgsConstructor
+@Entity
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -23,4 +26,28 @@ public class Role {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<Users> usersList;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Users> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
+    }
 }

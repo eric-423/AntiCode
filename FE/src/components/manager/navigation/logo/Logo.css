@@ -1,0 +1,19 @@
+.manager-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #F28705;
+    margin: 30px 0 40px 0;
+}
+.manager-logo > img{
+    height: 70px;
+    width: fit-content;
+    padding: 0;
+}
+.manager-logo > span{
+    width: fit-content;
+    padding: 0;
+}

@@ -1,0 +1,65 @@
+.login-row{
+    font-family: 'Poppins';
+    height: 100vh;
+    padding:0 20px;
+}
+
+.text-login-p-big{
+    color: #F28705;
+    margin: 0 0 20px 0;
+}
+.text-login-p-small{
+   font-size: 28px;
+   margin-bottom: 30px;
+   color: rgba(0, 0, 0, 0.7);
+   font-weight: 600;
+}
+.text-title-login{
+    color: rgba(0, 0, 0, 0.8);
+    margin: 0;
+    font-size:30px;
+}
+.sub-text-title{
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 5px 0 40px 0;
+    width: 80%;
+}
+.login-logo{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.align-content-end{
+    align-content: end;
+}
+.align-content-center{
+    align-content: center;
+}
+.block-slogan{
+    display: grid;
+    position: relative;
+    justify-content: end;
+}
+.block-slogan > span{
+    width: fit-content;
+    font-family: "Alex Brush", serif;
+    font-weight: 300;
+    font-size: 5rem;
+    color: #FFFFFF;
+    position: relative;
+    transform: rotate(-10deg);
+    padding-left: 40px;
+}
+.img-login-logo-big{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.main-background-login{
+    background-color: #F28705;
+    position: absolute;
+    top: 0;
+    left: 20px;
+    height: 100%;
+}
