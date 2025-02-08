@@ -1,9 +1,9 @@
 import {useState} from "react";
-import "./Plant.css";
+import "./Chemical.css";
 import ToolBar from "./tool_bar/ToolBar";
 import Table from "./table/Table";
 
-const Plant = () => {
+const Chemical = () => {
     const [refreshData, setRefreshData] = useState(false)
     const listTitle = [
         {
@@ -52,4 +52,4 @@ const Plant = () => {
     );
 };
 
-export default Plant;
+export default Chemical;

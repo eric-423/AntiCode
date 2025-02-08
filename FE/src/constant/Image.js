@@ -17,6 +17,7 @@ import icon_search from '../assets/image/search.png'
 import icon_filter from '../assets/image/filter.png'
 import icon_tick from '../assets/image/tick.png'
 import icon_close from '../assets/image/close.png'
+import icon_chemical from '../assets/image/chemical.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -37,7 +38,8 @@ const ICONS = {
     icon_search: icon_search,
     icon_filter: icon_filter,
     icon_tick: icon_tick,
-    icon_close: icon_close
+    icon_close: icon_close,
+    icon_chemical:icon_chemical
 }
 
 export default ICONS;

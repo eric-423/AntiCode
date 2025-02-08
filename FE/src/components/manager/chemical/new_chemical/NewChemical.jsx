@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
-import "./NewPlant.css";
-import ICONS from "../../../../../constant/Image";
+import "./NewChemical.css";
+import ICONS from "../../../../constant/Image";
 import {Form} from "react-bootstrap";
-import Button from "../../../../common/button/Button";
+import Button from "../../../common/button/Button";
 import {toast} from "react-toastify/unstyled";
 
-const NewPlant = ({setShowModal, setRefreshData}) => {
+const NewChemical = ({setShowModal, setRefreshData}) => {
     const [name, setName] = useState();
     const [characteristics, setCharacteristics] = useState();
     const [soilPH, setSoilPH] = useState();
@@ -19,7 +19,6 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
     const handleClickClose = () => {
         setShowModal(false);
     };
-
     const [plantTypesData, setPlantTypesData] = useState();
     const handleFetchDataPlantType = async () => {
         try {
@@ -91,12 +90,14 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
     return ReactDOM.createPortal(
         <div className="modal-create-plant-container">
             <div className="modal-create-plant">
+
                 <Form className="form-addition-plant-type form-create-plant">
                     <h4 className="addition-plant-type-h4 group-3-column-create-plant">
-                        NEW PLANT
+                        NEW CHEMICAL
                     </h4>
+
                     <Form.Group className="group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Name</Form.Label>
+                        <Form.Label className="text-label-login">Chemical Name</Form.Label>
                         <Form.Control
                             className="input-login input-addition input-name-create-plant"
                             type="text"
@@ -105,9 +106,10 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
                             onChange={(e) => setName(e.target.value)}
                         />
                     </Form.Group>
+
                     <Form.Group className="group-3-column-create-plant">
                         <Form.Label className="text-label-login">
-                            Characteristics
+                            Description
                         </Form.Label>
                         <Form.Control
                             className="input-login input-addition input-characteristis-create-plant"
@@ -117,28 +119,31 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
                             onChange={(e) => setCharacteristics(e.target.value)}
                         />
                     </Form.Group>
+
                     <Form.Group>
-                        <Form.Label className="text-label-login">Soil PH</Form.Label>
+                        <Form.Label className="text-label-login">Manufacturing date</Form.Label>
                         <Form.Control
                             className="input-login input-addition"
-                            type="text"
+                            type="date"
                             placeholder="Acid, Alkaline, Neutral"
                             value={soilPH}
                             onChange={(e) => setSoilPH(e.target.value)}
                         />
                     </Form.Group>
+
                     <Form.Group>
-                        <Form.Label className="text-label-login">Water Need</Form.Label>
+                        <Form.Label className="text-label-login">Expiration date</Form.Label>
                         <Form.Control
                             className="input-login input-addition"
-                            type="text"
+                            type="date"
                             placeholder="Average"
                             value={waterNeed}
                             onChange={(e) => setWaterNeed(e.target.value)}
                         />
                     </Form.Group>
+
                     <Form.Group>
-                        <Form.Label className="text-label-login">Quantity</Form.Label>
+                        <Form.Label className="text-label-login">Volume available</Form.Label>
                         <Form.Control
                             className="input-login input-addition input-number"
                             type="number"
@@ -148,43 +153,9 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
                             onChange={(e) => setQuantity(e.target.value)}
                         />
                     </Form.Group>
-                    <Form.Group className="group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Price</Form.Label>
-                        <Form.Control
-                            className="input-login input-addition input-price-create-plant input-number"
-                            type="number"
-                            placeholder="100"
-                            min="0"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-2 group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Plant Type</Form.Label>
-                        <Form.Select
-                            onChange={(e) => setPlantType(e.target.value)}
-                            className="input-login input-addition input-plant-type-create-plant"
-                        >
-                            {plantTypesData &&
-                                Array.isArray(plantTypesData) &&
-                                plantTypesData.map((item) => (
-                                    <option value={item.id}>{item.name}</option>
-                                ))}
-                        </Form.Select>
-                    </Form.Group>
-                    <Form.Group className="mb-2 group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Description</Form.Label>
-                        <Form.Control
-                            className="input-login-textarea"
-                            as="textarea"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            rows={3}
-                            placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
-                        />
-                    </Form.Group>
+
                     <Button
-                        text="Create Plant"
+                        text="Create"
                         handleOnClick={handleOnClick}
                         className="button-create-plant"
                     />
@@ -201,4 +172,4 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
     );
 };
 
-export default NewPlant;
+export default NewChemical;

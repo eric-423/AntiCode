@@ -1,12 +1,10 @@
 import {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
-import "./NewPlant.css";
-import ICONS from "../../../../../constant/Image";
+import ICONS from "../../../../constant/Image.js";
 import {Form} from "react-bootstrap";
-import Button from "../../../../common/button/Button";
-import {toast} from "react-toastify/unstyled";
+import Button from "../../../common/button/Button";
 
-const NewPlant = ({setShowModal, setRefreshData}) => {
+const UpdateChemical = ({setShowModal, itemUpdate}) => {
     const [name, setName] = useState();
     const [characteristics, setCharacteristics] = useState();
     const [soilPH, setSoilPH] = useState();
@@ -19,7 +17,6 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
     const handleClickClose = () => {
         setShowModal(false);
     };
-
     const [plantTypesData, setPlantTypesData] = useState();
     const handleFetchDataPlantType = async () => {
         try {
@@ -41,59 +38,15 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
     useEffect(() => {
         handleFetchDataPlantType();
     }, []);
-    const showToastMessageSuccess = (message) => {
-        toast.success(message, {
-            position: "top-right",
-        });
-    };
-    const showToastMessageFail = (message) => {
-        toast.error(message, {
-            position: "top-right",
-        });
-    };
-    const handleOnClick = async () => {
-        const plant = {
-            name: name,
-            characteristics: characteristics,
-            description: description,
-            soilPH: soilPH,
-            waterNeed: waterNeed,
-            quantity: quantity,
-            price: price,
-            plantType: plantType
-                ? plantTypesData.find(item => Number(item.id) === Number(plantType))
-                : plantTypesData[0],
-        };
-        try {
-            const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/create`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(plant),
-                }
-            );
-            if (!response.ok) throw new Error();
-            const data = await response.json();
-            if (!data) throw new Error();
-            showToastMessageSuccess("Plant was added !");
-            setShowModal(false);
-        } catch (error) {
-            console.log(error)
-            showToastMessageFail("Plant can not added !");
-            setShowModal(true);
-        } finally {
-            setRefreshData(prev => !prev)
-        }
-    };
+    useEffect(() => {
+        console.log(itemUpdate)
+    })
     return ReactDOM.createPortal(
         <div className="modal-create-plant-container">
             <div className="modal-create-plant">
                 <Form className="form-addition-plant-type form-create-plant">
                     <h4 className="addition-plant-type-h4 group-3-column-create-plant">
-                        NEW PLANT
+                        UPDATE PLANT
                     </h4>
                     <Form.Group className="group-3-column-create-plant">
                         <Form.Label className="text-label-login">Name</Form.Label>
@@ -106,9 +59,7 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
                         />
                     </Form.Group>
                     <Form.Group className="group-3-column-create-plant">
-                        <Form.Label className="text-label-login">
-                            Characteristics
-                        </Form.Label>
+                        <Form.Label className="text-label-login">Characteristis</Form.Label>
                         <Form.Control
                             className="input-login input-addition input-characteristis-create-plant"
                             type="text"
@@ -132,9 +83,9 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
                         <Form.Control
                             className="input-login input-addition"
                             type="text"
-                            placeholder="Average"
                             value={waterNeed}
                             onChange={(e) => setWaterNeed(e.target.value)}
+                            placeholder="Average"
                         />
                     </Form.Group>
                     <Form.Group>
@@ -177,17 +128,13 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
                         <Form.Control
                             className="input-login-textarea"
                             as="textarea"
+                            rows={3}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            rows={3}
                             placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
                         />
                     </Form.Group>
-                    <Button
-                        text="Create Plant"
-                        handleOnClick={handleOnClick}
-                        className="button-create-plant"
-                    />
+                    <Button text="Update Plant" className="button-create-plant"/>
                 </Form>
                 <img
                     className="icon-close"
@@ -201,4 +148,4 @@ const NewPlant = ({setShowModal, setRefreshData}) => {
     );
 };
 
-export default NewPlant;
+export default UpdateChemical;
