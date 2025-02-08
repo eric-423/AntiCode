@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "./Navigation.css";
 import Logo from "./logo/Logo";
@@ -9,7 +9,7 @@ import Header from "../header/Header";
 import useMediaQuery from "../../../hook/useMediaQuery";
 
 const Navigation = () => {
-  const isSmall = useMediaQuery("(max-width: 1500px)");
+  const isSmall = useMediaQuery("(max-inline-size: 1500px)");
   const [width, setWidth] = useState();
   const handleWidthBaseOnWindow = () => {
     const widthRoot = document.getElementById("root").clientWidth;
@@ -31,7 +31,7 @@ const Navigation = () => {
         xl={10}
         lg={9}
         md={8}
-        style={!isSmall ? { width: `${width}px` } : null}
+        style={!isSmall ? { inlineSize: `${width}px` } : null}
       >
         <Row className="header-manager-container">
           <Header />

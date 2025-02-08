@@ -64,8 +64,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />
-          {listRouteNavigation.map((item) => (
-            <Route path={item.path} element={item.component} />
+          {listRouteNavigation.map((item, index) => (
+            <Route key={index} path={item.path} element={item.component} />
           ))}
         </Route>
       </Routes>

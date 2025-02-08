@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Row } from "react-bootstrap";
 import "./Menu.css";
 import ICONS from "../../../../constant/Image";
@@ -149,8 +150,8 @@ const Menu = ({ list }) => {
                 <li
                   className={
                     indexMenu === itemActive.indexMenu &&
-                    index == itemActive.index &&
-                    itemActive.status
+                      index == itemActive.index &&
+                      itemActive.status
                       ? "active"
                       : ""
                   }
@@ -165,9 +166,9 @@ const Menu = ({ list }) => {
                       src={
                         (index === itemHover.index &&
                           indexMenu === itemHover.indexMenu) ||
-                        (index === itemActive.index &&
-                          itemActive.status &&
-                          indexMenu === itemActive.indexMenu)
+                          (index === itemActive.index &&
+                            itemActive.status &&
+                            indexMenu === itemActive.indexMenu)
                           ? item.imageActive
                           : item.image
                       }
@@ -175,17 +176,17 @@ const Menu = ({ list }) => {
                     />
                     <span>{item.nameMenu}</span>
                     {item.subItems.length > 0 &&
-                    ((index === itemHover.index &&
-                      indexMenu === itemHover.indexMenu) ||
-                      (index === itemActive.index &&
-                        itemActive.status &&
-                        indexMenu === subItemActive.indexMenu)) ? (
+                      ((index === itemHover.index &&
+                        indexMenu === itemHover.indexMenu) ||
+                        (index === itemActive.index &&
+                          itemActive.status &&
+                          indexMenu === subItemActive.indexMenu)) ? (
                       <img
                         className={"more-item-navigation"}
                         style={
                           itemActive.status &&
-                          index === itemActive.index &&
-                          indexMenu === subItemActive.indexMenu
+                            index === itemActive.index &&
+                            indexMenu === subItemActive.indexMenu
                             ? { transform: `rotate(${180}deg)` }
                             : { transform: `rotate(${0}deg)` }
                         }
@@ -198,15 +199,15 @@ const Menu = ({ list }) => {
                     <div
                       className={
                         index === itemActive.index &&
-                        itemActive.status &&
-                        indexMenu === subItemActive.indexMenu
+                          itemActive.status &&
+                          indexMenu === subItemActive.indexMenu
                           ? "sub-items-active"
                           : "sub-items-non-active"
                       }
                       style={
                         index === itemActive.index &&
-                        itemActive.status &&
-                        indexMenu === subItemActive.indexMenu
+                          itemActive.status &&
+                          indexMenu === subItemActive.indexMenu
                           ? { height: `${item.subItems.length * 40 + 20}px` }
                           : null
                       }
@@ -225,7 +226,7 @@ const Menu = ({ list }) => {
                             }
                             className={
                               indexSubItem === subItemActive.index &&
-                              subItemActive
+                                subItemActive
                                 ? "active"
                                 : ""
                             }
@@ -245,5 +246,9 @@ const Menu = ({ list }) => {
     </Row>
   );
 };
+Menu.propTypes = {
+  list: PropTypes.array.isRequired,
+};
 
+export default Menu;
 export default Menu;
