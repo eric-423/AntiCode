@@ -9,12 +9,11 @@ import { toast } from "react-toastify";
 const UpdateChemical = ({ setShowModal, itemUpdate }) => {
     const [chemicalName, setChemicalName] = useState(itemUpdate.name || '');
     const [description, setDescription] = useState(itemUpdate.description || '');
-    const [manufacturingDate, setManufacturingDate] = useState();
-    const [expirationDate, setExpirationDate] = useState();
+    const [manufacturingDate, setManufacturingDate] = useState(itemUpdate.manufacturingDate);
+    const [expirationDate, setExpirationDate] = useState(itemUpdate.expirationDate);
     const [volumneAvailable, setVolumneAvailable] = useState(itemUpdate.volumeAvailable || 0);
     const [chemicalType, setChemicalType] = useState('');
-    const [plantTypesData, setPlantTypesData] = useState([]);
-    const [typeId, setTypeId] = useState("");
+    const [chemicalTypesData, setChemicalTypesData] = useState([]);
 
     const modalRoot = document.body;
 
@@ -35,7 +34,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
             );
             if (!response.ok) throw new Error();
             const data = await response.json();
-            setPlantTypesData(data);
+            setChemicalTypesData(data);
         } catch (error) {
             console.log(error);
         }
@@ -51,32 +50,31 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
     }, []);
 
     useEffect(() => {
-        if (plantTypesData && itemUpdate && itemUpdate.chemicalType) {
-            const matchingType = plantTypesData.find(
+        if (chemicalTypesData && itemUpdate && itemUpdate.chemicalType) {
+            const matchingType = chemicalTypesData.find(
                 (type) => type.name === itemUpdate.chemicalType
             );
             if (matchingType) {
                 setChemicalType(matchingType.id);
             }
         }
-    }, [plantTypesData, itemUpdate]);
+    }, [chemicalTypesData, itemUpdate]);
 
     const handleOnClick = async () => {
-        setTypeId(chemicalType.find(item => Number(item.id) === Number(chemicalType))?.id || chemicalType);
-
         const chemical = {
+            id: itemUpdate.id,
             name: chemicalName,
             description: description,
             manufacturingDate: manufacturingDate,
             expirationDate: expirationDate,
             volumeAvailable: volumneAvailable,
-            chemicalType: chemicalType.find(item => Number(item.id) === Number(chemicalType))?.name || chemicalType,
+            chemicalType: chemicalType,
         };
 
         console.log(chemical)
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${typeId}`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${chemicalType}`,
                 {
                     method: "PUT",
                     headers: {
@@ -178,9 +176,9 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
                             onChange={(e) => setChemicalType(e.target.value)}
                             className="input-login input-addition input-plant-type-create-plant"
                         >
-                            {plantTypesData &&
-                                Array.isArray(plantTypesData) &&
-                                plantTypesData.map((item) => (
+                            {chemicalTypesData &&
+                                Array.isArray(chemicalTypesData) &&
+                                chemicalTypesData.map((item) => (
                                     <option key={item.id} value={item.id}>{item.name}</option>
                                 ))}
                         </Form.Select>

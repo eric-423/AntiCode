@@ -71,7 +71,6 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
             chemicalType: chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.name || '',
         };
 
-        console.log(chemical)
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${typeId}`,
