@@ -3,14 +3,14 @@ package com.sba.exam.sba.payload.request;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class PlantingLocationRequest {
-    private int areaId;
+    private int locationId;
     private int plantId;
-    private float locationSize;
-    private String locationName;
-    private String startDate;
-    private String endDate;
-    private boolean isHarvest;
+    private Date startDate;
+    private Date endDate;
+    private boolean harvest;
 }

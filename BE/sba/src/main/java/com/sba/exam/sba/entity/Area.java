@@ -32,6 +32,6 @@ public class Area {
     @OneToMany(mappedBy = "area", fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
-    private List<PlantingLocation> plantingLocationList;
+    private List<Location> locationList;
 
 }
