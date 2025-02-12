@@ -1,12 +1,16 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/login/Login";
-import Manager from "./pages/manager/Manager";
-import Dashboard from "./components/manager/dashboard/Dashboard";
-import NAVIGATION from "./constant/MenuNavigation";
-import Settings from "./components/manager/settings/Settings";
-import PlantType from "./components/manager/plant/type/PlantType";
-import Plant from "./components/manager/plant/plant/Plant";
-import { ToastContainer } from "react-toastify/unstyled";
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Login from './pages/login/Login'
+import Manager from './pages/manager/Manager'
+import Dashboard from './components/manager/dashboard/Dashboard'
+import NAVIGATION from './constant/MenuNavigation'
+import Settings from './components/manager/settings/Settings'
+import PlantType from './components/manager/plant/type/PlantType'
+import Plant from './components/manager/plant/plant/Plant'
+import Location from './components/manager/location/location/Location'
+import Farm from './components/manager/location/farm/Farm'
+import Area from './components/manager/location/area/Area'
+import { ToastContainer } from 'react-toastify/unstyled'
+import PlantingLocation from './components/manager/location/plant location/PlantingLocation'
 
 function App() {
   const listComponent = [
@@ -26,8 +30,24 @@ function App() {
       name: NAVIGATION.COMPONENTS.PLANT,
       component: <Plant />,
     },
-  ];
-  const listRouteNavigation = [];
+    {
+      name: NAVIGATION.COMPONENTS.LOCATION,
+      component: <Location />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.FARM,
+      component: <Farm />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.AREA,
+      component: <Area />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.PLANT_LOCATION,
+      component: <PlantingLocation />,
+    },
+  ]
+  const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
     itemMenu.data.forEach((item) => {
       if (item.subItems.length > 0) {
@@ -38,26 +58,26 @@ function App() {
               component: listComponent.find(
                 (item_component) => item_component.name === subItem.component
               ).component,
-            });
+            })
           } else {
             listRouteNavigation.push({
               path: item.path + subItem.path,
               component: listComponent.find(
                 (item_component) => item_component.name === subItem.component
               ).component,
-            });
+            })
           }
-        });
+        })
       } else {
         listRouteNavigation.push({
           path: item.path,
           component: listComponent.find(
             (item_component) => item_component.name === item.component
           ).component,
-        });
+        })
       }
-    });
-  });
+    })
+  })
   return (
     <BrowserRouter>
       <Routes>
@@ -71,7 +91,7 @@ function App() {
       </Routes>
       <ToastContainer />
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App

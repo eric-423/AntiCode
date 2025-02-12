@@ -24,14 +24,8 @@ public class PlantingLocation {
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinColumn(name = "area_id")
-    private Area area;
-
-    @Column(name = "location_size")
-    private float locationSize;
-
-    @Column(name = "location_name")
-    private String locationName;
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @Column(name = "start_date")
     private Date startDate;
@@ -41,5 +35,6 @@ public class PlantingLocation {
 
     @Column(name = "is_harvest")
     private boolean isHarvest;
+
 
 }

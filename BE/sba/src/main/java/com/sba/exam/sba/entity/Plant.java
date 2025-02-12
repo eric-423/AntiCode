@@ -35,6 +35,21 @@ public class Plant {
     @Column(name = "species")
     private String species;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "characteristics")
+    private String characteristics;
+
+    @Column(name = "attracts")
+    private String attracts;
+
+    @Column(name = "hardiness")
+    private String hardiness;
+
+    @Column(name = "heat_zones")
+    private String heatZones;
+
     @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "plant_type_id")

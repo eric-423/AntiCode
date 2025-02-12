@@ -4,6 +4,10 @@ import ICONS from "./Image";
 const COMPONENTS = {
   PLANT: "Plant",
   PLAN_TYPE: "Plant Type",
+  LOCATION: "Location",
+  FARM: "Farm",
+  AREA: "Area",
+  PLANT_LOCATION: "Plant Location",
   DASHBOARD: "Dashboard",
   SETTINGS: "Settings"
 };
@@ -26,11 +30,41 @@ const listMenu = [
           {
             name: "Plant Type",
             component: COMPONENTS.PLAN_TYPE,
-             path: "/plant-type"
+            path: "/plant-type"
           },
         ],
         component: null,
         path: "menu-plant"
+      },
+      {
+        nameMenu: "Location",
+        image: ICONS.icon_plant,
+        imageActive: ICONS.icon_plant_active,
+        sortItem: 2,
+        subItems: [
+          {
+            name: "Location",
+            component: COMPONENTS.LOCATION,
+            path: "/"
+          },
+          {
+            name: "Farm",
+            component: COMPONENTS.FARM,
+            path: "/farm"
+          },
+          {
+            name: "Area",
+            component: COMPONENTS.AREA,
+            path: "/area"
+          },
+          {
+            name: "Plant Location",
+            component: COMPONENTS.PLANT_LOCATION,
+            path: "/plant-location"
+          },
+        ],
+        component: null,
+        path: "location"
       },
       {
         nameMenu: "Dashboard",
@@ -52,7 +86,7 @@ const listMenu = [
         imageActive: ICONS.icon_setting_active,
         sortItem: 0,
         subItems: [],
-        component:  COMPONENTS.SETTINGS,
+        component: COMPONENTS.SETTINGS,
         path: "settings"
       },
     ].sort((a, b) => a.sortItem - b.sortItem),
