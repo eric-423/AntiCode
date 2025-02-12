@@ -8,10 +8,11 @@ const Table = ({ listTitle, refreshData }) => {
     const [itemsActive, setItemsActive] = useState([]);
     const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
     const [listItems, setListItems] = useState();
+
     const handleFetchPlantData = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical`,
                 {
                     method: "GET",
                     headers: {
@@ -21,36 +22,12 @@ const Table = ({ listTitle, refreshData }) => {
             )
             if (response.ok) {
                 const data = await response.json()
-                console.log(data);
                 setListItems(data)
             }
         } catch (error) {
             console.log(error)
         }
     }
-
-
-    // const handleCreate = async (data) => {
-    //     try {
-    //         const response = await fetch(
-    //             `${import.meta.env.VITE_REACT_APP_END_POINT}`,
-    //             {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify(data),
-    //             }
-    //         )
-    //         if (response.ok) {
-    //             handleFetchPlantData()
-    //         }
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
-
 
     const handleSelectItem = (item_index) => {
         if (itemsActive.includes(item_index.id)) {
@@ -63,6 +40,7 @@ const Table = ({ listTitle, refreshData }) => {
     useEffect(() => {
         setSelectedPlants(itemsActive);
     }, [itemsActive]);
+
     useEffect(() => {
         handleFetchPlantData()
     }, [refreshData])
@@ -83,7 +61,7 @@ const Table = ({ listTitle, refreshData }) => {
                         />
                     ))
                 ) : (
-                    <p>Không có dữ liệu để hiển thị</p>
+                    <p>Fail to fetch</p>
                 )}
             </div>
 

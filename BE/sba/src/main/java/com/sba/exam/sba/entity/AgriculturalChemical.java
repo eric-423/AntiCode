@@ -42,7 +42,7 @@ public class AgriculturalChemical {
     @OneToMany(mappedBy = "agriculturalChemical")
     private Set<TaskAgriculturalChemical> taskAgriculturalChemicals;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "type_id")
     private ChemicalType chemicalTypes;
 }

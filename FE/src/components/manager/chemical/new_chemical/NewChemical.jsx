@@ -7,24 +7,25 @@ import Button from "../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
 
 const NewChemical = ({ setShowModal, setRefreshData }) => {
-    const [name, setName] = useState();
-    const [characteristics, setCharacteristics] = useState();
-    const [soilPH, setSoilPH] = useState();
-    const [waterNeed, setWaterNeed] = useState();
-    const [quantity, setQuantity] = useState();
-    const [price, setPrice] = useState();
-    const [plantType, setPlantType] = useState();
-    const [description, setDescription] = useState();
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [manufacturingDate, setManufacturingDate] = useState("");
+    const [expirationDate, setExpirationDate] = useState("");
+    const [volumeAvailable, setVolumeAvailable] = useState();
+    const [chemicalTypes, setChemicalTypes] = useState([]);
+    const [selectedChemicalType, setSelectedChemicalType] = useState("");
+    const [typeId, setTypeId] = useState("");
+
     const modalRoot = document.body;
+
     const handleClickClose = () => {
         setShowModal(false);
     };
-    const [plantTypesData, setPlantTypesData] = useState();
 
-    const handleFetchDataPlantType = async () => {
+    const handleFetchDataChemicalType = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant-type/`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical-type`,
                 {
                     method: "GET",
                     headers: {
@@ -32,16 +33,21 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     },
                 }
             );
-            if (!response.ok) throw new Error();
+            if (!response.ok) throw new Error("Failed to fetch chemical types");
+
             const data = await response.json();
-            setPlantTypesData(data);
+            console.log(data);
+            setChemicalTypes(data);
         } catch (error) {
+            console.error("Error fetching chemical types:", error);
+            toast.error("Error fetching chemical types");
         }
     };
 
     useEffect(() => {
-        handleFetchDataPlantType();
+        handleFetchDataChemicalType();
     }, []);
+
     const showToastMessageSuccess = (message) => {
         toast.success(message, {
             position: "top-right",
@@ -55,47 +61,47 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     };
 
     const handleOnClick = async () => {
-        const plant = {
-            name: name,
-            characteristics: characteristics,
-            description: description,
-            soilPH: soilPH,
-            waterNeed: waterNeed,
-            quantity: quantity,
-            price: price,
-            plantType: plantType
-                ? plantTypesData.find(item => Number(item.id) === Number(plantType))
-                : plantTypesData[0],
+        setTypeId(chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.id || '');
+        const chemical = {
+            name,
+            description,
+            manufacturingDate,
+            expirationDate,
+            volumeAvailable,
+            chemicalType: chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.name || '',
         };
+
+        console.log(chemical)
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/create`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${typeId}`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify(plant),
+                    body: JSON.stringify(chemical),
                 }
             );
-            if (!response.ok) throw new Error();
+            if (!response.ok) throw new Error("Failed to create Chemical");
             const data = await response.json();
-            if (!data) throw new Error();
-            showToastMessageSuccess("Plant was added !");
+            if (!data) throw new Error("No data returned");
+            showToastMessageSuccess("Plant was added!");
             setShowModal(false);
         } catch (error) {
-            console.log(error)
-            showToastMessageFail("Plant can not added !");
+            console.error(error);
+            showToastMessageFail("Plant cannot be added!");
             setShowModal(true);
         } finally {
-            setRefreshData(prev => !prev)
+            setRefreshData(prev => !prev);
         }
     };
+
+
 
     return ReactDOM.createPortal(
         <div className="modal-create-plant-container">
             <div className="modal-create-plant">
-
                 <Form className="form-addition-plant-type form-create-plant">
                     <h4 className="addition-plant-type-h4 group-3-column-create-plant">
                         NEW CHEMICAL
@@ -113,15 +119,13 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     </Form.Group>
 
                     <Form.Group className="group-3-column-create-plant">
-                        <Form.Label className="text-label-login">
-                            Description
-                        </Form.Label>
+                        <Form.Label className="text-label-login">Description</Form.Label>
                         <Form.Control
                             className="input-login input-addition input-characteristis-create-plant"
                             type="text"
                             placeholder="Showy, Cut Flowers"
-                            value={characteristics}
-                            onChange={(e) => setCharacteristics(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </Form.Group>
 
@@ -130,9 +134,8 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                         <Form.Control
                             className="input-login input-addition"
                             type="date"
-                            placeholder="Acid, Alkaline, Neutral"
-                            value={soilPH}
-                            onChange={(e) => setSoilPH(e.target.value)}
+                            value={manufacturingDate}
+                            onChange={(e) => setManufacturingDate(e.target.value)}
                         />
                     </Form.Group>
 
@@ -141,9 +144,8 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                         <Form.Control
                             className="input-login input-addition"
                             type="date"
-                            placeholder="Average"
-                            value={waterNeed}
-                            onChange={(e) => setWaterNeed(e.target.value)}
+                            value={expirationDate}
+                            onChange={(e) => setExpirationDate(e.target.value)}
                         />
                     </Form.Group>
 
@@ -154,11 +156,25 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                             type="number"
                             placeholder="10"
                             min="1"
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
+                            value={volumeAvailable}
+                            onChange={(e) => setVolumeAvailable(e.target.value)}
                         />
                     </Form.Group>
 
+                    <Form.Group className="mb-2 group-3-column-create-plant">
+                        <Form.Label className="text-label-login">Chemical Type</Form.Label>
+                        <Form.Select
+                            onChange={(e) => setSelectedChemicalType(e.target.value)}
+                            className="input-login input-addition input-plant-type-create-plant"
+                        >
+                            <option value="">Select Chemical Type</option>
+                            {chemicalTypes &&
+                                Array.isArray(chemicalTypes) &&
+                                chemicalTypes.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                        </Form.Select>
+                    </Form.Group>
                     <Button
                         text="Create"
                         handleOnClick={handleOnClick}
@@ -167,9 +183,9 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                 </Form>
                 <img
                     className="icon-close"
-                    onClick={() => handleClickClose()}
+                    onClick={handleClickClose}
                     src={ICONS.icon_close}
-                    alt=""
+                    alt="Close"
                 />
             </div>
         </div>,
