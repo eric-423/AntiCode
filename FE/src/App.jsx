@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Manager from "./pages/manager/Manager";
 import Dashboard from "./components/manager/dashboard/Dashboard";
@@ -6,20 +6,24 @@ import NAVIGATION from "./constant/MenuNavigation";
 import Settings from "./components/manager/settings/Settings";
 import PlantType from "./components/manager/plant/type/PlantType";
 import Plant from "./components/manager/plant/plant/Plant";
-import {ToastContainer} from "react-toastify/unstyled";
+import { ToastContainer } from "react-toastify/unstyled";
 import Chemical from "./components/manager/chemical/Chemical";
+import ChemicalType from "./components/manager/chemical/type/ChemicalType";
+
 
 function App() {
     const listComponent = [{
-        name: NAVIGATION.COMPONENTS.SETTINGS, component: <Settings/>,
+        name: NAVIGATION.COMPONENTS.SETTINGS, component: <Settings />,
     }, {
-        name: NAVIGATION.COMPONENTS.PLAN_TYPE, component: <PlantType/>,
+        name: NAVIGATION.COMPONENTS.PLAN_TYPE, component: <PlantType />,
     }, {
-        name: NAVIGATION.COMPONENTS.DASHBOARD, component: <Dashboard/>,
+        name: NAVIGATION.COMPONENTS.DASHBOARD, component: <Dashboard />,
     }, {
-        name: NAVIGATION.COMPONENTS.PLANT, component: <Plant/>,
+        name: NAVIGATION.COMPONENTS.PLANT, component: <Plant />,
     }, {
-        name: NAVIGATION.COMPONENTS.CHEMICAL, component: <Chemical/>,
+        name: NAVIGATION.COMPONENTS.CHEMICAL, component: <Chemical />,
+    }, {
+        name: NAVIGATION.COMPONENTS.CHEMICAL_TYPE, component: <ChemicalType />
     }
 
 
@@ -51,14 +55,14 @@ function App() {
     });
     return (<BrowserRouter>
         <Routes>
-            <Route path="/" element={<Login/>}/>
-            <Route path="/manager/" element={<Manager/>}>
-                <Route index element={<Dashboard/>}/>
+            <Route path="/" element={<Login />} />
+            <Route path="/manager/" element={<Manager />}>
+                <Route index element={<Dashboard />} />
                 {listRouteNavigation.map((item, index) => (
-                    <Route key={index} path={item.path} element={item.component}/>))}
+                    <Route key={index} path={item.path} element={item.component} />))}
             </Route>
         </Routes>
-        <ToastContainer/>
+        <ToastContainer />
     </BrowserRouter>);
 }
 

@@ -6,7 +6,8 @@ const COMPONENTS = {
     PLAN_TYPE: "Plant Type",
     DASHBOARD: "Dashboard",
     SETTINGS: "Settings",
-    CHEMICAL: "Chemical"
+    CHEMICAL: "Chemical",
+    CHEMICAL_TYPE: "Chemical Type",
 };
 
 const listMenu = [
@@ -49,9 +50,20 @@ const listMenu = [
                 image: ICONS.icon_chemical,
                 imageActive: ICONS.icon_chemical,
                 sortItem: 0,
-                subItems: [],
                 component: COMPONENTS.CHEMICAL,
-                path: "menu-chemical"
+                path: "menu-chemical",
+                subItems: [
+                    {
+                        name: "Chemical",
+                        component: COMPONENTS.CHEMICAL,
+                        path: "/chemical"
+                    },
+                    {
+                        name: "Chemical Type",
+                        component: COMPONENTS.CHEMICAL_TYPE,
+                        path: "/chemical-type"
+                    },
+                ]
             },
         ].sort((a, b) => a.sortItem - b.sortItem),
     },

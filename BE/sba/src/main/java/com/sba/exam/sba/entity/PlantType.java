@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "plant_type")
-@Data
+
 @NoArgsConstructor
 public class PlantType {
 

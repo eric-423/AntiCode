@@ -2,14 +2,18 @@ package com.sba.exam.sba.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "planting_location")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+
 public class PlantingLocation {
 
     @Id
@@ -18,12 +22,12 @@ public class PlantingLocation {
     private int plantLocationId;
 
     @ManyToOne(cascade = {
-            CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "plant_id")
     private Plant plant;
 
     @ManyToOne(cascade = {
-            CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "area_id")
     private Area area;
 

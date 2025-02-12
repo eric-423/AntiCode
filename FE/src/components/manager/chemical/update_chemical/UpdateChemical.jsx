@@ -1,27 +1,27 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import ICONS from "../../../../constant/Image.js";
-import {Form} from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Button from "../../../common/button/Button";
 
-const UpdateChemical = ({setShowModal, itemUpdate}) => {
-    const [name, setName] = useState();
-    const [characteristics, setCharacteristics] = useState();
-    const [soilPH, setSoilPH] = useState();
-    const [waterNeed, setWaterNeed] = useState();
-    const [quantity, setQuantity] = useState();
-    const [price, setPrice] = useState();
-    const [plantType, setPlantType] = useState();
+const UpdateChemical = ({ setShowModal, itemUpdate }) => {
+    const [chemicalName, setChemicalName] = useState();
     const [description, setDescription] = useState();
+    const [manufacturingDate, setManufacturingDate] = useState();
+    const [expirationDate, setExpirationDate] = useState();
+    const [volumneAvailable, setVolumneAvailable] = useState();
+    const [chemicalType, setChemicalType] = useState();
+
     const modalRoot = document.body;
     const handleClickClose = () => {
         setShowModal(false);
     };
     const [plantTypesData, setPlantTypesData] = useState();
+
     const handleFetchDataPlantType = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant-type/`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}`,
                 {
                     method: "GET",
                     headers: {
@@ -33,6 +33,7 @@ const UpdateChemical = ({setShowModal, itemUpdate}) => {
             const data = await response.json();
             setPlantTypesData(data);
         } catch (error) {
+            console.log(error);
         }
     };
     useEffect(() => {
@@ -41,12 +42,13 @@ const UpdateChemical = ({setShowModal, itemUpdate}) => {
     useEffect(() => {
         console.log(itemUpdate)
     })
+
     return ReactDOM.createPortal(
         <div className="modal-create-plant-container">
             <div className="modal-create-plant">
                 <Form className="form-addition-plant-type form-create-plant">
                     <h4 className="addition-plant-type-h4 group-3-column-create-plant">
-                        UPDATE PLANT
+                        UPDATE CHEMICAL
                     </h4>
                     <Form.Group className="group-3-column-create-plant">
                         <Form.Label className="text-label-login">Name</Form.Label>
@@ -54,66 +56,55 @@ const UpdateChemical = ({setShowModal, itemUpdate}) => {
                             className="input-login input-addition input-name-create-plant"
                             type="text"
                             placeholder="Rosa Orange Glow (Shrub Rose)"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={itemUpdate.chemical_name}
+                            onChange={(e) => setChemicalName(e.target.value)}
                         />
                     </Form.Group>
                     <Form.Group className="group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Characteristis</Form.Label>
+                        <Form.Label className="text-label-login">Description</Form.Label>
                         <Form.Control
                             className="input-login input-addition input-characteristis-create-plant"
                             type="text"
                             placeholder="Showy, Cut Flowers"
-                            value={characteristics}
-                            onChange={(e) => setCharacteristics(e.target.value)}
+                            value={itemUpdate.description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className="text-label-login">Soil PH</Form.Label>
+                        <Form.Label className="text-label-login">Manufacturing Date</Form.Label>
                         <Form.Control
                             className="input-login input-addition"
-                            type="text"
+                            type="date"
                             placeholder="Acid, Alkaline, Neutral"
-                            value={soilPH}
-                            onChange={(e) => setSoilPH(e.target.value)}
+                            value={itemUpdate.manufacturing_date}
+                            onChange={(e) => setManufacturingDate(e.target.value)}
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className="text-label-login">Water Need</Form.Label>
+                        <Form.Label className="text-label-login">Expiration Date</Form.Label>
                         <Form.Control
                             className="input-login input-addition"
-                            type="text"
-                            value={waterNeed}
-                            onChange={(e) => setWaterNeed(e.target.value)}
+                            type="date"
+                            value={itemUpdate.expiration_date}
+                            onChange={(e) => setExpirationDate(e.target.value)}
                             placeholder="Average"
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label className="text-label-login">Quantity</Form.Label>
+                        <Form.Label className="text-label-login">Volumne Available</Form.Label>
                         <Form.Control
                             className="input-login input-addition input-number"
                             type="number"
                             placeholder="10"
                             min="1"
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
+                            value={itemUpdate.volumne_available}
+                            onChange={(e) => setVolumneAvailable(e.target.value)}
                         />
                     </Form.Group>
-                    <Form.Group className="group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Price</Form.Label>
-                        <Form.Control
-                            className="input-login input-addition input-price-create-plant input-number"
-                            type="number"
-                            placeholder="100"
-                            min="0"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-2 group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Plant Type</Form.Label>
+                    {/* <Form.Group className="mb-2 group-3-column-create-plant">
+                        <Form.Label className="text-label-login">Chemical Type</Form.Label>
                         <Form.Select
-                            onChange={(e) => setPlantType(e.target.value)}
+                            onChange={(e) => setChemicalType(e.target.value)}
                             className="input-login input-addition input-plant-type-create-plant"
                         >
                             {plantTypesData &&
@@ -122,19 +113,8 @@ const UpdateChemical = ({setShowModal, itemUpdate}) => {
                                     <option value={item.id}>{item.name}</option>
                                 ))}
                         </Form.Select>
-                    </Form.Group>
-                    <Form.Group className="mb-2 group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Description</Form.Label>
-                        <Form.Control
-                            className="input-login-textarea"
-                            as="textarea"
-                            rows={3}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
-                        />
-                    </Form.Group>
-                    <Button text="Update Plant" className="button-create-plant"/>
+                    </Form.Group> */}
+                    <Button text="Update Plant" className="button-create-plant" />
                 </Form>
                 <img
                     className="icon-close"

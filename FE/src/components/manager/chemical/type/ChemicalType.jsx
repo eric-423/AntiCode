@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./PlantType.css";
+import "./ChemicalType.css";
 import Addition from "./addition/Addition";
 import Table from "./table/Table";
 
-const PlantType = () => {
+const ChemicalType = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [updateItem, setUpdateItem] = useState()
   return (
@@ -20,4 +20,4 @@ const PlantType = () => {
   );
 };
 
-export default PlantType;
+export default ChemicalType;

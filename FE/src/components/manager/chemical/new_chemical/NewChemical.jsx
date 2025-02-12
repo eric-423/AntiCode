@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./NewChemical.css";
 import ICONS from "../../../../constant/Image";
-import {Form} from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Button from "../../../common/button/Button";
-import {toast} from "react-toastify/unstyled";
+import { toast } from "react-toastify/unstyled";
 
-const NewChemical = ({setShowModal, setRefreshData}) => {
+const NewChemical = ({ setShowModal, setRefreshData }) => {
     const [name, setName] = useState();
     const [characteristics, setCharacteristics] = useState();
     const [soilPH, setSoilPH] = useState();
@@ -20,6 +20,7 @@ const NewChemical = ({setShowModal, setRefreshData}) => {
         setShowModal(false);
     };
     const [plantTypesData, setPlantTypesData] = useState();
+
     const handleFetchDataPlantType = async () => {
         try {
             const response = await fetch(
@@ -37,6 +38,7 @@ const NewChemical = ({setShowModal, setRefreshData}) => {
         } catch (error) {
         }
     };
+
     useEffect(() => {
         handleFetchDataPlantType();
     }, []);
@@ -45,11 +47,13 @@ const NewChemical = ({setShowModal, setRefreshData}) => {
             position: "top-right",
         });
     };
+
     const showToastMessageFail = (message) => {
         toast.error(message, {
             position: "top-right",
         });
     };
+
     const handleOnClick = async () => {
         const plant = {
             name: name,
@@ -87,6 +91,7 @@ const NewChemical = ({setShowModal, setRefreshData}) => {
             setRefreshData(prev => !prev)
         }
     };
+
     return ReactDOM.createPortal(
         <div className="modal-create-plant-container">
             <div className="modal-create-plant">

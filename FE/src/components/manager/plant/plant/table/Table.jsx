@@ -7,9 +7,9 @@ import useLocalStorage from "use-local-storage";
 const Table = ({ listTitle, refreshData }) => {
   const [itemsActive, setItemsActive] = useState([]);
   const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
-  const [listItems,setListItems] = useState();
+  const [listItems, setListItems] = useState();
   const handleFetchPlantData = async () => {
-    try{
+    try {
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/`,
         {
@@ -19,11 +19,11 @@ const Table = ({ listTitle, refreshData }) => {
           },
         }
       )
-      if(response.ok){
+      if (response.ok) {
         const data = await response.json()
         setListItems(data)
       }
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
   }
@@ -39,7 +39,7 @@ const Table = ({ listTitle, refreshData }) => {
   }, [itemsActive]);
   useEffect(() => {
     handleFetchPlantData()
-  },[refreshData])
+  }, [refreshData])
   return (
     <>
       <Header listTitle={listTitle} />

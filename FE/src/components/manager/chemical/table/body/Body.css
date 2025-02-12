@@ -4,7 +4,7 @@
   display: grid;
   min-height: 60px;
   align-items: flex-start;
-  grid-template-columns: 0.5fr 1.5fr 1.75fr 2.5fr 1.5fr 1.5fr 1fr 1.25fr 0.5fr;
+  grid-template-columns: 0.5fr 1fr 1.5fr 1fr 1fr 0.5fr 0.5fr 0.5fr;
   margin-block-end: 0em;
   column-gap: 15px;
   padding: 15px 0;
@@ -13,46 +13,54 @@
   position: relative;
   z-index: 1;
 }
+
 .body-table:hover {
   background-color: rgba(242, 135, 5, 0.05);
 }
-.body-table > li {
+
+.body-table>li {
   font-size: 14px;
   font-weight: 400;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   color: rgba(0, 0, 0, 0.6);
 }
-.body-table > li:first-child {
+
+.body-table>li:first-child {
   padding-left: 15px;
 }
+
 .check-box-item {
   width: 15px;
   height: 15px;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.update-table-body{
-    width: 35px;
-    height: 35px;
-    background-color: #F7F7F7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: .375rem;
-    cursor: pointer;
-    z-index: 100;
+
+.update-table-body {
+  width: 35px;
+  height: 35px;
+  background-color: #F7F7F7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: .375rem;
+  cursor: pointer;
+  z-index: 100;
 }
-.tick-active-table-item{
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    width: 15px;
-    z-index: 1000;
-    background-color: transparent;
+
+.tick-active-table-item {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  z-index: 1000;
+  background-color: transparent;
 }
-.body-table-active{
-    outline: 1px solid rgba(242, 135, 5, 1);
+
+.body-table-active {
+  outline: 1px solid rgba(242, 135, 5, 1);
 }

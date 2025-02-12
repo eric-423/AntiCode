@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import "./Chemical.css";
 import ToolBar from "./tool_bar/ToolBar";
 import Table from "./table/Table";
@@ -7,47 +7,43 @@ const Chemical = () => {
     const [refreshData, setRefreshData] = useState(false)
     const listTitle = [
         {
-            name: "No.",
+            name: "ID.",
             column: 0.5,
         },
         {
             name: "Name",
-            column: 1.5,
-        },
-        {
-            name: "Characteristics",
-            column: 1.75,
-        },
-        {
-            name: "Description",
-            column: 2.5,
-        },
-        {
-            name: "Soil PH",
-            column: 1.5,
-        },
-        {
-            name: "Water Need",
-            column: 1.5,
-        },
-        {
-            name: "Quantity",
             column: 1,
         },
         {
-            name: "Price",
-            column: 1.25,
+            name: "Description",
+            column: 1.5,
         },
         {
-            name: "",
+            name: "Manufacturing date",
+            column: 1,
+        },
+        {
+            name: "Expiration date",
+            column: 1,
+        },
+        {
+            name: "Volumne Available",
+            column: 0.5,
+        },
+        {
+            name: "Chemical Type",
+            column: 0.5,
+        },
+        {
+            name: "Edit",
             column: 0.5,
         },
     ];
 
     return (
         <div className="plant-container">
-            <ToolBar setRefreshData={setRefreshData}/>
-            <Table listTitle={listTitle} refreshData={refreshData}/>
+            <ToolBar setRefreshData={setRefreshData} />
+            <Table listTitle={listTitle} refreshData={refreshData} />
         </div>
     );
 };
