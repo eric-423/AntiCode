@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "../button/Button";
+import Button from "../../button/Button";
 import "./FormLogin.css";
-import ICONS from "../../../constant/Image";
-import useMediaQuery from "../../../hook/useMediaQuery";
+import ICONS from "../../../../constant/Image";
+import useMediaQuery from "../../../../hook/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 
 const FormLogin = () => {
@@ -17,7 +17,7 @@ const FormLogin = () => {
       const response = await fetch(
         `${
           import.meta.env.VITE_REACT_APP_END_POINT
-        }/v1/account/login?email=${email}&password=${password}`,
+        }/user/signin?email=${email}&password=${password}`,
         {
           method: "POST",
           headers: {
@@ -86,7 +86,7 @@ const FormLogin = () => {
         className={!isScreenPhone ? "no-account" : "no-account text-center"}
         style={!isScreenPhone ? { marginBottom: "10vh" } : {}}
       >
-        Don't have an account? <span>Sign up</span>
+        Don't have an account? <span onClick={() => navigate("/registrations")} style={{cursor: "pointer"}}>Sign up</span>
       </p>
     </>
   );

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "./Login.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Col, Container, Row } from "react-bootstrap";
-import FormLogin from "../../components/common/form/login/FormLogin";
-import ICONS from "../../constant/Image";
-import useMediaQuery from "../../hook/useMediaQuery";
 import Header from "../../components/common/header/Header";
+import { Col, Container, Row } from "react-bootstrap";
+import useMediaQuery from "../../hook/useMediaQuery";
+import { Outlet } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const isScreenPhone = useMediaQuery("(max-width: 576px)");
   const isScreenTablet = useMediaQuery("(max-width: 768px)");
   const [widthBackground, setWidthBackground] = useState();
@@ -28,7 +25,12 @@ const Login = () => {
       {!isScreenTablet ? <Header /> : null}
       <Container id="container">
         <Row className="login-row">
-          <Col xl={4} lg={5} md={6} className={!isScreenTablet ? "align-content-end" : null}>
+          <Col
+            xl={4}
+            lg={5}
+            md={6}
+            className={!isScreenTablet ? "align-content-end" : null}
+          >
             {isScreenTablet ? (
               <img
                 src={ICONS.icon_logo}
@@ -43,7 +45,7 @@ const Login = () => {
                   : "text-login-p-big"
               }
             >
-              Login
+              Sign up
             </p>
             {!isScreenPhone ? (
               <>
@@ -54,15 +56,20 @@ const Login = () => {
               </>
             ) : null}
 
-            <FormLogin />
+            <Outlet />
           </Col>
           {!isScreenTablet ? (
-            <Col xl={8} lg={7} md={6} className="align-content-center position-relative">
+            <Col
+              xl={8}
+              lg={7}
+              md={6}
+              className="align-content-center position-relative"
+            >
               <div
                 className="main-background-login"
                 style={{ width: `calc(100% + ${widthBackground}px)` }}
               ></div>
-              <div className="block-slogan" id="block-slogan" >
+              <div className="block-slogan" id="block-slogan">
                 <span>Farm Tasks Management!</span>
               </div>
             </Col>
@@ -73,4 +80,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
