@@ -1,5 +1,6 @@
 package com.sba.exam.sba.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class PlantType {
     @OneToMany(mappedBy = "plantType", fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
+    @JsonIgnore
     private List<Plant> plantList;
 
 }
