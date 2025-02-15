@@ -3,9 +3,9 @@ import { Card } from "react-bootstrap";
 import "./CardPlantType.css";
 import ICONS from "../../../../../../constant/Image";
 import { toast } from "react-toastify/unstyled";
+import axios from "axios";
 
-
-const CardPlantType = ({ item ,setRefreshData, setUpdateItem}) => {
+const CardPlantType = ({ item, setRefreshData, setUpdateItem }) => {
   const showToastMessageSuccess = () => {
     toast.success("Plant type was deleted !", {
       position: "top-right",
@@ -18,44 +18,38 @@ const CardPlantType = ({ item ,setRefreshData, setUpdateItem}) => {
   };
   const handleDeleteItem = async (item) => {
     try {
-      const response = await fetch(
+      const response = await axios.delete(
         `${
           import.meta.env.VITE_REACT_APP_END_POINT
-        }/v1/plant-type/delete?plantTypeId=${item.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        }/plant-type?plantTypeId=${item.plantTypeId}`
       );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      if (!data) throw new Error();
+      if (!response || response.status !== 200 || response.data === "Failed") throw new Error();
       showToastMessageSuccess();
     } catch (error) {
-      showToastMessageFail()
-    }finally{
-      setRefreshData(prev => !prev)
+      showToastMessageFail();
+    } finally {
+      setRefreshData((prev) => !prev);
     }
   };
   const handleUpdateItem = (item) => {
-    setUpdateItem(item)
-  }
+    setUpdateItem(item);
+  };
   return (
-    <Card className="card-plant-type">
+    <Card className="card-plant-type" style={{ minWidth: "250px" }}>
       <Card.Header className="card-header">
         <div className="container-icon">
-          <img src={ICONS.icon_update} onClick={() => handleUpdateItem(item)}/>
+          <img src={ICONS.icon_update} onClick={() => handleUpdateItem(item)} />
         </div>
         <div className="container-icon" onClick={() => handleDeleteItem(item)}>
           <img src={ICONS.icon_delete} />
         </div>
       </Card.Header>
       <Card.Body className="card-body">
-        <Card.Title className="card-title-plant-type">{item.name}</Card.Title>
+        <Card.Title className="card-title-plant-type">
+          {item.plantTypeName}
+        </Card.Title>
         <Card.Text className="card-text-plant-type">
-          {item.description}
+          {item.typeDescription}
         </Card.Text>
       </Card.Body>
     </Card>

@@ -5,38 +5,54 @@ import Table from "./table/Table";
 
 const Plant = () => {
   const [refreshData,setRefreshData] = useState(false)
-  const listTitle = [
+   const listTitle = [
     {
       name: "No.",
       column: 0.5,
     },
     {
       name: "Name",
-      column: 1.5,
-    },
-    {
-      name: "Characteristics",
-      column: 1.75,
-    },
-    {
-      name: "Description",
-      column: 2.5,
-    },
-    {
-      name: "Soil PH",
-      column: 1.5,
-    },
-    {
-      name: "Water Need",
-      column: 1.5,
-    },
-    {
-      name: "Quantity",
       column: 1,
     },
     {
+      name: "Characteristics",
+      column: 1.5,
+    },
+    {
+      name: "Description",
+      column: 1.75,
+    },
+    {
+      name: "Species",
+      column: 0.75,
+    },
+    {
+      name: "Attracts",
+      column: 0.75,
+    },
+    {
+      name: "Hardiness",
+      column: 0.75,
+    },
+    {
+      name: "Plant Type",
+      column: 1,
+    },
+    {
+      name: "Heat Zone",
+      column: 0.75,
+    },
+    {
+      name: "Size",
+      column: 0.5,
+    },
+    {
       name: "Price",
-      column: 1.25,
+      column: 0.75,
+    },
+    {
+      name: "Is Seed",
+      column: 0.5,
     },
     {
       name: "",
@@ -47,7 +63,7 @@ const Plant = () => {
   return (
     <div className="plant-container">
       <ToolBar setRefreshData={setRefreshData} />
-      <Table listTitle={listTitle} refreshData={refreshData} />
+      <Table listTitle={listTitle} refreshData={refreshData} setRefreshData={setRefreshData}/>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import Button from "../../../../common/button/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify/unstyled";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const [name, setName] = useState("");
@@ -26,24 +27,13 @@ const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
   };
   const handleUpdatePlantType = async () => {
     const plantType = {
-      id: updateItem.id,
-      name: name,
-      description: description,
+      plantTypeId: updateItem.plantTypeId,
+      plantTypeName: name,
+      typeDescription: description,
     };
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant-type/update`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(plantType),
-        }
-      );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      if (!data) throw new Error();
+      const response = await axios.put( `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, plantType);
+      if (!response || response.status !== 200 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Plant type was updated !");
     } catch (error) {
       showToastMessageFail("Plant type can not update !");
@@ -55,25 +45,15 @@ const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
   }
   const handleAddPlantType = async () => {
     const plantType = {
-      name: name,
-      description: description,
+      plantTypeName: name,
+      typeDescription: description,
     };
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant-type/create`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(plantType),
-        }
-      );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      if (!data) throw new Error();
+      const response = await axios.post( `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, plantType);
+      if (!response || response.status !== 201 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Plant type was added !");
     } catch (error) {
+      console.log(error)
       showToastMessageFail("Plant type can not add !");
     } finally {
       clearData();
@@ -83,8 +63,8 @@ const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
   useEffect(() => {
     if (updateItem) {
       setIsUpdate(true);
-      setName(updateItem.name);
-      setDescription(updateItem.description);
+      setName(updateItem.plantTypeName);
+      setDescription(updateItem.typeDescription);
     } else {
       setIsUpdate(false);
       clearData();

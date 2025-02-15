@@ -5,16 +5,20 @@ import ICONS from "../../../../../constant/Image";
 import { Form } from "react-bootstrap";
 import Button from "../../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
+import axios from "axios";
 
 const NewPlant = ({ setShowModal, setRefreshData }) => {
   const [name, setName] = useState();
   const [characteristics, setCharacteristics] = useState();
-  const [soilPH, setSoilPH] = useState();
-  const [waterNeed, setWaterNeed] = useState();
-  const [quantity, setQuantity] = useState();
+  const [description, setDescription] = useState();
+  const [species, setSpecies] = useState();
+  const [attracts, setAttracts] = useState();
+  const [hardiness, setHardiness] = useState();
+  const [heatZone, setHeatZone] = useState();
+  const [size, setSize] = useState();
   const [price, setPrice] = useState();
   const [plantType, setPlantType] = useState();
-  const [description, setDescription] = useState();
+  const [isSeed, setIsSeed] = useState(false);
   const modalRoot = document.body;
   const handleClickClose = () => {
     setShowModal(false);
@@ -22,19 +26,15 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
   const [plantTypesData, setPlantTypesData] = useState();
   const handleFetchDataPlantType = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant-type/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`
       );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      setPlantTypesData(data);
-    } catch (error) {}
+      if (response.status === 200) {
+        setPlantTypesData(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     handleFetchDataPlantType();
@@ -49,41 +49,36 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
       position: "top-right",
     });
   };
-  const handleOnClick = async () => {    
+  const handleOnClick = async () => {
+    const plant_type = plantType
+      ? plantTypesData.find(
+          (item) => Number(item.plantTypeId) === Number(plantType)
+        )
+      : plantTypesData[0];
     const plant = {
-      name: name,
-      characteristics: characteristics,
-      description: description,
-      soilPH: soilPH,
-      waterNeed: waterNeed,
-      quantity: quantity,
+      plantName: name,
       price: price,
-      plantType: plantType
-        ? plantTypesData.find( item => Number(item.id) === Number(plantType))
-        : plantTypesData[0],
+      size: size,
+      seed: isSeed,
+      species: species,
+      description: description,
+      characteristics: characteristics,
+      attracts: attracts,
+      hardiness: hardiness,
+      heatZones: heatZone,
+      plantTypeId: plant_type.plantTypeId,
     };
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/create`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(plant),
-        }
-      );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      if (!data) throw new Error();
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant`, plant);
+      if (!response || response.status !== 201) throw new Error();
       showToastMessageSuccess("Plant was added !");
       setShowModal(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       showToastMessageFail("Plant can not added !");
       setShowModal(true);
     } finally {
-      setRefreshData(prev => !prev)
+      setRefreshData((prev) => !prev);
     }
   };
   return ReactDOM.createPortal(
@@ -98,7 +93,7 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
             <Form.Control
               className="input-login input-addition input-name-create-plant"
               type="text"
-              placeholder="Rosa Orange Glow (Shrub Rose)"
+              placeholder="Rosa ‘Belinda’s Dream’ (Shrub Rose)"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -116,37 +111,57 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label className="text-label-login">Soil PH</Form.Label>
+            <Form.Label className="text-label-login">Species</Form.Label>
             <Form.Control
               className="input-login input-addition"
               type="text"
-              placeholder="Acid, Alkaline, Neutral"
-              value={soilPH}
-              onChange={(e) => setSoilPH(e.target.value)}
+              placeholder="Roses"
+              value={species}
+              onChange={(e) => setSpecies(e.target.value)}
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label className="text-label-login">Water Need</Form.Label>
+            <Form.Label className="text-label-login">Hardiness</Form.Label>
             <Form.Control
               className="input-login input-addition"
               type="text"
-              placeholder="Average"
-              value={waterNeed}
-              onChange={(e) => setWaterNeed(e.target.value)}
+              placeholder="5 - 9"
+              value={hardiness}
+              onChange={(e) => setHardiness(e.target.value)}
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label className="text-label-login">Quantity</Form.Label>
+            <Form.Label className="text-label-login">Heat Zone</Form.Label>
             <Form.Control
               className="input-login input-addition input-number"
-              type="number"
-              placeholder="10"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
+              type="text"
+              placeholder="1 - 5"
+              value={heatZone}
+              onChange={(e) => setHeatZone(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">Attracts</Form.Label>
+            <Form.Control
+              className="input-login input-addition input-name-create-plant"
+              type="text"
+              placeholder="Bee"
+              value={attracts}
+              onChange={(e) => setAttracts(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className="">
+            <Form.Label className="text-label-login">Size</Form.Label>
+            <Form.Control
+              className="input-login input-addition input-price-create-plant input-number"
+              type="text"
+              placeholder="M"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="">
             <Form.Label className="text-label-login">Price</Form.Label>
             <Form.Control
               className="input-login input-addition input-price-create-plant input-number"
@@ -157,7 +172,7 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
               onChange={(e) => setPrice(e.target.value)}
             />
           </Form.Group>
-          <Form.Group className="mb-2 group-3-column-create-plant">
+          <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">Plant Type</Form.Label>
             <Form.Select
               onChange={(e) => setPlantType(e.target.value)}
@@ -166,9 +181,22 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
               {plantTypesData &&
                 Array.isArray(plantTypesData) &&
                 plantTypesData.map((item) => (
-                  <option value={item.id}>{item.name}</option>
+                  <option value={item.plantTypeId}>{item.plantTypeName}</option>
                 ))}
             </Form.Select>
+          </Form.Group>
+          <Form.Group className="display-flex-radio-group">
+            <span className="text-label-login">Seed</span>
+            <div
+              className={
+                isSeed
+                  ? "group-input-radio-new-plant active"
+                  : "group-input-radio-new-plant"
+              }
+              onClick={() => setIsSeed((prev) => !prev)}
+            >
+              <div></div>
+            </div>
           </Form.Group>
           <Form.Group className="mb-2 group-3-column-create-plant">
             <Form.Label className="text-label-login">Description</Form.Label>
@@ -198,5 +226,4 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
     modalRoot
   );
 };
-
 export default NewPlant;
