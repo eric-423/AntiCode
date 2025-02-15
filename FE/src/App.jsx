@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import './index.css'
 import Login from './pages/login/Login'
 import Manager from './pages/manager/Manager'
 import Dashboard from './components/manager/dashboard/Dashboard'
@@ -11,6 +12,9 @@ import Farm from './components/manager/location/farm/Farm'
 import Area from './components/manager/location/area/Area'
 import { ToastContainer } from 'react-toastify/unstyled'
 import PlantingLocation from './components/manager/location/plant location/PlantingLocation'
+import Register from './pages/register/Register'
+import FormRegister from './components/common/form/register/FormRegister'
+import VerifyEmail from './components/common/form/register/verify/VerifyEmail'
 
 function App() {
   const listComponent = [
@@ -82,6 +86,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/registrations/" element={<Register />} >
+          <Route index element={<FormRegister />}/>
+          <Route path="verify-otp" element={<VerifyEmail />}/>
+        </Route>
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />
           {listRouteNavigation.map((item) => (
