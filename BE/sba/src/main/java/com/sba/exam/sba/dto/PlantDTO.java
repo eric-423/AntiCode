@@ -31,4 +31,6 @@ public class PlantDTO implements Serializable {
     private String hardiness;
 
     private String heatZones;
+
+    private int plantTypeId;
 }
