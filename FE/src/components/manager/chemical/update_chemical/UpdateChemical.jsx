@@ -185,7 +185,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
 
                     </Form.Group>
                     <Button
-                        text="Create"
+                        text="Update"
                         handleOnClick={handleOnClick}
                         className="button-update-plant"
                     />

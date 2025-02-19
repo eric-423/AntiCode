@@ -6,23 +6,20 @@ import com.sba.exam.sba.entity.ChemicalType;
 import com.sba.exam.sba.repository.ChemicalRepository;
 import com.sba.exam.sba.repository.ChemicalTypeRepository;
 import com.sba.exam.sba.service.imp.ChemicalServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @Service
+@RequiredArgsConstructor
 public class ChemicalService implements ChemicalServiceImp {
+    
+    private final ChemicalRepository chemicalRepository;
 
-    @Autowired
-    ChemicalRepository chemicalRepository;
-
-    @Autowired
-    ChemicalTypeRepository chemicalTypeRepository;
-
+    private final ChemicalTypeRepository chemicalTypeRepository;
 
     @Override
     public List<ChemicalDTO> findAll() {
@@ -49,8 +46,9 @@ public class ChemicalService implements ChemicalServiceImp {
             chemicalRepository.deleteById(id);
             return true;
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        return false;
     }
 
     @Override
@@ -75,7 +73,6 @@ public class ChemicalService implements ChemicalServiceImp {
     public ChemicalDTO updateChemical(ChemicalDTO chemicalDTO, int typeId) throws Exception {
         AgriculturalChemical chemical = chemicalRepository.findById(chemicalDTO.getId()).orElseThrow(() -> new Exception("Chemical not found"));
         ChemicalType type = chemicalTypeRepository.findById(typeId).orElseThrow(() -> new Exception("Type not found"));
-
         chemical.setName(chemicalDTO.getName());
         chemical.setDescription(chemicalDTO.getDescription());
         chemical.setManufacturingDate(chemicalDTO.getManufacturingDate());

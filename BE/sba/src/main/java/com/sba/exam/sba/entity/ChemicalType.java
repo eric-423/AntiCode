@@ -29,6 +29,6 @@ public class ChemicalType {
     @Column(name = "type_description")
     private String typeDescription;
 
-    @OneToMany(mappedBy = "chemicalTypes",fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "chemicalTypes", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<AgriculturalChemical> agriculturalChemicals;
 }

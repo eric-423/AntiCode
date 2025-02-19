@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { useState } from "react";
+import PropTypes from 'prop-types';
 import "./Body.css";
 import ICONS from "../../../../../constant/Image.js";
 import UpdateChemical from "../../update_chemical/UpdateChemical.jsx";
@@ -51,5 +52,21 @@ const Body = ({ item, index, itemsActive, handleSelectItem }) => {
         </>
     );
 };
+
+Body.propTypes = {
+    item: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        manufacturingDate: PropTypes.string,
+        expirationDate: PropTypes.string,
+        volumeAvailable: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        chemicalType: PropTypes.string,
+    }).isRequired,
+    index: PropTypes.number.isRequired,
+    itemsActive: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+    handleSelectItem: PropTypes.func.isRequired,
+};
+
 
 export default Body;
