@@ -66,6 +66,15 @@ const listMenu = [
         component: null,
         path: "location"
       },
+      // {
+      //   nameMenu: "Task",
+      //   image: ICONS.icon_plant,
+      //   imageActive: ICONS.icon_plant_active,
+      //   sortItem: 3,
+      //   subItems: [],
+      //   component: COMPONENTS.TASK,
+      //   path: "task"
+      // },
       {
         nameMenu: "Dashboard",
         image: ICONS.icon_dashboard,
