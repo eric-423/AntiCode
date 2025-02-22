@@ -18,6 +18,8 @@ import icon_filter from '../assets/image/filter.png'
 import icon_tick from '../assets/image/tick.png'
 import icon_close from '../assets/image/close.png'
 import icon_loading from '../assets/image/loading.png'
+import icon_menu from '../assets/image/menu.png'
+import icon_watch from '../assets/image/watch.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -39,7 +41,9 @@ const ICONS = {
     icon_filter: icon_filter,
     icon_tick: icon_tick,
     icon_close: icon_close,
-    icon_loading: icon_loading
+    icon_loading: icon_loading,
+    icon_menu: icon_menu,
+    icon_watch: icon_watch
 }
 
 export default ICONS;

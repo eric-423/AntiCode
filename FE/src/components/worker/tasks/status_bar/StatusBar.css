@@ -1,0 +1,5 @@
+.worker-tasks-status-bar{
+    width: 350px;
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.06);
+    padding: 30px;
+}

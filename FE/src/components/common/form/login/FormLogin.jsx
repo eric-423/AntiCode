@@ -6,33 +6,43 @@ import "./FormLogin.css";
 import ICONS from "../../../../constant/Image";
 import useMediaQuery from "../../../../hook/useMediaQuery";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import BASE from "../../../../constant/base";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage";
+import useRole from "../../../../hook/useRole";
 
 const FormLogin = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [accountLoginInformation, setAccountLoginInformation] = useLocalStorage(
+    LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
+    ""
+  );
+
   const isScreenPhone = useMediaQuery("(max-width: 576px)");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleOnClick = async () => {
     try {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_REACT_APP_END_POINT
-        }/user/signin?email=${email}&password=${password}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      const response = await axios.post(
+        `${BASE.BASE_URL}/user/signin?email=${email}&password=${password}`
       );
-      if(!response.ok){
-          throw new Error()
+      if (!response || response.status !== 200 || response.data.data === "")
+        throw new Error();
+      const data = response.data.data;
+      setAccountLoginInformation(btoa(data));
+      const role = useRole(data);
+      if (role.admin) {
+        navigate("/admin");
+      } else if (role.manager) {
+        navigate("/manager");
+      } else if (role.worker) {
+        navigate("/worker");
       }
-      const data = await response.json()
-      if(data){
-        navigate("/manager")
-      }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
   return (
     <>
@@ -86,7 +96,13 @@ const FormLogin = () => {
         className={!isScreenPhone ? "no-account" : "no-account text-center"}
         style={!isScreenPhone ? { marginBottom: "10vh" } : {}}
       >
-        Don't have an account? <span onClick={() => navigate("/registrations")} style={{cursor: "pointer"}}>Sign up</span>
+        Don't have an account?{" "}
+        <span
+          onClick={() => navigate("/registrations")}
+          style={{ cursor: "pointer" }}
+        >
+          Sign up
+        </span>
       </p>
     </>
   );

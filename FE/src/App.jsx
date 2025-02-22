@@ -15,6 +15,8 @@ import PlantingLocation from './components/manager/location/plant location/Plant
 import Register from './pages/register/Register'
 import FormRegister from './components/common/form/register/FormRegister'
 import VerifyEmail from './components/common/form/register/verify/VerifyEmail'
+import Worker from './pages/worker/Worker'
+import Tasks from './components/worker/tasks/Tasks'
 
 function App() {
   const listComponent = [
@@ -95,6 +97,9 @@ function App() {
           {listRouteNavigation.map((item) => (
             <Route path={item.path} element={item.component} />
           ))}
+        </Route>
+        <Route path='/worker' element={<Worker />} >
+            <Route index element={<Tasks />}/>
         </Route>
       </Routes>
       <ToastContainer />
