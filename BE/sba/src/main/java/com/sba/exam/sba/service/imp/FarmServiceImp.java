@@ -1,8 +1,6 @@
 package com.sba.exam.sba.service.imp;
 
 import com.sba.exam.sba.dto.FarmDTO;
-import com.sba.exam.sba.entity.Farm;
-import com.sba.exam.sba.payload.ResponseData;
 import com.sba.exam.sba.payload.request.FarmRequest;
 
 import java.util.List;

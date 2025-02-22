@@ -1,15 +1,16 @@
 package com.sba.exam.sba.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "area")
-@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Area {
 
     @Id

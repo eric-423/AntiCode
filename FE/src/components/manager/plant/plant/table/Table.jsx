@@ -3,60 +3,43 @@ import "./Table.css";
 import Header from "../../../../common/table/header/Header";
 import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
-import axios from "axios";
 
-const Table = ({ listTitle, refreshData , setRefreshData}) => {
+const Table = ({ listTitle, refreshData }) => {
   const [itemsActive, setItemsActive] = useState([]);
-  const [selectedPlants, setSelectedPlants] = useLocalStorage(
-    "manager_plants_selected",
-    ""
-  );
-  const [plantTypesData, setPlantTypesData] = useState();
+  const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
   const [listItems, setListItems] = useState();
   const handleFetchPlantData = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant`
-      );
-      if (response && response.status === 200) {
-        setListItems(response.data.data);
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      if (response.ok) {
+        const data = await response.json()
+        setListItems(data)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
-
-  const handleFetchDataPlantType = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`
-      );
-      if (response.status === 200) {
-        setPlantTypesData(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  }
   const handleSelectItem = (item_index) => {
-    if (itemsActive.includes(item_index.plantId)) {
-      setItemsActive(itemsActive.filter((item) => {
-        return item !== item_index.plantId
-      }));
+    if (itemsActive.includes(item_index.id)) {
+      setItemsActive(itemsActive.filter((item) => item.id !== item_index.id));
     } else {
-      setItemsActive([...itemsActive, item_index.plantId]);
+      setItemsActive([...itemsActive, item_index.id]);
     }
   };
-  useEffect(() => {
-    handleFetchDataPlantType()
-  },[])
   useEffect(() => {
     setSelectedPlants(itemsActive);
   }, [itemsActive]);
   useEffect(() => {
-    handleFetchPlantData();
-  }, [refreshData]);
+    handleFetchPlantData()
+  }, [refreshData])
   return (
     <>
       <Header listTitle={listTitle} />
@@ -68,12 +51,10 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
               itemsActive={itemsActive}
               item={item}
               index={index}
-              plantTypesData={plantTypesData}
-              setRefreshData={setRefreshData}
-              listTitle={listTitle}
             />
           ))}
       </div>
+
     </>
   );
 };

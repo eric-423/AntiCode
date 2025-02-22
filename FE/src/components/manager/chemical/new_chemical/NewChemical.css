@@ -23,7 +23,7 @@
     overflow-y: scroll;
 }
 
-.modal-create-plant > .icon-close {
+.modal-create-plant>.icon-close {
     width: 18px;
     position: absolute;
     top: 10px;
@@ -43,20 +43,20 @@
 .form-create-plant {
     display: grid;
     grid-template-columns: 4fr 4fr 4fr;
-    column-gap: 40px;
+    column-gap: 10px;
 }
 
 .group-3-column-create-plant {
     grid-column-start: 1;
-    grid-column-end: 10;
+    grid-column-end: 4;
 }
 
 .input-name-create-plant {
-    max-width: 250px;
+    max-width: 60%;
 }
 
 .input-characteristis-create-plant {
-    max-width: 350px;
+    max-width: 60%;
 }
 
 .input-price-create-plant {
@@ -64,12 +64,8 @@
 }
 
 .input-plant-type-create-plant {
-    max-width: 300px;
+    max-width: 60%;
     cursor: pointer;
-}
-
-.button-create-plant {
-    margin-top: 20px;
 }
 
 .input-number::-webkit-outer-spin-button,

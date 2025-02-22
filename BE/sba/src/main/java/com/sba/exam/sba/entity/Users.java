@@ -9,6 +9,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class Users {
@@ -47,7 +49,7 @@ public class Users {
     private List<Users> subordinates = new ArrayList<>();
 
     @ManyToOne(cascade = {
-            CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
     @JoinColumn(name = "role_id")
     private Role role;
