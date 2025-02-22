@@ -15,22 +15,22 @@ public class TaskController {
     @Autowired
     TaskServiceImp taskServiceImp;
 
-    @GetMapping("/getTasks")
+    @GetMapping()
     public ResponseEntity<?> getAllTasks() {
         return new ResponseEntity<>(taskServiceImp.getTasks(), HttpStatus.OK);
     }
 
-    @GetMapping("/getTask/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable int id) {
         return new ResponseEntity<>(taskServiceImp.getTaskById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/addTask")
+    @PostMapping()
     public ResponseEntity<?> addTask(@RequestBody TaskRequest taskRequest) {
-        return new ResponseEntity<>(taskServiceImp.addTask(taskRequest), HttpStatus.OK);
+        return new ResponseEntity<>(taskServiceImp.addTask(taskRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("/updateTask")
+    @PutMapping()
     public ResponseEntity<?> updateTask(@RequestBody TaskRequest taskRequest) {
         return new ResponseEntity<>(taskServiceImp.updateTask(taskRequest), HttpStatus.OK);
     }

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Row } from "react-bootstrap";
 import "./Menu.css";
 import ICONS from "../../../../constant/Image";
@@ -21,31 +22,35 @@ const Menu = ({ list }) => {
     index: null,
     status: false,
   });
+
   const handleHoverItem = (index, indexMenu) => {
     setItemHover({
       indexMenu: indexMenu,
       index: index,
     });
   };
+
   const handleLeaveItem = () => {
     setItemHover({
       indexMenu: null,
       index: null,
     });
   };
+
   const handleItemActive = (index, indexMenu, item) => {
     if (Array.isArray(item.subItems) && item.subItems.length > 0) {
       navigate(item.path + item.subItems[0].path);
     } else {
       navigate(item.path);
     }
+
     if (index === itemActive.index && indexMenu === itemActive.indexMenu) {
       if (itemActive.status) {
         setSubItemActive({
           indexMenu: null,
           parentItem: null,
           index: null,
-          status: null,
+          status: false,
         });
       } else {
         setSubItemActive({
@@ -70,17 +75,12 @@ const Menu = ({ list }) => {
         indexMenu: indexMenu,
         parentItem: index,
         index: 0,
-        status: !itemActive.status,
+        status: true,
       });
     }
   };
-  const hanldeActiveSubItem = (
-    indexParent,
-    indexSubItem,
-    indexMenu,
-    subItem,
-    item
-  ) => {
+
+  const hanldeActiveSubItem = (indexParent, indexSubItem, indexMenu, subItem, item) => {
     navigate(item.path + subItem.path);
     setSubItemActive({
       indexMenu: indexMenu,
@@ -89,6 +89,7 @@ const Menu = ({ list }) => {
       status: !subItemActive.status,
     });
   };
+
   const pathName = window.location.pathname;
   useEffect(() => {
     if (list) {
@@ -105,7 +106,6 @@ const Menu = ({ list }) => {
           Array.isArray(itemMenu.data) &&
             itemMenu.data.forEach((item, index) => {
               const itemPath = String(item.path);
-              console.log(pathName)
               if (pathName.includes(itemPath)) {
                 setItemActive({
                   indexMenu: indexMenu,
@@ -130,27 +130,28 @@ const Menu = ({ list }) => {
                         status: true,
                       });
                     }
-                    return;
                   });
                 }
               }
             });
         });
     }
-  }, [list]);
+  }, [list, pathName]);
+
   return (
     <Row className="list-navigation">
       {list.map((listMenu, indexMenu) => (
-        <>
+        <div key={indexMenu}>
           <p>{listMenu.title}</p>
           <div>
             <ul id="list-navigation">
               {listMenu.data.map((item, index) => (
                 <li
+                  key={index}
                   className={
                     indexMenu === itemActive.indexMenu &&
-                    index == itemActive.index &&
-                    itemActive.status
+                      index === itemActive.index &&
+                      itemActive.status
                       ? "active"
                       : ""
                   }
@@ -158,74 +159,58 @@ const Menu = ({ list }) => {
                   <div
                     onClick={() => handleItemActive(index, indexMenu, item)}
                     onMouseEnter={() => handleHoverItem(index, indexMenu)}
-                    onMouseLeave={() => handleLeaveItem()}
+                    onMouseLeave={handleLeaveItem}
                     className="menu-item"
                   >
                     <img
                       src={
-                        (index === itemHover.index &&
-                          indexMenu === itemHover.indexMenu) ||
-                        (index === itemActive.index &&
-                          itemActive.status &&
-                          indexMenu === itemActive.indexMenu)
+                        (index === itemHover.index && indexMenu === itemHover.indexMenu) ||
+                          (index === itemActive.index && itemActive.status && indexMenu === itemActive.indexMenu)
                           ? item.imageActive
                           : item.image
                       }
                       alt=""
                     />
                     <span>{item.nameMenu}</span>
-                    {item.subItems.length > 0 &&
-                    ((index === itemHover.index &&
-                      indexMenu === itemHover.indexMenu) ||
-                      (index === itemActive.index &&
-                        itemActive.status &&
-                        indexMenu === subItemActive.indexMenu)) ? (
+                    {item.subItems.length > 0 && (
                       <img
                         className={"more-item-navigation"}
                         style={
-                          itemActive.status &&
-                          index === itemActive.index &&
-                          indexMenu === subItemActive.indexMenu
-                            ? { transform: `rotate(${180}deg)` }
-                            : { transform: `rotate(${0}deg)` }
+                          itemActive.status && index === itemActive.index && indexMenu === subItemActive.indexMenu
+                            ? { transform: `rotate(180deg)` }
+                            : { transform: `rotate(0deg)` }
                         }
                         src={ICONS.icon_arrow_active}
                         alt=""
                       />
-                    ) : null}
+                    )}
                   </div>
-                  {item.subItems.length > 0 ? (
+                  
+                  {item.subItems.length > 0 && (
                     <div
                       className={
                         index === itemActive.index &&
-                        itemActive.status &&
-                        indexMenu === subItemActive.indexMenu
+                          itemActive.status &&
+                          indexMenu === subItemActive.indexMenu
                           ? "sub-items-active"
                           : "sub-items-non-active"
                       }
                       style={
                         index === itemActive.index &&
-                        itemActive.status &&
-                        indexMenu === subItemActive.indexMenu
+                          itemActive.status &&
+                          indexMenu === subItemActive.indexMenu
                           ? { height: `${item.subItems.length * 40 + 20}px` }
                           : null
                       }
                     >
                       {item.subItems.map((subItem, indexSubItem) => (
-                        <div className="sub-item">
+                        <div className="sub-item" key={indexSubItem}>
                           <span
                             onClick={() =>
-                              hanldeActiveSubItem(
-                                index,
-                                indexSubItem,
-                                indexMenu,
-                                subItem,
-                                item
-                              )
+                              hanldeActiveSubItem(index, indexSubItem, indexMenu, subItem, item)
                             }
                             className={
-                              indexSubItem === subItemActive.index &&
-                              subItemActive
+                              indexSubItem === subItemActive.index && subItemActive
                                 ? "active"
                                 : ""
                             }
@@ -235,15 +220,19 @@ const Menu = ({ list }) => {
                         </div>
                       ))}
                     </div>
-                  ) : null}
+                  )}
                 </li>
               ))}
             </ul>
           </div>
-        </>
+        </div>
       ))}
     </Row>
   );
+};
+
+Menu.propTypes = {
+  list: PropTypes.array.isRequired,
 };
 
 export default Menu;

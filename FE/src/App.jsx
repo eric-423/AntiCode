@@ -17,6 +17,9 @@ import FormRegister from './components/common/form/register/FormRegister'
 import VerifyEmail from './components/common/form/register/verify/VerifyEmail'
 import Worker from './pages/worker/Worker'
 import Tasks from './components/worker/tasks/Tasks'
+import Task from './components/manager/task/task/Task'
+import Type from './components/manager/task/type/Type'
+import Status from './components/manager/task/status/Status'
 
 function App() {
   const listComponent = [
@@ -51,6 +54,18 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.PLANT_LOCATION,
       component: <PlantingLocation />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.TASK,
+      component: <Task />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.TASK_STATUS,
+      component: <Status />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.TASK_TYPE,
+      component: <Type />,
     },
   ]
   const listRouteNavigation = []
@@ -89,8 +104,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registrations/" element={<Register />} >
-          <Route index element={<FormRegister />}/>
-          <Route path="verify-otp" element={<VerifyEmail />}/>
+          <Route index element={<FormRegister />} />
+          <Route path="verify-otp" element={<VerifyEmail />} />
         </Route>
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />
