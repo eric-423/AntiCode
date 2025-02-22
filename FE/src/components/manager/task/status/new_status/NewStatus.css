@@ -1,0 +1,34 @@
+.form-addition-plant-type{
+    padding: 25px;
+    display: grid;
+    row-gap: 15px;
+}
+.addition-plant-type-h4 {
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+.input-login-textarea{
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.7);
+}
+.input-login-textarea:focus{
+    box-shadow: none;
+    border-color: #F28705;
+} 
+.input-login-textarea::-webkit-scrollbar{
+    width: 2px;
+}
+.input-login-textarea::-webkit-scrollbar-thumb{
+   background-color: #F28705;
+   border-radius: 50px;
+}
+.input-addition{
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.7);
+}
+.input-login-textarea::placeholder{
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+}
