@@ -44,10 +44,14 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
         }
     };
 
+
+
     useEffect(() => {
         handleFetchDataChemicalType();
     }, []);
 
+
+    // message for success or fail
     const showToastMessageSuccess = (message) => {
         toast.success(message, {
             position: "top-right",
@@ -60,6 +64,9 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
         });
     };
 
+
+    // Create new chemical
+
     const handleOnClick = async () => {
         setTypeId(chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.id || '');
         const chemical = {
@@ -70,6 +77,13 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
             volumeAvailable,
             chemicalType: chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.name || '',
         };
+
+        if (expirationDate < manufacturingDate) {
+            return showToastMessageFail("Expiration date must be greater than manufacturing date");
+        }
+        if (volumeAvailable < 1) {
+            return showToastMessageFail("Volume available must be greater than 0");
+        }
 
         try {
             const response = await fetch(
@@ -85,11 +99,11 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
             if (!response.ok) throw new Error("Failed to create Chemical");
             const data = await response.json();
             if (!data) throw new Error("No data returned");
-            showToastMessageSuccess("Plant was added!");
+            showToastMessageSuccess("Chemical was added!");
             setShowModal(false);
         } catch (error) {
             console.error(error);
-            showToastMessageFail("Plant cannot be added!");
+            showToastMessageFail("Chemical cannot be added!");
             setShowModal(true);
         } finally {
             setRefreshData(prev => !prev);
@@ -101,10 +115,29 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     return ReactDOM.createPortal(
         <div className="modal-create-plant-container">
             <div className="modal-create-plant">
+
                 <Form className="form-addition-plant-type form-create-plant">
                     <h4 className="addition-plant-type-h4 group-3-column-create-plant">
                         NEW CHEMICAL
                     </h4>
+
+
+                    <Form.Group className="mb-2 group-3-column-create-plant">
+                        <Form.Label className="text-label-login">Chemical Type</Form.Label>
+                        <Form.Select
+                            onChange={(e) => setSelectedChemicalType(e.target.value)}
+                            className="input-login input-addition input-plant-type-create-plant"
+
+                        >
+                            <option value="">Select Chemical Type</option>
+                            {chemicalTypes &&
+                                Array.isArray(chemicalTypes) &&
+                                chemicalTypes.map((item) => (
+                                    <option key={item.id} value={item.id}>{item.name}</option>
+                                ))}
+                        </Form.Select>
+                    </Form.Group>
+
 
                     <Form.Group className="group-3-column-create-plant">
                         <Form.Label className="text-label-login">Chemical Name</Form.Label>
@@ -120,8 +153,9 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     <Form.Group className="group-3-column-create-plant">
                         <Form.Label className="text-label-login">Description</Form.Label>
                         <Form.Control
-                            className="input-login input-addition input-characteristis-create-plant"
-                            type="text"
+                            className=" input-addition input-characteristis-create-plant"
+                            as="textarea"
+                            rows={3}
                             placeholder="Showy, Cut Flowers"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -160,20 +194,7 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                         />
                     </Form.Group>
 
-                    <Form.Group className="mb-2 group-3-column-create-plant">
-                        <Form.Label className="text-label-login">Chemical Type</Form.Label>
-                        <Form.Select
-                            onChange={(e) => setSelectedChemicalType(e.target.value)}
-                            className="input-login input-addition input-plant-type-create-plant"
-                        >
-                            <option value="">Select Chemical Type</option>
-                            {chemicalTypes &&
-                                Array.isArray(chemicalTypes) &&
-                                chemicalTypes.map((item) => (
-                                    <option key={item.id} value={item.id}>{item.name}</option>
-                                ))}
-                        </Form.Select>
-                    </Form.Group>
+
                     <Button
                         text="Create"
                         handleOnClick={handleOnClick}

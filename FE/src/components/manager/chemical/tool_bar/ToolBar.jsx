@@ -12,6 +12,7 @@ const ToolBar = ({ setRefreshData }) => {
     const handleShowModal = () => {
         setShowModal((prev) => !prev);
     };
+
     const handleDeleteChemical = async () => {
         try {
             let param = ''
