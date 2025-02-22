@@ -15,7 +15,6 @@ import PlantingLocation from './components/manager/location/plant location/Plant
 import Register from './pages/register/Register'
 import FormRegister from './components/common/form/register/FormRegister'
 import VerifyEmail from './components/common/form/register/verify/VerifyEmail'
-// import Task from './components/manager/task/Task'
 
 function App() {
   const listComponent = [
@@ -51,10 +50,6 @@ function App() {
       name: NAVIGATION.COMPONENTS.PLANT_LOCATION,
       component: <PlantingLocation />,
     },
-    // {
-    //   name: NAVIGATION.COMPONENTS.TASK,
-    //   component: <Task />,
-    // },
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
