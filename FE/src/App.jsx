@@ -20,6 +20,8 @@ import Tasks from './components/worker/tasks/Tasks'
 import Task from './components/manager/task/task/Task'
 import Type from './components/manager/task/type/Type'
 import Status from './components/manager/task/status/Status'
+import Chemical from './components/manager/chemical/Chemical'
+import ChemicalType from './components/manager/chemical/type/ChemicalType'
 
 function App() {
   const listComponent = [
@@ -66,6 +68,14 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.TASK_TYPE,
       component: <Type />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.CHEMICAL,
+      component: <Chemical />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.CHEMICAL_TYPE,
+      component: <ChemicalType />,
     },
   ]
   const listRouteNavigation = []

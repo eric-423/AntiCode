@@ -12,7 +12,9 @@ const COMPONENTS = {
   TASK_TYPE: "Task Type",
   TASK_STATUS: "Task Status",
   DASHBOARD: "Dashboard",
-  SETTINGS: "Settings"
+  SETTINGS: "Settings",
+  CHEMICAL: "Chemical",
+  CHEMICAL_TYPE: "Chemical Type"
 };
 
 const listMenu = [
@@ -43,7 +45,7 @@ const listMenu = [
         nameMenu: "Chemical",
         image: ICONS.icon_chemical,
         imageActive: ICONS.icon_chemical,
-        sortItem: 0,
+        sortItem: 4,
         component: COMPONENTS.CHEMICAL,
         path: "menu-chemical",
         subItems: [
@@ -61,8 +63,8 @@ const listMenu = [
       },
       {
         nameMenu: "Task",
-        image: ICONS.icon_plant,
-        imageActive: ICONS.icon_plant_active,
+        image: ICONS.icon_task,
+        imageActive: ICONS.icon_task_active,
         sortItem: 3,
         subItems: [
           {
@@ -86,8 +88,8 @@ const listMenu = [
       },
       {
         nameMenu: "Location",
-        image: ICONS.icon_plant,
-        imageActive: ICONS.icon_plant_active,
+        image: ICONS.icon_location,
+        imageActive: ICONS.icon_location_active,
         sortItem: 2,
         subItems: [
           {

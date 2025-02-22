@@ -21,6 +21,10 @@ import icon_loading from '../assets/image/loading.png'
 import icon_menu from '../assets/image/menu.png'
 import icon_watch from '../assets/image/watch.png'
 import icon_chemical from '../assets/image/chemical.png'
+import icon_task from '../assets/image/task.png'
+import icon_task_active from '../assets/image/task-active.png'
+import icon_location from '../assets/image/location.png'
+import icon_location_active from '../assets/image/location-active.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -45,7 +49,11 @@ const ICONS = {
     icon_loading: icon_loading,
     icon_menu: icon_menu,
     icon_watch: icon_watch,
-    icon_chemical:icon_chemical
+    icon_chemical:icon_chemical,
+    icon_task: icon_task,
+    icon_task_active: icon_task_active,
+    icon_location: icon_location,
+    icon_location_active: icon_location_active
 }
 
 export default ICONS;
