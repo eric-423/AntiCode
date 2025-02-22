@@ -27,7 +27,7 @@ public class TaskController {
 
     @PostMapping()
     public ResponseEntity<?> addTask(@RequestBody TaskRequest taskRequest) {
-        return new ResponseEntity<>(taskServiceImp.addTask(taskRequest), HttpStatus.OK);
+        return new ResponseEntity<>(taskServiceImp.addTask(taskRequest), HttpStatus.CREATED);
     }
 
     @PutMapping()
