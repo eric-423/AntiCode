@@ -103,8 +103,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registrations/" element={<Register />} >
-          <Route index element={<FormRegister />}/>
-          <Route path="verify-otp" element={<VerifyEmail />}/>
+          <Route index element={<FormRegister />} />
+          <Route path="verify-otp" element={<VerifyEmail />} />
         </Route>
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />
