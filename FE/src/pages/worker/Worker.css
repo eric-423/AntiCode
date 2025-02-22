@@ -1,0 +1,8 @@
+.worker-container{
+    background-color: #F7F7F7;
+    height: 100vh;
+}
+.worker-container-content{
+    height: calc(100vh - 65px);
+    padding: 0 0 0 5vw;
+}
