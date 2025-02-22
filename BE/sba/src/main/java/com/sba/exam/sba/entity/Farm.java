@@ -1,15 +1,17 @@
 package com.sba.exam.sba.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "farm")
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
+
 public class Farm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

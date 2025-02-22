@@ -1,4 +1,3 @@
-import React from 'react'
 import Navigation from '../../components/manager/navigation/Navigation'
 
 const Manager = () => {
