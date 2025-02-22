@@ -8,6 +8,9 @@ const COMPONENTS = {
   FARM: "Farm",
   AREA: "Area",
   PLANT_LOCATION: "Plant Location",
+  TASK: "Task",
+  TASK_TYPE: "Task Type",
+  TASK_STATUS: "Task Status",
   DASHBOARD: "Dashboard",
   SETTINGS: "Settings"
 };
@@ -35,6 +38,51 @@ const listMenu = [
         ],
         component: null,
         path: "menu-plant"
+      },
+      {
+        nameMenu: "Chemical",
+        image: ICONS.icon_chemical,
+        imageActive: ICONS.icon_chemical,
+        sortItem: 0,
+        component: COMPONENTS.CHEMICAL,
+        path: "menu-chemical",
+        subItems: [
+          {
+            name: "Chemical",
+            component: COMPONENTS.CHEMICAL,
+            path: "/chemical"
+          },
+          {
+            name: "Chemical Type",
+            component: COMPONENTS.CHEMICAL_TYPE,
+            path: "/chemical-type"
+          },
+        ]
+      },
+      {
+        nameMenu: "Task",
+        image: ICONS.icon_plant,
+        imageActive: ICONS.icon_plant_active,
+        sortItem: 3,
+        subItems: [
+          {
+            name: "Task",
+            component: COMPONENTS.TASK,
+            path: "/"
+          },
+          {
+            name: "Task Type",
+            component: COMPONENTS.TASK_TYPE,
+            path: "/task-type"
+          },
+          {
+            name: "Task Status",
+            component: COMPONENTS.TASK_STATUS,
+            path: "/task-status"
+          },
+        ],
+        component: null,
+        path: "task"
       },
       {
         nameMenu: "Location",
