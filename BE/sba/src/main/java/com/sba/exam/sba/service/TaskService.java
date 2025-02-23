@@ -71,12 +71,14 @@ public class TaskService implements TaskServiceImp {
     @Transactional
     public TaskDTO addTask(TaskRequest taskRequest) {
         try{
+            if(taskRequest.getCreatedAt().after(taskRequest.getCompletedAt())||
+            taskRequest.getCompletedAt().toString().isEmpty()) throw new Exception("Invalid date");
             Task task = new Task();
             TaskType taskType = taskTypeRepository.findTaskTypeById(taskRequest.getTaskType());
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(taskRequest.getTaskStatus());
 
             task.setCompletedAt(taskRequest.getCompletedAt());
-            task.setCreatedAt(new Date());
+            task.setCreatedAt(taskRequest.getCreatedAt());
             task.setDescription(taskRequest.getTaskDescription());
             task.setTaskStatus(taskStatus);
             task.setTaskType(taskType);
@@ -94,6 +96,8 @@ public class TaskService implements TaskServiceImp {
     @Transactional
     public TaskDTO updateTask(TaskRequest taskRequest) {
         try{
+            if(taskRequest.getCreatedAt().after(taskRequest.getCompletedAt())||
+                    taskRequest.getCompletedAt().toString().isEmpty()) throw new Exception("Invalid date");
             Task task = taskRepository.findTaskById(taskRequest.getTaskId());
             TaskType taskType = taskTypeRepository.findTaskTypeById(taskRequest.getTaskType());
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(taskRequest.getTaskStatus());

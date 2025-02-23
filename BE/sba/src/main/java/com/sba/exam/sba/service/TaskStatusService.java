@@ -48,6 +48,7 @@ public class TaskStatusService implements TaskStatusImp {
     public TaskStatusDTO addTaskStatus(TaskStatusDTO taskStatusDTO) {
         try{
             TaskStatus taskStatus = new TaskStatus();
+            if(taskStatusDTO.getTaskStatusName().isEmpty()) throw new Exception("taskStatusName is empty");
             taskStatus.setStatusName(taskStatusDTO.getTaskStatusName());
             taskStatus.setStatusDescription(taskStatusDTO.getTaskStatusDescription());
             taskStatusRepository.save(taskStatus);
@@ -63,6 +64,7 @@ public class TaskStatusService implements TaskStatusImp {
     @Transactional
     public TaskStatusDTO updateTaskStatus(TaskStatusDTO taskStatusDTO) {
         try{
+            if(taskStatusDTO.getTaskStatusName().isEmpty()) throw new Exception("task status name is empty");
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(taskStatusDTO.getTaskStatusId());
             taskStatus.setStatusName(taskStatusDTO.getTaskStatusName());
             taskStatus.setStatusDescription(taskStatusDTO.getTaskStatusDescription());
