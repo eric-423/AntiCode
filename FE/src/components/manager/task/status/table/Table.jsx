@@ -10,7 +10,7 @@ const Table = ({refreshData,setRefreshData, setUpdateItem}) => {
     try{
       const  response = await axios.get(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`);
       if(response.status === 200){
-        setData(response.data.data)
+        setData(response.data)
       }
     }catch(error){
       console.log(error)

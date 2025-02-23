@@ -29,13 +29,13 @@ public class UserService implements UserServiceImp {
     @Override
     public boolean createUser(UserDTO userDTO) {
         try{
-            boolean isVerified =OTPServiceImp.isOtpVerified(userDTO.getEmail());
-            if(!isVerified ) throw new Exception();
+//            boolean isVerified =OTPServiceImp.isOtpVerified(userDTO.getEmail());
+//            if(!isVerified ) throw new Exception();
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
             user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
-            Role role = roleRepository.findRoleByName("Worker");
+            Role role = roleRepository.findRoleByName("Manager");
             user.setRole(role);
             userRepository.save(user);
             return true;

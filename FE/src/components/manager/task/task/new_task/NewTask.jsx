@@ -26,7 +26,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
       );
       if (response.status === 200) {
-        setTaskStatusData(response.data.data);
+        setTaskStatusData(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -43,7 +43,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
       );
       if (response.status === 200) {
-        setTaskTypesData(response.data.data);
+        setTaskTypesData(response.data);
       }
     } catch (error) {
       console.log(error);

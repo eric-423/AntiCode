@@ -9,9 +9,11 @@ const Table = ({refreshData,setRefreshData, setUpdateItem}) => {
   const handleFetchData = async () => {
     try{
       const  response = await axios.get(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`);
+      console.log(response)
       if(response.status === 200){
-        setData(response.data.data)
+        setData(response.data)
       }
+      console.log(response.data)
     }catch(error){
       console.log(error)
     }

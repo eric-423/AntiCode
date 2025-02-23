@@ -51,7 +51,9 @@ public class TaskStatusService implements TaskStatusImp {
             taskStatus.setStatusName(taskStatusDTO.getTaskStatusName());
             taskStatus.setStatusDescription(taskStatusDTO.getTaskStatusDescription());
             taskStatusRepository.save(taskStatus);
-            return getTaskStatusById(taskStatusDTO.getTaskStatusId());
+            TaskStatusDTO result = new TaskStatusDTO();
+            result.setTaskStatusId(taskStatus.getId());
+            return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +68,9 @@ public class TaskStatusService implements TaskStatusImp {
             taskStatus.setStatusDescription(taskStatusDTO.getTaskStatusDescription());
             taskStatus.setId(taskStatusDTO.getTaskStatusId());
             taskStatusRepository.save(taskStatus);
-            return getTaskStatusById(taskStatusDTO.getTaskStatusId());
+            TaskStatusDTO result = new TaskStatusDTO();
+            result.setTaskStatusId(taskStatus.getId());
+            return result;
         }catch(Exception e){
             throw new RuntimeException();
         }

@@ -4,7 +4,7 @@ import ICONS from "../../../../../../constant/Image";
 import UpdateTask from "../../update_task/UpdateTask";
 import useGridColumn from "../../../../../../hook/useGridColumn";
 
-const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, plantTypesData, setRefreshData}) => {
+const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, taskStatusData, taskTypesData, setRefreshData}) => {
   const [showModal,setShowModal] = useState(false)
   const [itemUpdate,setItemUpdate] = useState()
   const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.plantId);

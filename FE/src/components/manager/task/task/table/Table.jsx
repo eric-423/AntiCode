@@ -20,7 +20,7 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task`
       );
       if (response && response.status === 200) {
-        setListItems(response.data.data);
+        setListItems(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -32,8 +32,9 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
       const response = await axios.get(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
       );
+      
       if (response.status === 200) {
-        setTaskTypesData(response.data.data);
+        setTaskTypesData(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -45,8 +46,9 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
       const response = await axios.get(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
       );
+      
       if (response.status === 200) {
-        setTaskStatusData(response.data.data);
+        setTaskStatusData(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -54,12 +56,12 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   };
 
   const handleSelectItem = (item_index) => {
-    if (itemsActive.includes(item_index.plantId)) {
+    if (itemsActive.includes(item_index.taskId)) {
       setItemsActive(itemsActive.filter((item) => {
-        return item !== item_index.plantId
+        return item !== item_index.taskId
       }));
     } else {
-      setItemsActive([...itemsActive, item_index.plantId]);
+      setItemsActive([...itemsActive, item_index.taskId]);
     }
   };
   useEffect(() => {
@@ -74,6 +76,8 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   useEffect(() => {
     handleFetchTaskData();
   }, [refreshData]);
+  console.log(listItems);
+  
   return (
     <>
       <Header listTitle={listTitle} />

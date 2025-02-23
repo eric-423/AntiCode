@@ -49,7 +49,9 @@ public class TaskTypeService implements TaskTypeImp {
             taskType.setTypeName(taskTypeDTO.getTaskTypeName());
             taskType.setTypeDescription(taskTypeDTO.getTaskTypeDesc());
             taskTypeRepository.save(taskType);
-            return getTaskTypeById(taskTypeDTO.getTaskTypeId());
+            TaskTypeDTO taskTypeDTO2 = new TaskTypeDTO();
+            taskTypeDTO2.setTaskTypeId(taskType.getId());
+            return taskTypeDTO2;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -63,7 +65,9 @@ public class TaskTypeService implements TaskTypeImp {
             taskType.setTypeName(taskTypeDTO.getTaskTypeName());
             taskType.setTypeDescription(taskTypeDTO.getTaskTypeDesc());
             taskTypeRepository.save(taskType);
-            return getTaskTypeById(taskTypeDTO.getTaskTypeId());
+            TaskTypeDTO result = new TaskTypeDTO();
+            result.setTaskTypeId(taskType.getId());
+            return result;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

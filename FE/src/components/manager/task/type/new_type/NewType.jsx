@@ -46,7 +46,6 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
   }
   const handleAddTaskType = async () => {
     const taskType = {
-      taskTypeId: taskTypeId,
       taskTypeName: taskTypeName,
       taskTypeDesc: taskTypeDesc,
     };

@@ -84,7 +84,7 @@ public class TaskService implements TaskServiceImp {
 
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
-            return getTaskById(task.getId());
+            return taskDTO;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -106,7 +106,7 @@ public class TaskService implements TaskServiceImp {
             taskRepository.save(task);
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
-            return getTaskById(task.getId());
+            return taskDTO;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
