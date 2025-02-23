@@ -7,13 +7,15 @@ import axios from "axios";
 import { toast } from "react-toastify/unstyled";
 
 const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
+  const [taskId, setTaskId] = useState()
   const [createdAt, setCreatedAt] = useState()
-    const [completedAt, setCompletedAt] = useState()
-    const [taskDescription, setTaskDescription] = useState()
-    const [taskType, setTaskType] = useState()
-    const [taskStatus, setTaskStatus] = useState()
-    const modalRoot = document.body;
+  const [completedAt, setCompletedAt] = useState()
+  const [taskDescription, setTaskDescription] = useState()
+  const [taskType, setTaskType] = useState()
+  const [taskStatus, setTaskStatus] = useState()
+  const modalRoot = document.body;
   const setDataItem = (itemUpdate) => {
+    setTaskId(itemUpdate.taskId)
     setCreatedAt(itemUpdate.createdAt)
     setCompletedAt(itemUpdate.completedAt)
     setTaskDescription(itemUpdate.taskDescription)
@@ -44,7 +46,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
       );
       if (response.status === 200) {
-        setTaskStatusData(response.data.data);
+        setTaskStatusData(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +64,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
         `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
       );
       if (response.status === 200) {
-        setTaskTypesData(response.data.data);
+        setTaskTypesData(response.data);
       }
     } catch (error) {
       console.log(error);
@@ -88,14 +90,19 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
       : taskStatusData[0];
 
     const task = {
+      taskId: taskId,
       createdAt: createdAt,
       completedAt: completedAt,
       taskDescription: taskDescription,
       taskStatus: task_status.taskStatusId,
       taskType: task_type.taskTypeId,
     };
+    console.log(task);
+    
     try {
       const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, task);
+      console.log(response.data);
+      
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Task was updated !");
       setShowModal(false);
