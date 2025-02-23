@@ -8,10 +8,14 @@ import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.OTPServiceImp;
 import com.sba.exam.sba.service.imp.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserServiceImp {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -30,7 +34,7 @@ public class UserService implements UserServiceImp {
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
-            user.setPassWord(userDTO.getPassword());
+            user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
             Role role = roleRepository.findRoleByName("Worker");
             user.setRole(role);
             userRepository.save(user);

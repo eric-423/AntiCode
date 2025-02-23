@@ -40,6 +40,7 @@ public class UserController {
             responseData.setData(token);
         } else {
             responseData.setData("");
+            responseData.setStatus(400);
         }
 
         return new ResponseEntity<>(responseData, HttpStatus.OK);
