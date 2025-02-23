@@ -16,23 +16,23 @@ public class WaterController {
     @Autowired
     WaterServiceImp waterServiceImp;
 
-    @PostMapping("/addWater")
+    @PostMapping()
     public ResponseEntity<?> addWater(@RequestBody WaterRequest water) {
         waterServiceImp.addWater(water);
-        return new ResponseEntity<>(water, HttpStatus.OK);
+        return new ResponseEntity<>(water, HttpStatus.CREATED);
     }
 
-    @GetMapping("/getWaters")
+    @GetMapping()
     public ResponseEntity<?> getAllWater() {
         return new ResponseEntity<>(waterServiceImp.getWaterList(), HttpStatus.OK);
     }
 
-    @GetMapping("/getWater/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getWaterById(@PathVariable int id) {
         return new ResponseEntity<>(waterServiceImp.getWaterById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/updateWater")
+    @PutMapping()
     public ResponseEntity<?> updateWater(@RequestBody WaterRequest water) {
         waterServiceImp.updateWater(water);
         return new ResponseEntity<>(water, HttpStatus.OK);
