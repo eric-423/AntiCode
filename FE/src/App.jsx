@@ -22,6 +22,7 @@ import Type from './components/manager/task/type/Type'
 import Status from './components/manager/task/status/Status'
 import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
+import Water from './components/manager/water/Water'
 
 function App() {
   const listComponent = [
@@ -77,6 +78,10 @@ function App() {
       name: NAVIGATION.COMPONENTS.CHEMICAL_TYPE,
       component: <ChemicalType />,
     },
+    {
+      name: NAVIGATION.COMPONENTS.WATER,
+      component: <Water />
+    }
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {

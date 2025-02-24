@@ -14,7 +14,8 @@ const COMPONENTS = {
   DASHBOARD: "Dashboard",
   SETTINGS: "Settings",
   CHEMICAL: "Chemical",
-  CHEMICAL_TYPE: "Chemical Type"
+  CHEMICAL_TYPE: "Chemical Type",
+  WATER: "Water"
 };
 
 const listMenu = [
@@ -59,6 +60,21 @@ const listMenu = [
             component: COMPONENTS.CHEMICAL_TYPE,
             path: "/chemical-type"
           },
+        ]
+      },
+      {
+        nameMenu: "Water",
+        image: ICONS.icon_task,
+        imageActive: ICONS.icon_task_active,
+        sortItem: 5,
+        component: null,
+        path: "water",
+        subItems:[
+          {
+            name: "Water",
+            component: COMPONENTS.WATER,
+            path: "/"
+          }
         ]
       },
       {
