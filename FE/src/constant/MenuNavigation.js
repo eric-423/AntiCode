@@ -64,8 +64,8 @@ const listMenu = [
       },
       {
         nameMenu: "Water",
-        image: ICONS.icon_task,
-        imageActive: ICONS.icon_task_active,
+        image: ICONS.icon_water,
+        imageActive: ICONS.icon_water_active,
         sortItem: 5,
         component: null,
         path: "water",

@@ -46,17 +46,21 @@ public class WaterService implements WaterServiceImp {
     public WaterDTO addWater(WaterRequest waterRequest) {
         try{
             Water water = new Water();
-            water.setWaterName(waterRequest.getWaterName());
-            water.setPurity(waterRequest.getPurity());
-            water.setPHLevel(waterRequest.getPHLevel());
-            water.setVolumeAvailable(waterRequest.getVolumeAvailable());
-            waterRepository.save(water);
+            if(waterRequest.getPHLevel() >= 0 && waterRequest.getPHLevel() <= 14 && waterRequest.getPurity() >= 0
+               && waterRequest.getVolumeAvailable() >= 0 && waterRequest.getVolumeAvailable() <= 100) {
+                water.setWaterName(waterRequest.getWaterName());
+                water.setPurity(waterRequest.getPurity());
+                water.setPHLevel(waterRequest.getPHLevel());
+                water.setVolumeAvailable(waterRequest.getVolumeAvailable());
+                waterRepository.save(water);
 
-            WaterDTO waterDTO = new WaterDTO();
-            waterDTO.setWaterId(water.getId());
+                WaterDTO waterDTO = new WaterDTO();
+                waterDTO.setWaterId(water.getId());
 
-            return waterDTO;
-
+                return waterDTO;
+            }else{
+                throw new Exception();
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -67,15 +71,20 @@ public class WaterService implements WaterServiceImp {
     @Transactional
     public WaterDTO updateWater(WaterRequest waterRequest) {
         try{
-            Water water = waterRepository.findWaterById(waterRequest.getWaterId());
-            water.setWaterName(waterRequest.getWaterName());
-            water.setPurity(waterRequest.getPurity());
-            water.setPHLevel(waterRequest.getPHLevel());
-            water.setVolumeAvailable(waterRequest.getVolumeAvailable());
-            waterRepository.save(water);
-            WaterDTO waterDTO = new WaterDTO();
-            waterDTO.setWaterId(water.getId());
-            return waterDTO;
+            if(waterRequest.getPHLevel() >= 0 && waterRequest.getPHLevel() <= 14 && waterRequest.getPurity() >= 0
+                    && waterRequest.getVolumeAvailable() >= 0 && waterRequest.getVolumeAvailable() <= 100) {
+                Water water = waterRepository.findWaterById(waterRequest.getWaterId());
+                water.setWaterName(waterRequest.getWaterName());
+                water.setPurity(waterRequest.getPurity());
+                water.setPHLevel(waterRequest.getPHLevel());
+                water.setVolumeAvailable(waterRequest.getVolumeAvailable());
+                waterRepository.save(water);
+                WaterDTO waterDTO = new WaterDTO();
+                waterDTO.setWaterId(water.getId());
+                return waterDTO;
+            } else {
+                throw new Exception();
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

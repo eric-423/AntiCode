@@ -72,42 +72,53 @@ const UpdateWater = ({ setShowModal, itemUpdate, setRefreshData }) => {
             UPDATE WATER
           </h4>
           <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">Name</Form.Label>
-            <Form.Control
-              className="input-login input-addition input-name-create-plant"
-              type="text"
-              value={waterName}
-              onChange={(e) => setWaterName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">Purity</Form.Label>
-            <Form.Control
-              className="input-login input-addition input-characteristis-create-plant"
-              type="number"
-              value={purity}
-              onChange={(e) => setPurity(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">pHLevel</Form.Label>
-            <Form.Control
-              className="input-login input-addition"
-              type="number"
-              value={phlevel}
-              onChange={(e) => setPhLevel(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Volume Available</Form.Label>
-            <Form.Control
-              className="input-login input-addition"
-              type="number"
-              value={volumeAvailable}
-              onChange={(e) => setVolumeAvailable(e.target.value)}
-            />
-          </Form.Group>
-          <Button text="Update Water" className="button-create-plant" handleOnClick={handleOnClick}/>
+                      <Form.Label className="text-label-login">Name</Form.Label>
+                      <Form.Control
+                        className="input-login input-addition input-name-create-plant"
+                        type="text"
+                        value={waterName}
+                        onChange={(e) => setWaterName(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className="group-3-column-create-plant">
+                      <Form.Label className="text-label-login">
+                        Purity
+                      </Form.Label>
+                      <Form.Control
+                        className="input-login input-addition input-characteristis-create-plant"
+                        type="number"
+                        value={purity}
+                        onChange={(e) => setPurity(e.target.value)}
+                      />
+                    </Form.Group>
+                    <Form.Group className="group-3-column-create-plant">
+                      <Form.Label className="text-label-login">
+                        PH Level
+                      </Form.Label>
+                      <Form.Control
+                        className="input-login input-addition input-characteristis-create-plant"
+                        type="number"
+                        value={phlevel}
+                        onChange={(e) => setPhLevel(e.target.value)}
+                      />
+                    </Form.Group>
+                    
+                    <Form.Group className="group-3-column-create-plant">
+                      <Form.Label className="text-label-login">
+                        Volume Available
+                      </Form.Label>
+                      <Form.Control
+                        className="input-login input-addition input-characteristis-create-plant"
+                        type="number"
+                        value={volumeAvailable}
+                        onChange={(e) => setVolumeAvailable(e.target.value)}
+                      />
+                    </Form.Group>
+          <Button
+            text="Update Task"
+            handleOnClick={handleOnClick}
+            className="button-create-plant"
+          />
         </Form>
         <img
           className="icon-close"
