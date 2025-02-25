@@ -1,184 +1,146 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import "./NewPlant.css";
-import ICONS from "../../../../../constant/Image";
-import { Form } from "react-bootstrap";
-import Button from "../../../../common/button/Button";
-import { toast } from "react-toastify/unstyled";
+import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
+import './NewArea.css'
+import ICONS from '../../../../../constant/Image'
+import { Form } from 'react-bootstrap'
+import Button from '../../../../common/button/Button'
+import { toast } from 'react-toastify/unstyled'
 
-const NewPlant = ({ setShowModal, setRefreshData }) => {
-  const [name, setName] = useState();
-  const [characteristics, setCharacteristics] = useState();
-  const [soilPH, setSoilPH] = useState();
-  const [waterNeed, setWaterNeed] = useState();
-  const [quantity, setQuantity] = useState();
-  const [price, setPrice] = useState();
-  const [plantType, setPlantType] = useState();
-  const [description, setDescription] = useState();
-  const modalRoot = document.body;
+const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
+  const [farmId, setFarmId] = useState('')
+  const [areaName, setAreaName] = useState('')
+  const [areaExtend, setAreaExtend] = useState('')
+  const [areaWidth, setAreaWidth] = useState('')
+  const [areaLength, setAreaLength] = useState('')
+
+  const modalRoot = document.body
+
   const handleClickClose = () => {
-    setShowModal(false);
-  };
-  const [plantTypesData, setPlantTypesData] = useState();
-  const handleFetchDataPlantType = async () => {
+    setShowModal(false)
+  }
+
+  const [farmData, setFarmData] = useState([])
+  const handleFetchDataFarm = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant-type/`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/farm`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
-      );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      setPlantTypesData(data);
+      )
+      if (!response.ok) throw new Error()
+      const data = await response.json()
+      setFarmData(data.data)
     } catch (error) {}
-  };
+  }
+
   useEffect(() => {
-    handleFetchDataPlantType();
-  }, []);
+    handleFetchDataFarm()
+  }, [])
+
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
-      position: "top-right",
-    });
-  };
+      position: 'top-right',
+    })
+  }
+
   const showToastMessageFail = (message) => {
     toast.error(message, {
-      position: "top-right",
-    });
-  };
-  const handleOnClick = async () => {    
-    const plant = {
-      name: name,
-      characteristics: characteristics,
-      description: description,
-      soilPH: soilPH,
-      waterNeed: waterNeed,
-      quantity: quantity,
-      price: price,
-      plantType: plantType
-        ? plantTypesData.find( item => Number(item.id) === Number(plantType))
-        : plantTypesData[0],
-    };
+      position: 'top-right',
+    })
+  }
+
+  const handleOnClick = async () => {
+    const area = {
+      areaName: areaName,
+      areaExtend: areaExtend,
+      farmId: farmId,
+      areaWidth: areaWidth,
+      areaLength: areaLength,
+    }
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/create`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/area`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(plant),
+          body: JSON.stringify(area),
         }
-      );
-      if (!response.ok) throw new Error();
-      const data = await response.json();
-      if (!data) throw new Error();
-      showToastMessageSuccess("Plant was added !");
-      setShowModal(false);
+      )
+      if (!response.ok) throw new Error()
+      const data = await response.json()
+      if (!data) throw new Error()
+      showToastMessageSuccess('Area was added!')
+      setShowModal(false)
     } catch (error) {
-      console.log(error)
-      showToastMessageFail("Plant can not added !");
-      setShowModal(true);
+      showToastMessageFail('Area can not be added!')
+      setShowModal(true)
     } finally {
-      setRefreshData(prev => !prev)
+      setRefreshData((prev) => !prev)
     }
-  };
+  }
+
   return ReactDOM.createPortal(
     <div className="modal-create-plant-container">
       <div className="modal-create-plant">
         <Form className="form-addition-plant-type form-create-plant">
           <h4 className="addition-plant-type-h4 group-3-column-create-plant">
-            NEW PLANT
+            NEW AREA
           </h4>
           <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">Name</Form.Label>
-            <Form.Control
-              className="input-login input-addition input-name-create-plant"
-              type="text"
-              placeholder="Rosa Orange Glow (Shrub Rose)"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">
-              Characteristics
-            </Form.Label>
-            <Form.Control
-              className="input-login input-addition input-characteristis-create-plant"
-              type="text"
-              placeholder="Showy, Cut Flowers"
-              value={characteristics}
-              onChange={(e) => setCharacteristics(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Soil PH</Form.Label>
-            <Form.Control
-              className="input-login input-addition"
-              type="text"
-              placeholder="Acid, Alkaline, Neutral"
-              value={soilPH}
-              onChange={(e) => setSoilPH(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Water Need</Form.Label>
-            <Form.Control
-              className="input-login input-addition"
-              type="text"
-              placeholder="Average"
-              value={waterNeed}
-              onChange={(e) => setWaterNeed(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Quantity</Form.Label>
-            <Form.Control
-              className="input-login input-addition input-number"
-              type="number"
-              placeholder="10"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">Price</Form.Label>
-            <Form.Control
-              className="input-login input-addition input-price-create-plant input-number"
-              type="number"
-              placeholder="100"
-              min="0"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group className="mb-2 group-3-column-create-plant">
-            <Form.Label className="text-label-login">Plant Type</Form.Label>
+            <Form.Label className="text-label-login">Farm</Form.Label>
             <Form.Select
-              onChange={(e) => setPlantType(e.target.value)}
-              className="input-login input-addition input-plant-type-create-plant"
+              className="input-login input-addition"
+              value={farmId}
+              onChange={(e) => setFarmId(e.target.value)}
             >
-              {plantTypesData &&
-                Array.isArray(plantTypesData) &&
-                plantTypesData.map((item) => (
-                  <option value={item.id}>{item.name}</option>
-                ))}
+              <option value="">Select Farm</option>
+              {farmData.map((farm) => (
+                <option key={farm.farmId} value={farm.farmId}>
+                  {farm.farmName}
+                </option>
+              ))}
             </Form.Select>
           </Form.Group>
-          <Form.Group className="mb-2 group-3-column-create-plant">
-            <Form.Label className="text-label-login">Description</Form.Label>
+          <Form.Group>
+            <Form.Label className="text-label-login">Area Name</Form.Label>
             <Form.Control
-              className="input-login-textarea"
-              as="textarea"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
+              className="input-login input-addition"
+              type="text"
+              value={areaName}
+              onChange={(e) => setAreaName(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="text-label-login">Area Extend</Form.Label>
+            <Form.Control
+              className="input-login input-addition"
+              type="number"
+              value={areaExtend}
+              onChange={(e) => setAreaExtend(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="text-label-login">Width</Form.Label>
+            <Form.Control
+              type="number"
+              className="input-login input-addition"
+              value={areaWidth}
+              onChange={(e) => setAreaWidth(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="text-label-login">Length</Form.Label>
+            <Form.Control
+              type="number"
+              className="input-login input-addition"
+              value={areaLength}
+              onChange={(e) => setAreaLength(e.target.value)}
             />
           </Form.Group>
           <Button
@@ -189,14 +151,14 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
         </Form>
         <img
           className="icon-close"
-          onClick={() => handleClickClose()}
+          onClick={handleClickClose}
           src={ICONS.icon_close}
           alt=""
         />
       </div>
     </div>,
     modalRoot
-  );
-};
+  )
+}
 
-export default NewPlant;
+export default NewPlantingLocation

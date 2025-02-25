@@ -23,9 +23,8 @@ public class FarmService implements FarmServiceImp {
     public List<FarmDTO> getFarmList() {
         List<Farm> farmList = farmRepository.findAll();
         List<FarmDTO> result = new ArrayList<>();
-        for(Farm farm : farmList){
-            FarmDTO farmDTO = getFarmById(farm.getFarmId());
-            result.add(farmDTO);
+        for (Farm farm : farmList) {
+            result.add(transferDTO(farm));
         }
         return result;
     }
@@ -33,50 +32,53 @@ public class FarmService implements FarmServiceImp {
     @Override
     public FarmDTO getFarmById(int id) {
         Farm farm = farmRepository.findByFarmId(id);
+        return transferDTO(farm);
+    }
+
+    public FarmDTO transferDTO(Farm farm) {
         FarmDTO farmDTO = new FarmDTO();
         farmDTO.setFarmId(farm.getFarmId());
         farmDTO.setFarmName(farm.getFarmName());
         farmDTO.setFarmExtend(farm.getFarmExtend());
         farmDTO.setFarmAddress(farm.getFarmAddress());
-
+        farmDTO.setFarmWidth(farm.getFarmWidth());
+        farmDTO.setFarmLength(farm.getFarmLength());
         return farmDTO;
     }
 
     @Override
     @Transactional
     public FarmDTO addFarm(FarmRequest farmRequest) {
-        try{
+        try {
             Farm farm = new Farm();
 
             farm.setFarmName(farmRequest.getFarmName());
             farm.setFarmExtend(farmRequest.getFarmExtend());
             farm.setFarmAddress(farmRequest.getFarmAddress());
+            farm.setFarmWidth(farmRequest.getFarmWidth());
+            farm.setFarmLength(farmRequest.getFarmLength());
             farmRepository.save(farm);
 
-            FarmDTO result = new FarmDTO();
-            result.setFarmId(farm.getFarmId());
-
-            return result;
-        }catch (Exception e){
+            return transferDTO(farm);
+        } catch (Exception e) {
             return null;
         }
     }
 
     @Override
     @Transactional
-    public FarmDTO updateFarm(FarmRequest farmRequest) {
-        try{
-            Farm farm = farmRepository.findByFarmId(farmRequest.getFarmId());
+    public FarmDTO updateFarm(FarmRequest farmRequest, int id) {
+        try {
+            Farm farm = farmRepository.findByFarmId(id);
             farm.setFarmName(farmRequest.getFarmName());
             farm.setFarmExtend(farmRequest.getFarmExtend());
             farm.setFarmAddress(farmRequest.getFarmAddress());
+            farm.setFarmLength(farmRequest.getFarmLength());
+            farm.setFarmLength(farmRequest.getFarmLength());
             farmRepository.save(farm);
 
-            FarmDTO result = new FarmDTO();
-            result.setFarmId(farm.getFarmId());
-
-            return result;
-        }catch (Exception e){
+            return transferDTO(farm);
+        } catch (Exception e) {
             return null;
         }
     }
@@ -92,7 +94,7 @@ public class FarmService implements FarmServiceImp {
             result.setFarmId(farm.getFarmId());
 
             return result;
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }

@@ -29,6 +29,8 @@ import icon_schedule from '../assets/image/schedule.png'
 import icon_schedule_active from '../assets/image/schedule-active.png'
 import icon_add_worker from '../assets/image/add-worker.png'
 import icon_equipment from '../assets/image/equipment-tool.png'
+import icon_water from '../assets/image/water.png'
+import icon_water_active from '../assets/image/water-active.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -62,6 +64,8 @@ const ICONS = {
     icon_schedule_active: icon_schedule_active,
     icon_add_worker: icon_add_worker,
     icon_equipment: icon_equipment,
+    icon_water: icon_water,
+    icon_water_active: icon_water_active
 }
 
 export default ICONS;

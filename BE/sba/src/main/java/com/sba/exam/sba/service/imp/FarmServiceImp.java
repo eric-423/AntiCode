@@ -10,6 +10,6 @@ public interface FarmServiceImp {
     public List<FarmDTO> getFarmList();
     public FarmDTO getFarmById(int id);
     public FarmDTO addFarm(FarmRequest farm);
-    public FarmDTO updateFarm(FarmRequest farm);
+    public FarmDTO updateFarm(FarmRequest farm, int id);
     public FarmDTO deleteFarm(int id);
 }

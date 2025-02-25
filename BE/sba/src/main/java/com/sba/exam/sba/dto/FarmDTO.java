@@ -19,4 +19,9 @@ public class FarmDTO implements Serializable {
 
     private String farmAddress;
 
+    private float farmLength;
+
+    private float farmWidth;
+
+
 }
