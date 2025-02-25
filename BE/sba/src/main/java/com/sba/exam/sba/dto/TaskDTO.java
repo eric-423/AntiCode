@@ -13,6 +13,8 @@ public class TaskDTO {
     private int taskId;
     private Date createdAt;
     private Date completedAt;
+    private Date startDate;
+    private Date dueDate;
     private String taskDescription;
     private int taskStatusId;
     private String taskStatusName;
@@ -20,4 +22,5 @@ public class TaskDTO {
     private int taskTypeId;
     private String taskTypeName;
     private String taskTypeDescription;
+
 }

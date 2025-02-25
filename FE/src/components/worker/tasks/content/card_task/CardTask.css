@@ -18,11 +18,12 @@
   width: fit-content;
   padding: 0px 10px;
   border-radius: 0.375rem;
-  background-color: aqua;
+  background-color: #F28705;
 }
 .task-name > span {
   font-family: "Poppins";
   font-size: 13px;
+  color: #ffffff;
 }
 .body-card-task-container {
   height: 100%;
@@ -60,7 +61,7 @@
 .people-assigned-group > div > span {
   font-size: 12px;
 }
-.people-assigned-group > div:last-child {
+.people-assigned-group > div {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -24,6 +24,7 @@ const FormLogin = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const handleOnClick = async () => {
+    setIsLoading(true)
     try {
       const response = await axios.post(
         `${BASE.BASE_URL}/user/signin?email=${email}&password=${password}`
@@ -42,6 +43,8 @@ const FormLogin = () => {
       }
     } catch (error) {
       console.log(error)
+    }finally{
+      setIsLoading(false)
     }
   };
   return (
@@ -70,7 +73,7 @@ const FormLogin = () => {
           />
         </Form.Group>
         <p className="mb-4 text-end text-forgot-password">Forgot password?</p>
-        <Button text="Login" handleOnClick={handleOnClick} />
+        <Button text="Login" handleOnClick={handleOnClick} isLoading={isLoading} />
       </Form>
       <div
         className={

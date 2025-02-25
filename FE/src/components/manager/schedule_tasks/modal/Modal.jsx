@@ -1,0 +1,311 @@
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import ICONS from "../../../../constant/Image";
+import "./Modal.css";
+import { Form } from "react-bootstrap";
+import BASE from "../../../../constant/base";
+import axios from "axios";
+import Button from "../../../common/button/Button";
+import useFormattedDate from "../../../../hook/useFormatDate";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage";
+import { jwtDecode } from "jwt-decode";
+
+const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
+  const [status, setStatus] = useState();
+  const [showModalSelectWorker, setShowModalSelectWorker] = useState(false);
+  const [workerAssigned, setWorkerAssigned] = useState();
+  const [workerUnAssigned, setWorkerUnAssigned] = useState();
+  const [description, setDescription] = useState();
+  const [startDate, setStartDate] = useState();
+  const [dueDate, setDueDate] = useState();
+  const [itemStatus, setItemStatus] = useState();
+  const [accountLoginInformation, setAccountLoginInformation] = useLocalStorage(
+    LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
+    ""
+  );
+
+  const handleFetchTaskStatus = async () => {
+    try {
+      const response = await axios.get(`${BASE.BASE_URL}/task-status`);
+      if (!response || response.status !== 200) throw new Error();
+      setStatus(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCloseModalDetail = () => {
+    setShowModalDetail(false);
+    setItemDetail();
+  };
+
+  const handleFetchUserAssigned = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE.BASE_URL}/task/users-assigned?taskID=${itemDetail.taskId}`
+      );
+      if (!response || response.status !== 200) throw new Error();
+      setWorkerAssigned(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFetchUserUnAssigned = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE.BASE_URL}/task/users-un-assigned?taskID=${itemDetail.taskId}`
+      );
+      if (!response || response.status !== 200) throw new Error();
+      setWorkerUnAssigned(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleAssignWorker = async (worker) => {
+    try {
+      const response = await axios.post(
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id}&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
+      );
+      if (!response || response.status !== 201) throw new Error();
+
+      handleFetchUserAssigned();
+      handleFetchUserUnAssigned();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnAssignWorker = async (worker) => {
+    try {
+      const response = await axios.delete(
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id}&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
+      );
+      if (!response || response.status !== 201) throw new Error();
+
+      handleFetchUserAssigned();
+      handleFetchUserUnAssigned();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateStatus = async (status) => {
+    const data = {
+      taskId: itemDetail.taskId,
+      createdAt: itemDetail.createdAt,
+      completedAt: itemDetail.completedAt,
+      startDate: itemDetail.startDate,
+      dueDate: itemDetail.dueDate,
+      taskDescription: itemDetail.taskDescription,
+      taskStatus: status,
+      taskType: itemDetail.taskTypeId,
+    };
+    try {
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data);
+      if (!response) throw new Error();
+      setItemStatus(status);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  const handleUpdateStartDate = async (startDate) => {
+    const data = {
+      taskId: itemDetail.taskId,
+      createdAt: itemDetail.createdAt,
+      completedAt: itemDetail.completedAt,
+      startDate: startDate,
+      dueDate: itemDetail.dueDate,
+      taskDescription: itemDetail.taskDescription,
+      taskStatus: itemDetail.taskStatusId,
+      taskType: itemDetail.taskTypeId,
+    };
+    try {
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data);
+      if (!response) throw new Error();
+      setStartDate(startDate);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  const handleUpdateDueDate = async (dueDate) => {
+    const data = {
+      taskId: itemDetail.taskId,
+      createdAt: itemDetail.createdAt,
+      completedAt: itemDetail.completedAt,
+      startDate: itemDetail.startDate,
+      dueDate: dueDate,
+      taskDescription: itemDetail.taskDescription,
+      taskStatus: itemDetail.taskStatusId,
+      taskType: itemDetail.taskTypeId,
+    };
+    try {
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data);
+      if (!response) throw new Error();
+      setDueDate(dueDate);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    if (!workerAssigned) {
+      handleFetchUserAssigned();
+    }
+    if (!workerUnAssigned) {
+      handleFetchUserUnAssigned();
+    }
+    if (!description) {
+      setDescription(itemDetail?.taskDescription);
+    }
+    if (!startDate) {
+      setStartDate(useFormattedDate(itemDetail?.startDate, "yyyy-MM-dd"));
+    }
+    if (!dueDate) {
+      setDueDate(useFormattedDate(itemDetail?.dueDate, "yyyy-MM-dd"));
+    }
+    if (!itemStatus) {
+      setItemStatus(itemDetail?.taskStatusId);
+    }
+  }, [itemDetail]);
+
+  useEffect(() => {
+    if (!status) {
+      handleFetchTaskStatus();
+    }
+  }, []);
+  const modalRoot = document.body;
+  return ReactDOM.createPortal(
+    <div className="modal-create-plant-container">
+      <div className="modal-create-plant">
+        <h5 className="modal-schedule-task-h5">Pruning and Trimming</h5>
+        <div className="modal-schedule-task-assign-worker mt-4">
+          <div className="modal-schedule-add-worker">
+            <img
+              src={ICONS.icon_add_worker}
+              onClick={() => setShowModalSelectWorker((prev) => !prev)}
+            />
+            {showModalSelectWorker && (
+              <ul className="text select-worker-input">
+                <Form.Control
+                  className="input-login input-addition input-characteristis-create-plant input-select-schedule-task"
+                  type="text"
+                  placeholder="Type a name or email address"
+                />
+                {workerAssigned && workerAssigned.length > 0 && (
+                  <label className="schedule-label mt-2">Assigned</label>
+                )}
+                {workerAssigned &&
+                  workerAssigned.map((item) => (
+                    <li>
+                      <span>{item.userName}</span>
+                      <img
+                        className="icon-close"
+                        width="15px"
+                        height="15px"
+                        src={ICONS.icon_close}
+                        alt=""
+                        onClick={() => handleUnAssignWorker(item)}
+                      />
+                    </li>
+                  ))}
+                {workerUnAssigned && workerUnAssigned.length > 0 && (
+                  <label className="schedule-label mt-3">Suggestion</label>
+                )}
+                {workerUnAssigned &&
+                  workerUnAssigned.map((item) => (
+                    <li onClick={() => handleAssignWorker(item)}>
+                      <span>{item.userName}</span>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+          {workerAssigned &&
+            workerAssigned.map((item) => (
+              <div className="modal-schedule-add-worker">
+                {String(item.userName).charAt(0)}
+              </div>
+            ))}
+        </div>
+        <div className="modal-schedule-time-line">
+          <div>
+            <label className="schedule-label">Status</label>
+            <Form.Select
+              value={itemStatus}
+              onChange={(event) => handleUpdateStatus(event.target.value)}
+              className="input-login input-addition input-plant-type-create-plant input-select-schedule-task"
+            >
+              {status &&
+                Array.isArray(status) &&
+                status.map((item) => (
+                  <option value={item.taskStatusId}>
+                    {item.taskStatusName}
+                  </option>
+                ))}
+            </Form.Select>
+          </div>
+          <div></div>
+          <div></div>
+          <div>
+            <label className="schedule-label">Start date</label>
+            <Form.Control
+              className="input-login input-addition input-name-create-plant input-select-schedule-task"
+              type="date"
+              value={startDate}
+              onChange={(event) => handleUpdateStartDate(event.target.value)}
+            />
+          </div>
+          <div>
+            <label className="schedule-label">Due date</label>
+            <Form.Control
+              className="input-login input-addition input-name-create-plant input-select-schedule-task"
+              type="date"
+              placeholder="Start any time"
+              value={dueDate}
+              onChange={(event) => handleUpdateDueDate(event.target.value)}
+            />
+          </div>
+          <div></div>
+        </div>
+        <div className="mt-5">
+          <label className="schedule-label">Description</label>
+          <Form.Control
+            className="input-login-textarea"
+            as="textarea"
+            rows={10}
+            placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
+          />
+        </div>
+        <div className="mt-4">
+          <label className="schedule-label">Comments</label>
+          <Form.Control
+            className="input-login-textarea"
+            as="textarea"
+            rows={3}
+            placeholder=""
+          />
+          <div className="mt-2 comment-button-schedule-tasks">
+            <Button text="Comment" />
+          </div>
+        </div>
+        <img
+          className="icon-close"
+          src={ICONS.icon_close}
+          alt=""
+          onClick={() => handleCloseModalDetail()}
+        />
+      </div>
+    </div>,
+    modalRoot
+  );
+};
+
+export default Modal;
