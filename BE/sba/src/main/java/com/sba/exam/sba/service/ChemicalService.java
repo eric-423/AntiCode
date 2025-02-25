@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ChemicalService implements ChemicalServiceImp {
-    
+
     private final ChemicalRepository chemicalRepository;
 
     private final ChemicalTypeRepository chemicalTypeRepository;
@@ -26,16 +26,18 @@ public class ChemicalService implements ChemicalServiceImp {
         List<AgriculturalChemical> Chemicals = chemicalRepository.findAll();
         List<ChemicalDTO> dtos = new ArrayList<>();
         for (AgriculturalChemical a : Chemicals) {
-            ChemicalDTO dto = new ChemicalDTO();
-            dto.setId(a.getId());
-            dto.setName(a.getName());
-            dto.setDescription(a.getDescription());
-            dto.setManufacturingDate(a.getManufacturingDate());
-            dto.setExpirationDate(a.getExpirationDate());
-            dto.setVolumeAvailable(a.getVolumeAvailable());
-            dto.setChemicalType(a.getChemicalTypes().getTypeName());
-
-            dtos.add(dto);
+            if (!a.isDeleted()) {
+                ChemicalDTO dto = new ChemicalDTO();
+                dto.setId(a.getId());
+                dto.setName(a.getName());
+                dto.setDescription(a.getDescription());
+                dto.setManufacturingDate(a.getManufacturingDate());
+                dto.setExpirationDate(a.getExpirationDate());
+                dto.setVolumeAvailable(a.getVolumeAvailable());
+                dto.setChemicalType(a.getChemicalTypes().getTypeName());
+                dto.setDeleted(a.isDeleted());
+                dtos.add(dto);
+            }
         }
         return dtos;
     }
@@ -43,7 +45,9 @@ public class ChemicalService implements ChemicalServiceImp {
     @Override
     public boolean delete(int id) {
         try {
-            chemicalRepository.deleteById(id);
+            AgriculturalChemical che = chemicalRepository.findById(id).get();
+            che.setDeleted(true);
+            chemicalRepository.save(che);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,6 +67,7 @@ public class ChemicalService implements ChemicalServiceImp {
         chemical.setExpirationDate(chemicalDTO.getExpirationDate());
         chemical.setVolumeAvailable(chemicalDTO.getVolumeAvailable());
         chemical.setChemicalTypes(type);
+        chemical.setDeleted(false);
         chemicalRepository.save(chemical);
         chemicalDTO.setChemicalType(type.getTypeName());
 

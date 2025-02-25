@@ -56,8 +56,38 @@ public class UserController {
     }
 
     @GetMapping("/workers")
-    public  ResponseEntity<?> getAllWorker(){
+    public ResponseEntity<?> getAllWorker() {
         return new ResponseEntity<>(userServiceImp.getAllWorker(), HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUser() {
+        try {
+            return new ResponseEntity<>(userServiceImp.getAllUser(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createUserByAdmin(@RequestBody UserDTO userDTO) {
+        try {
+            return new ResponseEntity<>(userServiceImp.addUserByAdmin(userDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
+        try {
+            return new ResponseEntity<>(userServiceImp.updateUser(id, userDTO), HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

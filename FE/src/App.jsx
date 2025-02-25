@@ -25,6 +25,7 @@ import ChemicalType from './components/manager/chemical/type/ChemicalType'
 import Equipment from './components/manager/equipment/Equipment'
 import EquipmentType from './components/manager/equipment/type/EquipmentType'
 import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
+import User from './components/manager/user/User'
 
 function App() {
   const listComponent = [
@@ -87,11 +88,15 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.EQUIPMENT_TYPE,
       component: <EquipmentType />,
-    }
+    },
     {
       name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
       component: <ScheduleTasks />,
     },
+    {
+      name: NAVIGATION.COMPONENTS.USER,
+      component: <User />,
+    }
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
@@ -134,8 +139,8 @@ function App() {
         </Route>
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />
-          {listRouteNavigation.map((item) => (
-            <Route path={item.path} element={item.component} />
+          {listRouteNavigation.map((item, index) => (
+            <Route key={index} path={item.path} element={item.component} />
           ))}
         </Route>
         <Route path='/worker' element={<Worker />} >

@@ -28,6 +28,7 @@ import icon_location_active from '../assets/image/location-active.png'
 import icon_schedule from '../assets/image/schedule.png'
 import icon_schedule_active from '../assets/image/schedule-active.png'
 import icon_add_worker from '../assets/image/add-worker.png'
+import icon_equipment from '../assets/image/equipment-tool.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -52,14 +53,15 @@ const ICONS = {
     icon_loading: icon_loading,
     icon_menu: icon_menu,
     icon_watch: icon_watch,
-    icon_chemical:icon_chemical,
+    icon_chemical: icon_chemical,
     icon_task: icon_task,
     icon_task_active: icon_task_active,
     icon_location: icon_location,
     icon_location_active: icon_location_active,
     icon_schedule: icon_schedule,
     icon_schedule_active: icon_schedule_active,
-    icon_add_worker: icon_add_worker
+    icon_add_worker: icon_add_worker,
+    icon_equipment: icon_equipment,
 }
 
 export default ICONS;

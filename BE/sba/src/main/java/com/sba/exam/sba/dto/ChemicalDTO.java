@@ -24,4 +24,6 @@ public class ChemicalDTO {
 
     private String chemicalType;
 
+    private boolean deleted;
+
 }
