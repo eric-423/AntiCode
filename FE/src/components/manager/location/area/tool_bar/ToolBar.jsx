@@ -1,39 +1,44 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./ToolBar.css";
-import SearchBar from "../../../../common/search_bar/SearchBar";
-import Filter from "../../../../common/filter/Filter";
-import NewPlant from "../new_plant/NewPlant";
-import useLocalStorage from "use-local-storage";
+import React, { useEffect, useRef, useState } from 'react'
+import './ToolBar.css'
+import SearchBar from '../../../../common/search_bar/SearchBar'
+import Filter from '../../../../common/filter/Filter'
+import NewArea from '../new_area/NewArea'
+import useLocalStorage from 'use-local-storage'
 
-const ToolBar = ({setRefreshData}) => {
-  const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
-  const [showModal, setShowModal] = useState(false);  
+const ToolBar = ({ setRefreshData }) => {
+  const [selectedArea, setSelectedArea] = useLocalStorage(
+    'manager_area_selected',
+    ''
+  )
+  const [showModal, setShowModal] = useState(false)
   const handleShowModal = () => {
-    setShowModal((prev) => !prev);
-  };
-  const handleDeletePlant = async () => {
-    try{
-      let param = ''
-      Array.isArray(selectedPlants) && selectedPlants.forEach((element,index) => {
-          if(index === selectedPlants.length - 1){
-            param += `plantId=${element}`
-          }else{
-            param += `plantId=${element}&`
+    setShowModal((prev) => !prev)
+  }
+  const handleDeleteArea = async () => {
+    try {
+      let id = ''
+      Array.isArray(selectedArea) &&
+        selectedArea.forEach((element, index) => {
+          if (index === selectedArea.length - 1) {
+            id += element
+          } else {
+            id += element
           }
-      });
-      console.log(param)
+        })
+
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/delete?${param}`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/area/${id}`,
         {
-          method: "POST",
+          method: 'DELETE',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
-      );
-    }catch(error){
-    }finally{
-      setRefreshData(prev => !prev)
+      )
+    } catch (error) {
+    } finally {
+      setSelectedArea([])
+      setRefreshData((prev) => !prev)
     }
   }
 
@@ -42,7 +47,14 @@ const ToolBar = ({setRefreshData}) => {
       <Filter />
       <div className="right-tool-bar-plant">
         <SearchBar />
-        <div onClick={() => handleDeletePlant()} className={selectedPlants && selectedPlants.length > 0 ?"plant-button delete-plant-button-active" :"plant-button delete-plant-button-non-active"}>
+        <div
+          onClick={() => handleDeleteArea()}
+          className={
+            selectedArea && selectedArea.length > 0
+              ? 'plant-button delete-plant-button-active'
+              : 'plant-button delete-plant-button-non-active'
+          }
+        >
           Delete
         </div>
         <div
@@ -52,9 +64,11 @@ const ToolBar = ({setRefreshData}) => {
           Create Plant
         </div>
       </div>
-      {showModal && <NewPlant setRefreshData={setRefreshData} setShowModal={setShowModal}/>}
+      {showModal && (
+        <NewArea setRefreshData={setRefreshData} setShowModal={setShowModal} />
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default ToolBar;
+export default ToolBar

@@ -19,6 +19,12 @@ public class Farm {
     @Column(name = "farm_name", length = 50)
     private String farmName;
 
+    @Column(name = "farm_length")
+    private float farmLength;
+
+    @Column(name = "farm_width")
+    private float farmWidth;
+
     @Column(name = "farm_extent")
     private float farmExtend;
 

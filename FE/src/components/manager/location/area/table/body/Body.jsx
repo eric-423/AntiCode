@@ -1,32 +1,50 @@
-import React, { useState } from "react";
-import "./Body.css";
-import ICONS from "../../../../../../constant/Image";
-import UpdatePlant from "../../update_plant/UpdatePlant";
+import React, { useState } from 'react'
+import './Body.css'
+import ICONS from '../../../../../../constant/Image'
+import UpdatePlaingLocation from '../../update_area/UpdateArea'
 
-const Body = ({ item, index, itemsActive, handleSelectItem }) => {
-  const [showModal,setShowModal] = useState(false)
-  const [itemUpdate,setItemUpdate] = useState()
-  const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.id);
+const Body = ({
+  item,
+  index,
+  itemsActive,
+  handleSelectItem,
+  setRefreshData,
+}) => {
+  const [showModal, setShowModal] = useState(false)
+  const [itemUpdate, setItemUpdate] = useState()
+  const isActive =
+    Array.isArray(itemsActive) && itemsActive.includes(item.areaId)
+
   const handleShowUpdatePopup = (event, item) => {
     setItemUpdate(item)
-    event.stopPropagation();
+    event.stopPropagation()
     setShowModal(true)
-  };
+  }
+
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate)
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    const formattedDate = date.toLocaleDateString('en-US', options)
+    return formattedDate
+  }
   return (
     <>
-      {showModal && <UpdatePlant itemUpdate={itemUpdate} setShowModal={setShowModal} />}
+      {showModal && (
+        <UpdatePlaingLocation
+          itemUpdate={itemUpdate}
+          setShowModal={setShowModal}
+          setRefreshData={setRefreshData}
+        />
+      )}
       <ul
-        className={isActive ? "body-table body-table-active" : "body-table"}
+        className={isActive ? 'body-table body-table-active' : 'body-table'}
         onClick={() => handleSelectItem(item)}
       >
         <li>{index + 1}</li>
-        <li>{item.name}</li>
-        <li>{item.characteristics}</li>
-        <li>{item.description}</li>
-        <li>{item.soilPH}</li>
-        <li>{item.waterNeed}</li>
-        <li>{item.quantity}</li>
-        <li>{item.price}</li>
+        <li>{item.areaName}</li>
+        <li>{item.areaExtend}</li>
+        <li>{item.areaWidth}</li>
+        <li>{item.areaLength}</li>
         <li>
           <div
             onClick={(event) => handleShowUpdatePopup(event, item)}
@@ -40,7 +58,7 @@ const Body = ({ item, index, itemsActive, handleSelectItem }) => {
         ) : null}
       </ul>
     </>
-  );
-};
+  )
+}
 
-export default Body;
+export default Body

@@ -14,4 +14,9 @@ public class LocationDTO implements Serializable {
 
     private float locationExtent;
 
+    private float locationLength;
+
+    private float locationWidth;
+
+    private AreaDTO area;
 }

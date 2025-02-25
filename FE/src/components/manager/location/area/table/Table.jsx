@@ -1,45 +1,46 @@
-import React, { useEffect, useState } from "react";
-import "./Table.css";
-import Header from "../../../../common/table/header/Header";
-import Body from "./body/Body";
-import useLocalStorage from "use-local-storage";
+import { useEffect, useState } from 'react'
+import './Table.css'
+import Header from '../../../../common/table/header/Header'
+import Body from './body/Body'
+import useLocalStorage from 'use-local-storage'
 
-const Table = ({ listTitle, refreshData }) => {
-  const [itemsActive, setItemsActive] = useState([]);
-  const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
-  const [listItems,setListItems] = useState();
-  const handleFetchPlantData = async () => {
-    try{
+const Table = ({ listTitle, refreshData, setRefreshData }) => {
+  const [itemsActive, setItemsActive] = useState([])
+  const [selectedArea, setselectedArea] = useLocalStorage(
+    'manager_area_selected',
+    ''
+  )
+  const [listItems, setListItems] = useState()
+  const handleFetchArea = async () => {
+    try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/v1/plant/`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/area`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       )
-      if(response.ok){
+      if (response.ok) {
         const data = await response.json()
-        setListItems(data)
+        console.log(data)
+
+        setListItems(data.data)
       }
-    }catch(error){
+    } catch (error) {
       console.log(error)
     }
   }
   const handleSelectItem = (item_index) => {
-    if (itemsActive.includes(item_index.id)) {
-      setItemsActive(itemsActive.filter((item) => item.id !== item_index.id));
-    } else {
-      setItemsActive([...itemsActive, item_index.id]);
-    }
-  };
+    setItemsActive([item_index.areaId])
+  }
   useEffect(() => {
-    setSelectedPlants(itemsActive);
-  }, [itemsActive]);
+    setselectedArea(itemsActive)
+  }, [itemsActive])
   useEffect(() => {
-    handleFetchPlantData()
-  },[refreshData])
+    handleFetchArea()
+  }, [refreshData])
   return (
     <>
       <Header listTitle={listTitle} />
@@ -51,12 +52,12 @@ const Table = ({ listTitle, refreshData }) => {
               itemsActive={itemsActive}
               item={item}
               index={index}
+              setRefreshData={setRefreshData}
             />
           ))}
       </div>
-
     </>
-  );
-};
+  )
+}
 
-export default Table;
+export default Table

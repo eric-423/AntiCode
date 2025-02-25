@@ -22,6 +22,8 @@ import Type from './components/manager/task/type/Type'
 import Status from './components/manager/task/status/Status'
 import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
+import PlantMedium from './components/manager/plant_medium/PlantMedium'
+import PlantPot from './components/manager/plant_pot/PlantPot'
 
 function App() {
   const listComponent = [
@@ -77,6 +79,14 @@ function App() {
       name: NAVIGATION.COMPONENTS.CHEMICAL_TYPE,
       component: <ChemicalType />,
     },
+    {
+      name: NAVIGATION.COMPONENTS.PLANT_MEDIUM,
+      component: <PlantMedium />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.PLANT_POT,
+      component: <PlantPot />,
+    },
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
@@ -113,7 +123,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/registrations/" element={<Register />} >
+        <Route path="/registrations/" element={<Register />}>
           <Route index element={<FormRegister />} />
           <Route path="verify-otp" element={<VerifyEmail />} />
         </Route>
@@ -123,8 +133,8 @@ function App() {
             <Route path={item.path} element={item.component} />
           ))}
         </Route>
-        <Route path='/worker' element={<Worker />} >
-            <Route index element={<Tasks />}/>
+        <Route path="/worker" element={<Worker />}>
+          <Route index element={<Tasks />} />
         </Route>
       </Routes>
       <ToastContainer />
