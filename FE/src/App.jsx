@@ -24,7 +24,9 @@ import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
 import PlantMedium from './components/manager/plant_medium/PlantMedium'
 import PlantPot from './components/manager/plant_pot/PlantPot'
-
+import Equipment from './components/manager/equipment/Equipment'
+import EquipmentType from './components/manager/equipment/type/EquipmentType'
+import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
 function App() {
   const listComponent = [
     {
@@ -86,6 +88,16 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.PLANT_POT,
       component: <PlantPot />,
+      name: NAVIGATION.COMPONENTS.EQUIPMENT,
+      component: <Equipment />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.EQUIPMENT_TYPE,
+      component: <EquipmentType />,
+    }
+    {
+      name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
+      component: <ScheduleTasks />,
     },
   ]
   const listRouteNavigation = []
@@ -133,7 +145,7 @@ function App() {
             <Route path={item.path} element={item.component} />
           ))}
         </Route>
-        <Route path="/worker" element={<Worker />}>
+        <Route path='/worker' element={<Worker />} >
           <Route index element={<Tasks />} />
         </Route>
       </Routes>

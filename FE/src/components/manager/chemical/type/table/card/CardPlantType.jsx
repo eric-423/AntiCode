@@ -53,9 +53,9 @@ const CardPlantType = ({ item ,setRefreshData, setUpdateItem}) => {
         </div>
       </Card.Header>
       <Card.Body className="card-body">
-        <Card.Title className="card-title-plant-type">{item.name}</Card.Title>
+        <Card.Title className="card-title-plant-type">{'123'}</Card.Title>
         <Card.Text className="card-text-plant-type">
-          {item.description}
+          123
         </Card.Text>
       </Card.Body>
     </Card>

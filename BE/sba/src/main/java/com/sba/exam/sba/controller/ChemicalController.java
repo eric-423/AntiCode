@@ -28,7 +28,6 @@ public class ChemicalController {
     }
 
     @PostMapping("/{typeId}")
-    @Transactional
     public ResponseEntity<?> createChemical(@RequestBody ChemicalDTO dto, @PathVariable int typeId) {
         try {
             return new ResponseEntity<>(chemicalServiceImp.createChemical(dto, typeId), HttpStatus.OK);
@@ -38,7 +37,6 @@ public class ChemicalController {
     }
 
     @PutMapping("/{typeId}")
-    @Transactional
     public ResponseEntity<?> updateChemical(@RequestBody ChemicalDTO dto, @PathVariable int typeId) {
         try {
             return new ResponseEntity<>(chemicalServiceImp.updateChemical(dto, typeId), HttpStatus.OK);
@@ -46,4 +44,5 @@ public class ChemicalController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 }

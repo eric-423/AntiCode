@@ -54,6 +54,9 @@ public class Users {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserTask> userTasks;
+
     public int getId() {
         return id;
     }

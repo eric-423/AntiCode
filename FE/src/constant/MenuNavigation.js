@@ -1,6 +1,5 @@
 import ICONS from "./Image";
 
-
 const COMPONENTS = {
   PLANT: "Plant",
   PLAN_TYPE: "Plant Type",
@@ -16,13 +15,25 @@ const COMPONENTS = {
   CHEMICAL: "Chemical",
   PLANT_POT: "Plant Pot",
   PLANT_MEDIUM: "Plant Medium",
-  CHEMICAL_TYPE: "Chemical Type"
+  CHEMICAL_TYPE: "Chemical Type",
+  EQUIPMENT: "Equipment",
+  EQUIPMENT_TYPE: "Equipment Type",
+  SCHEDULE_TASKS: "Schedule Tasks"
 };
 
 const listMenu = [
   {
     title: "MENU",
     data: [
+      {
+        nameMenu: "Schedule Tasks",
+        image: ICONS.icon_schedule,
+        imageActive: ICONS.icon_schedule_active,
+        sortItem: 1,
+        subItems: [],
+        component: COMPONENTS.SCHEDULE_TASKS,
+        path: "menu-schedule-tasks",
+      },
       {
         nameMenu: "Plant",
         image: ICONS.icon_plant,
@@ -32,16 +43,16 @@ const listMenu = [
           {
             name: "Plant",
             component: COMPONENTS.PLANT,
-            path: "/"
+            path: "/",
           },
           {
             name: "Plant Type",
             component: COMPONENTS.PLAN_TYPE,
-            path: "/plant-type"
+            path: "/plant-type",
           },
         ],
         component: null,
-        path: "menu-plant"
+        path: "menu-plant",
       },
       {
         nameMenu: "Chemical",
@@ -54,15 +65,16 @@ const listMenu = [
           {
             name: "Chemical",
             component: COMPONENTS.CHEMICAL,
-            path: "/chemical"
+            path: "/chemical",
           },
           {
             name: "Chemical Type",
             component: COMPONENTS.CHEMICAL_TYPE,
-            path: "/chemical-type"
+            path: "/chemical-type",
           },
-        ]
+        ],
       },
+
       {
         nameMenu: "Task",
         image: ICONS.icon_task,
@@ -72,21 +84,21 @@ const listMenu = [
           {
             name: "Task",
             component: COMPONENTS.TASK,
-            path: "/"
+            path: "/",
           },
           {
             name: "Task Type",
             component: COMPONENTS.TASK_TYPE,
-            path: "/task-type"
+            path: "/task-type",
           },
           {
             name: "Task Status",
             component: COMPONENTS.TASK_STATUS,
-            path: "/task-status"
+            path: "/task-status",
           },
         ],
         component: null,
-        path: "task"
+        path: "menu-task",
       },
       {
         nameMenu: "Location",
@@ -97,26 +109,26 @@ const listMenu = [
           {
             name: "Location",
             component: COMPONENTS.LOCATION,
-            path: "/"
+            path: "/",
           },
           {
             name: "Farm",
             component: COMPONENTS.FARM,
-            path: "/farm"
+            path: "/farm",
           },
           {
             name: "Area",
             component: COMPONENTS.AREA,
-            path: "/area"
+            path: "/area",
           },
           {
             name: "Plant Location",
             component: COMPONENTS.PLANT_LOCATION,
-            path: "/plant-location"
+            path: "/plant-location",
           },
         ],
         component: null,
-        path: "location"
+        path: "location",
       },
       {
         nameMenu: "Plant Medium",
@@ -143,7 +155,27 @@ const listMenu = [
         sortItem: 5,
         subItems: [],
         component: COMPONENTS.DASHBOARD,
-        path: "menu-dashboard"
+        path: "menu-dashboard",
+      },
+      {
+        nameMenu: "Equipment",
+        image: ICONS.icon_chemical,
+        imageActive: ICONS.icon_chemical,
+        sortItem: 5,
+        component: COMPONENTS.EQUIPMENT,
+        path: "equipment",
+        subItems: [
+          {
+            name: "Equipment",
+            component: COMPONENTS.EQUIPMENT,
+            path: "/"
+          },
+          {
+            name: "Equipment Type",
+            component: COMPONENTS.EQUIPMENT_TYPE,
+            path: "/equipment-type"
+          },
+        ]
       },
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
@@ -157,7 +189,7 @@ const listMenu = [
         sortItem: 0,
         subItems: [],
         component: COMPONENTS.SETTINGS,
-        path: "settings"
+        path: "settings",
       },
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
@@ -165,7 +197,7 @@ const listMenu = [
 
 const NAVIGATION = {
   LISTS_MENU_NAVIGATION: listMenu,
-  COMPONENTS: COMPONENTS
+  COMPONENTS: COMPONENTS,
 };
 
 export default NAVIGATION;
