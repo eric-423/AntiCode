@@ -22,6 +22,7 @@ import Type from './components/manager/task/type/Type'
 import Status from './components/manager/task/status/Status'
 import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
+import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
 
 function App() {
   const listComponent = [
@@ -76,6 +77,10 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.CHEMICAL_TYPE,
       component: <ChemicalType />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
+      component: <ScheduleTasks />,
     },
   ]
   const listRouteNavigation = []

@@ -1,30 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CardTask.css";
 import ICONS from "../../../../../constant/Image";
-
-const CardTask = ({ index, item }) => {
-  const handleDrag = (event) => {
-    event.preventDefault()
-    event.dataTransfer.setData("_index", index);
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+import BASE from "../../../../../constant/base";
+const CardTask = ({
+  index,
+  item,
+  isBoxShadow = false,
+  titleTask,
+  setList,
+  listTask,
+  client,
+}) => {
+  const handleDrag = (event, _index, titleTask) => {
+    event.dataTransfer.setData("titleTask", titleTask);
+    event.dataTransfer.setData("index", _index);
   };
 
-  const handleDrop = (event, index) => {
-    const _index =  event.dataTransfer.get("_index");
-    console.log(index,"index")
-    console.log(_index,"_index")
-  }
+  const handleDrop = (event, index, titleTask) => {
+    event.preventDefault();
+    const _titleTask = event.dataTransfer.getData("titleTask");
+    const _index = event.dataTransfer.getData("index");
+    if (titleTask === _titleTask) {
+      let previousList = [...listTask];
+      [previousList[index], previousList[_index]] = [
+        previousList[_index],
+        previousList[index],
+      ];
+      setList(previousList);
+    } else {
+      console.log(_titleTask, "_titleTask");
+      console.log(_index, "_index");
+      console.log(titleTask, "titleTask");
+      console.log(index, "index");
+      const taskChange = {
+        taskId: 1073741824,
+        createdAt: "2025-02-23T11:27:49.553Z",
+        completedAt: "2025-02-23T11:27:49.553Z",
+        taskDescription: "string",
+        taskStatus: 1073741824,
+        taskType: 1073741824,
+      };
+      // client.send("/app/tasks-change", {}, JSON.stringify(taskChange));
+    }
+  };
 
   return (
     <div
       className="card-task-container"
-      onDrag={(event) => handleDrag(event)}
+      onDragStart={(event) => handleDrag(event, index, titleTask)}
       onDragOver={(event) => event.preventDefault()}
-      onDrop={(event) => handleDrop(event, index)}
+      onDrop={(event) => handleDrop(event, index, titleTask)}
       draggable="true"
+      style={{
+        boxShadow: isBoxShadow && "0px 0px 1px 1px rgba(0,0,0,0.06)",
+      }}
     >
       <div className="header-card-task-container">
         <div className="task-name">
-          <span> Water Task</span>
+          <span>{item}</span>
         </div>
         <img
           src={ICONS.icon_menu}

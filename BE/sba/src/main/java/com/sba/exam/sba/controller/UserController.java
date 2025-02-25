@@ -54,4 +54,11 @@ public class UserController {
         responseData.setStatus(isCreated ? 201: 400);
         return new ResponseEntity<>(responseData,isCreated ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/workers")
+    public  ResponseEntity<?> getAllWorker(){
+        return new ResponseEntity<>(userServiceImp.getAllWorker(), HttpStatus.OK);
+    }
+
+
 }

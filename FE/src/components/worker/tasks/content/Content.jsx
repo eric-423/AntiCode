@@ -10,10 +10,14 @@ const Content = () => {
   const [needReview, setNeedReview] = useState([2,4])
   const [done, setDone] = useState([3,4,4])
 
+  const [taskChange,setTaskChange] = useState();
+
+  
+
   return (
     <div className="worker-tasks-content">
       <Row>
-        <h4 className="worker-tasks-content-h4">Your Tasks</h4>
+        <h4 className="worker-tasks-content-h4">Your Tasks <span>{taskChange}</span></h4>
       </Row>
       <Row className="worker-tasks-column-task-container">
         <Col>
