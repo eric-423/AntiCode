@@ -27,6 +27,7 @@ import icon_location from '../assets/image/location.png'
 import icon_location_active from '../assets/image/location-active.png'
 import icon_schedule from '../assets/image/schedule.png'
 import icon_schedule_active from '../assets/image/schedule-active.png'
+import icon_add_worker from '../assets/image/add-worker.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -57,7 +58,8 @@ const ICONS = {
     icon_location: icon_location,
     icon_location_active: icon_location_active,
     icon_schedule: icon_schedule,
-    icon_schedule_active: icon_schedule_active
+    icon_schedule_active: icon_schedule_active,
+    icon_add_worker: icon_add_worker
 }
 
 export default ICONS;

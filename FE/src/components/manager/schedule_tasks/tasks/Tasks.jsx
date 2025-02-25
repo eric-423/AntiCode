@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "./Content.css";
 import { Col, Row } from "react-bootstrap";
-import TaskColumn from "./task_column/TaskColumn";
-import axios from "axios";
+import TaskColumn from "../../../worker/tasks/content/task_column/TaskColumn";
+import "./Tasks.css";
 import BASE from "../../../../constant/base";
-import LOCALSTORAGE from "../../../../constant/localStorage";
-import useLocalStorage from "use-local-storage";
-import { Client } from "@stomp/stompjs";
+import axios from "axios";
+import Modal from "../modal/Modal";
 import SockJS from "sockjs-client";
-import Modal from "../../../manager/schedule_tasks/modal/Modal";
+import { Client } from "@stomp/stompjs";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage";
 
-const Content = () => {
+const Tasks = () => {
   const [status, setStatus] = useState();
   const [showModalDetail, setShowModalDetail] = useState(false);
   const [itemDetail, setItemDetail] = useState();
@@ -19,8 +19,8 @@ const Content = () => {
     LOCALSTORAGE.REFRESH_TASKS_DATA,
     ""
   );
-  const [refreshDataUser, setRefreshDataUser] = useLocalStorage(
-    LOCALSTORAGE.REFRESH_TASK_USER,
+  const [refreshDataManager, setRefreshDataManager] = useLocalStorage(
+    LOCALSTORAGE.REFRESH_TASK_MANAGER,
     ""
   );
 
@@ -51,7 +51,7 @@ const Content = () => {
       client.subscribe("/topic/tasks/users", (message) => {
         const userID = JSON.stringify(message.body).replaceAll(`\"`, ``);
         setTimeout(() => {
-          setRefreshDataUser(userID);
+          setRefreshDataManager(userID);
         }, 2000);
       });
     };
@@ -75,14 +75,9 @@ const Content = () => {
       }
     };
   }, []);
-  return (
-    <div className="worker-tasks-content">
-      <Row>
-        <h4 className="worker-tasks-content-h4">
-          Your Tasks
-        </h4>
-      </Row>
 
+  return (
+    <div className="schedule-tasks-task">
       <Row className="worker-tasks-column-task-container">
         {status &&
           status
@@ -91,7 +86,7 @@ const Content = () => {
                 String(item.taskStatusName).toLocaleLowerCase() !==
                   "completed" &&
                 String(item.taskStatusName).toLocaleLowerCase() !==
-                  "initial"
+                  "on progress"
             )
             .map((item) => (
               <Col>
@@ -116,4 +111,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default Tasks;
