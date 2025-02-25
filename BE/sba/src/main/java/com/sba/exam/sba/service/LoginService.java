@@ -20,8 +20,8 @@ public class LoginService implements LoginServiceImp {
         Users users = userRepository.findByUserEmail(email);
         boolean checklogin = false;
 
-        if(users!=null){
-            if(passwordEncoder.matches(password,users.getPassWord())){
+        if (users != null) {
+            if (passwordEncoder.matches(password, users.getPassWord())) {
                 checklogin = true;
             }
         }

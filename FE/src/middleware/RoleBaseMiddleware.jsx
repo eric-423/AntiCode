@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,8 @@ const RoleBaseMiddleware = ({ children, requiredRole }) => {
     } catch (error) {
       navigate("/")
     }
-  }, accountLoginInformation);
+    // }, accountLoginInformation);
+  }, [accountLoginInformation, navigate, requiredRole]);
   return children;
 };
 

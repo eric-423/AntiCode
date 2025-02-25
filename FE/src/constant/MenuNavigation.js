@@ -14,7 +14,9 @@ const COMPONENTS = {
   DASHBOARD: "Dashboard",
   SETTINGS: "Settings",
   CHEMICAL: "Chemical",
-  CHEMICAL_TYPE: "Chemical Type"
+  CHEMICAL_TYPE: "Chemical Type",
+  EQUIPMENT: "Equipment",
+  EQUIPMENT_TYPE: "Equipment Type",
 };
 
 const listMenu = [
@@ -61,6 +63,7 @@ const listMenu = [
           },
         ]
       },
+
       {
         nameMenu: "Task",
         image: ICONS.icon_task,
@@ -124,6 +127,26 @@ const listMenu = [
         subItems: [],
         component: COMPONENTS.DASHBOARD,
         path: "menu-dashboard"
+      },
+      {
+        nameMenu: "Equipment",
+        image: ICONS.icon_chemical,
+        imageActive: ICONS.icon_chemical,
+        sortItem: 5,
+        component: COMPONENTS.EQUIPMENT,
+        path: "equipment",
+        subItems: [
+          {
+            name: "Equipment",
+            component: COMPONENTS.EQUIPMENT,
+            path: "/"
+          },
+          {
+            name: "Equipment Type",
+            component: COMPONENTS.EQUIPMENT_TYPE,
+            path: "/equipment-type"
+          },
+        ]
       },
     ].sort((a, b) => a.sortItem - b.sortItem),
   },

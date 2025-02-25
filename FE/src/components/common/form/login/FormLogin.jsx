@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "../../button/Button";
@@ -23,15 +23,19 @@ const FormLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const handleOnClick = async () => {
     try {
+
       const response = await axios.post(
         `${BASE.BASE_URL}/user/signin?email=${email}&password=${password}`
       );
       if (!response || response.status !== 200 || response.data.data === "")
         throw new Error();
       const data = response.data.data;
+
       setAccountLoginInformation(btoa(data));
+
       const role = useRole(data);
       if (role.admin) {
         navigate("/admin");
@@ -44,6 +48,7 @@ const FormLogin = () => {
       console.log(error)
     }
   };
+
   return (
     <>
       <Form

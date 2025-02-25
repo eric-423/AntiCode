@@ -35,7 +35,7 @@ public class FarmingEquipmentService implements FarmingEquipmentServiceImp {
             farmingEquipment.setName(dto.getName());
             farmingEquipment.setDescription(dto.getDescription());
             farmingEquipment.setQuantity(dto.getQuantity());
-            farmingEquipment.setInUsed(true);
+            farmingEquipment.setInUsed(false);
             farmingEquipment.setDamaged(false);
             farmingEquipment.setDeleted(false);
 
@@ -110,6 +110,7 @@ public class FarmingEquipmentService implements FarmingEquipmentServiceImp {
                 farmingEquipmentDTO.setQuantity(farmingEquipment.getQuantity());
                 farmingEquipmentDTO.setInUsed(farmingEquipment.isInUsed());
                 farmingEquipmentDTO.setDamaged(farmingEquipment.isDamaged());
+                farmingEquipmentDTO.setDeleted(farmingEquipment.isDeleted());
                 farmingEquipmentDTO.setTypeName(farmingEquipment.getEquipmentType().getName());
                 farmingEquipmentDTOList.add(farmingEquipmentDTO);
             }
