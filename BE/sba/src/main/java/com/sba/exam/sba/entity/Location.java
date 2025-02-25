@@ -21,6 +21,12 @@ public class Location {
     @Column(name = "location_name")
     private String locationName;
 
+    @Column(name = "location_width")
+    private float locationWidth;
+
+    @Column(name = "location_length")
+    private float locationLength;
+
     @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })

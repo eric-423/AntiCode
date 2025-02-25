@@ -13,11 +13,12 @@ const COMPONENTS = {
   DASHBOARD: "Dashboard",
   SETTINGS: "Settings",
   CHEMICAL: "Chemical",
+  PLANT_POT: "Plant Pot",
+  PLANT_MEDIUM: "Plant Medium",
   CHEMICAL_TYPE: "Chemical Type",
   EQUIPMENT: "Equipment",
   EQUIPMENT_TYPE: "Equipment Type",
   SCHEDULE_TASKS: "Schedule Tasks"
-
 };
 
 const listMenu = [
@@ -130,10 +131,28 @@ const listMenu = [
         path: "location",
       },
       {
+        nameMenu: "Plant Medium",
+        image: ICONS.icon_dashboard,
+        imageActive: ICONS.icon_dashboard_active,
+        sortItem: 3,
+        subItems: [],
+        component: COMPONENTS.PLANT_MEDIUM,
+        path: "menu-plant-medium"
+      },
+      {
+        nameMenu: "Plant Pot",
+        image: ICONS.icon_dashboard,
+        imageActive: ICONS.icon_dashboard_active,
+        sortItem: 4,
+        subItems: [],
+        component: COMPONENTS.PLANT_POT,
+        path: "menu-plant-pot"
+      },
+      {
         nameMenu: "Dashboard",
         image: ICONS.icon_dashboard,
         imageActive: ICONS.icon_dashboard_active,
-        sortItem: 0,
+        sortItem: 5,
         subItems: [],
         component: COMPONENTS.DASHBOARD,
         path: "menu-dashboard",

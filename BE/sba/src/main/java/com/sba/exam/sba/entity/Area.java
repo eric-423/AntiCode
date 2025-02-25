@@ -20,6 +20,12 @@ public class Area {
     @Column(name = "area_name", length = 50)
     private String areaName;
 
+    @Column(name = "area_width")
+    private float areaWidth;
+
+    @Column(name = "area_length")
+    private float areaLength;
+
     @Column(name = "area_extent")
     private float areaExtend;
 

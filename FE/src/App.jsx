@@ -22,10 +22,11 @@ import Type from './components/manager/task/type/Type'
 import Status from './components/manager/task/status/Status'
 import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
+import PlantMedium from './components/manager/plant_medium/PlantMedium'
+import PlantPot from './components/manager/plant_pot/PlantPot'
 import Equipment from './components/manager/equipment/Equipment'
 import EquipmentType from './components/manager/equipment/type/EquipmentType'
 import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
-
 function App() {
   const listComponent = [
     {
@@ -81,6 +82,12 @@ function App() {
       component: <ChemicalType />,
     },
     {
+      name: NAVIGATION.COMPONENTS.PLANT_MEDIUM,
+      component: <PlantMedium />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.PLANT_POT,
+      component: <PlantPot />,
       name: NAVIGATION.COMPONENTS.EQUIPMENT,
       component: <Equipment />,
     },
@@ -128,7 +135,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/registrations/" element={<Register />} >
+        <Route path="/registrations/" element={<Register />}>
           <Route index element={<FormRegister />} />
           <Route path="verify-otp" element={<VerifyEmail />} />
         </Route>

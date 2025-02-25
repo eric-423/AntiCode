@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './PlantLocation.css'
 import ToolBar from './tool_bar/ToolBar'
 import Table from './table/Table'

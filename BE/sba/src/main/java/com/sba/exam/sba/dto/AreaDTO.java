@@ -16,5 +16,9 @@ public class AreaDTO implements Serializable {
 
     private float areaExtend;
 
-    private FarmDTO farmDTO;
+    private float areaWidth;
+
+    private float areaLength;
+
+    private FarmDTO farm;
 }
