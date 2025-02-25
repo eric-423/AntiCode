@@ -18,7 +18,8 @@ const COMPONENTS = {
   CHEMICAL_TYPE: "Chemical Type",
   EQUIPMENT: "Equipment",
   EQUIPMENT_TYPE: "Equipment Type",
-  SCHEDULE_TASKS: "Schedule Tasks"
+  SCHEDULE_TASKS: "Schedule Tasks",
+  WATER: "Water"
 };
 
 const listMenu = [
@@ -177,6 +178,21 @@ const listMenu = [
           },
         ]
       },
+      {
+        nameMenu: "Water",
+        image: ICONS.icon_water,
+        imageActive: ICONS.icon_water_active,
+        sortItem: 5,
+        component: null,
+        path: "water",
+        subItems:[
+          {
+            name: "Water",
+            component: COMPONENTS.WATER,
+            path: "/"
+          }
+        ]
+      }
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
   {

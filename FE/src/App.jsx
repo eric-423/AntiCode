@@ -27,6 +27,7 @@ import PlantPot from './components/manager/plant_pot/PlantPot'
 import Equipment from './components/manager/equipment/Equipment'
 import EquipmentType from './components/manager/equipment/type/EquipmentType'
 import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
+import Water from './components/manager/water/Water'
 function App() {
   const listComponent = [
     {
@@ -101,6 +102,10 @@ function App() {
       name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
       component: <ScheduleTasks />,
     },
+    {
+      name: NAVIGATION.COMPONENTS.WATER,
+      component: <Water />
+    }
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
