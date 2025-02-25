@@ -22,6 +22,8 @@ import Type from './components/manager/task/type/Type'
 import Status from './components/manager/task/status/Status'
 import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
+import Equipment from './components/manager/equipment/Equipment'
+import EquipmentType from './components/manager/equipment/type/EquipmentType'
 import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
 
 function App() {
@@ -79,6 +81,14 @@ function App() {
       component: <ChemicalType />,
     },
     {
+      name: NAVIGATION.COMPONENTS.EQUIPMENT,
+      component: <Equipment />,
+    },
+    {
+      name: NAVIGATION.COMPONENTS.EQUIPMENT_TYPE,
+      component: <EquipmentType />,
+    }
+    {
       name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
       component: <ScheduleTasks />,
     },
@@ -129,7 +139,7 @@ function App() {
           ))}
         </Route>
         <Route path='/worker' element={<Worker />} >
-            <Route index element={<Tasks />}/>
+          <Route index element={<Tasks />} />
         </Route>
       </Routes>
       <ToastContainer />

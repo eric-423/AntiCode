@@ -47,12 +47,12 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserDTO userDTO){
+    public ResponseEntity<?> signup(@RequestBody UserDTO userDTO) {
         boolean isCreated = userServiceImp.createUser(userDTO);
         ResponseData responseData = new ResponseData();
         responseData.setData(isCreated ? "Successful" : "Failed");
-        responseData.setStatus(isCreated ? 201: 400);
-        return new ResponseEntity<>(responseData,isCreated ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
+        responseData.setStatus(isCreated ? 201 : 400);
+        return new ResponseEntity<>(responseData, isCreated ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/workers")
