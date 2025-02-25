@@ -24,6 +24,7 @@ import Chemical from './components/manager/chemical/Chemical'
 import ChemicalType from './components/manager/chemical/type/ChemicalType'
 import Equipment from './components/manager/equipment/Equipment'
 import EquipmentType from './components/manager/equipment/type/EquipmentType'
+import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
 
 function App() {
   const listComponent = [
@@ -79,7 +80,6 @@ function App() {
       name: NAVIGATION.COMPONENTS.CHEMICAL_TYPE,
       component: <ChemicalType />,
     },
-
     {
       name: NAVIGATION.COMPONENTS.EQUIPMENT,
       component: <Equipment />,
@@ -88,6 +88,10 @@ function App() {
       name: NAVIGATION.COMPONENTS.EQUIPMENT_TYPE,
       component: <EquipmentType />,
     }
+    {
+      name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
+      component: <ScheduleTasks />,
+    },
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {

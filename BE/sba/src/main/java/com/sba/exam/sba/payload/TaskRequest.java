@@ -12,7 +12,10 @@ public class TaskRequest implements Serializable {
     private int taskId;
     private Date createdAt;
     private Date completedAt;
+    private Date startDate;
+    private Date dueDate;
     private String taskDescription;
     private int taskStatus;
     private int taskType;
+
 }

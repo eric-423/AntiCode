@@ -105,7 +105,6 @@ const Menu = ({ list }) => {
           Array.isArray(itemMenu.data) &&
             itemMenu.data.forEach((item, index) => {
               const itemPath = String(item.path);
-              console.log(pathName)
               if (pathName.includes(itemPath)) {
                 setItemActive({
                   indexMenu: indexMenu,
@@ -115,20 +114,14 @@ const Menu = ({ list }) => {
                 if (Array.isArray(item.subItems) && item.subItems.length > 0) {
                   item.subItems.forEach((subItem, indexSubItem) => {
                     const subItemPath = String(subItem.path);
-                    if (pathName.includes(itemPath + subItemPath)) {
+                    if (pathName.endsWith(itemPath + subItemPath)) {
                       setSubItemActive({
                         indexMenu: indexMenu,
                         parentItem: index,
                         index: indexSubItem,
                         status: true,
                       });
-                    } else {
-                      setSubItemActive({
-                        indexMenu: indexMenu,
-                        parentItem: index,
-                        index: 0,
-                        status: true,
-                      });
+                      return;
                     }
                     return;
                   });

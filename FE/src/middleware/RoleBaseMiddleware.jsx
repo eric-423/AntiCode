@@ -18,8 +18,7 @@ const RoleBaseMiddleware = ({ children, requiredRole }) => {
     } catch (error) {
       navigate("/")
     }
-    // }, accountLoginInformation);
-  }, [accountLoginInformation, navigate, requiredRole]);
+  }, [accountLoginInformation]);
   return children;
 };
 

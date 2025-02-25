@@ -22,6 +22,8 @@
 }
 
 .animation-spin{
-    animation:spin 5s infinite ;
+    animation: spin 1s linear infinite;
+    will-change: transform;
+    transform-origin: center center;
 }
 

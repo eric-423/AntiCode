@@ -10,5 +10,4 @@ public interface TaskStatusImp {
     public List<TaskStatusDTO> getAllTaskStatus();
     public TaskStatusDTO addTaskStatus(TaskStatusDTO taskStatusDTO);
     public TaskStatusDTO updateTaskStatus(TaskStatusDTO taskStatusDTO);
-
 }
