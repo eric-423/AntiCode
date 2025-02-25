@@ -105,7 +105,9 @@ function App() {
     },
     {
       name: NAVIGATION.COMPONENTS.USER,
-      component: <User />,
+      component: <User />
+    },
+    {
       name: NAVIGATION.COMPONENTS.WATER,
       component: <Water />
     }
