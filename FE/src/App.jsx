@@ -88,13 +88,15 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.PLANT_POT,
       component: <PlantPot />,
+    },
+    {
       name: NAVIGATION.COMPONENTS.EQUIPMENT,
       component: <Equipment />,
     },
     {
       name: NAVIGATION.COMPONENTS.EQUIPMENT_TYPE,
       component: <EquipmentType />,
-    }
+    },
     {
       name: NAVIGATION.COMPONENTS.SCHEDULE_TASKS,
       component: <ScheduleTasks />,
