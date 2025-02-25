@@ -73,6 +73,7 @@ public class ChemicalService implements ChemicalServiceImp {
     public ChemicalDTO updateChemical(ChemicalDTO chemicalDTO, int typeId) throws Exception {
         AgriculturalChemical chemical = chemicalRepository.findById(chemicalDTO.getId()).orElseThrow(() -> new Exception("Chemical not found"));
         ChemicalType type = chemicalTypeRepository.findById(typeId).orElseThrow(() -> new Exception("Type not found"));
+
         chemical.setName(chemicalDTO.getName());
         chemical.setDescription(chemicalDTO.getDescription());
         chemical.setManufacturingDate(chemicalDTO.getManufacturingDate());
