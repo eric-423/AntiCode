@@ -145,7 +145,7 @@ const UpdateEquipment = ({ setShowModal, itemUpdate }) => {
                     />
                 </Form.Group>
 
-                <Form.Group>
+                <Form.Group className="group-3-column-create-plant" style={{ maxWidth: "100px" }}>
                     <Form.Label className="text-label-login">Quantity</Form.Label>
                     <Form.Control
                         className="input-login input-addition input-number"

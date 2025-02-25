@@ -29,6 +29,9 @@ public class ChemicalType {
     @Column(name = "type_description")
     private String typeDescription;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "chemicalTypes", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<AgriculturalChemical> agriculturalChemicals;
 }

@@ -24,21 +24,21 @@ public class UserService implements UserServiceImp {
     private UserRepository userRepository;
 
     @Autowired
-    private OTPServiceImp  OTPServiceImp;
+    private OTPServiceImp OTPServiceImp;
 
     @Autowired
     private RoleRepository roleRepository;
 
     @Override
     public boolean createUser(UserDTO userDTO) {
-        try{
-            boolean isVerified =OTPServiceImp.isOtpVerified(userDTO.getEmail());
-            if(!isVerified ) throw new Exception();
+        try {
+            boolean isVerified = OTPServiceImp.isOtpVerified(userDTO.getEmail());
+            if (!isVerified) throw new Exception();
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
             user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
-            Role role = roleRepository.findRoleByName("Worker");
+            Role role = roleRepository.findRoleByNameIgnoreCase("Worker");
             user.setRole(role);
             userRepository.save(user);
             return true;
@@ -50,7 +50,7 @@ public class UserService implements UserServiceImp {
 
     @Override
     public List<UserDTO> getAllWorker() {
-        List<Users> users =  userRepository.getUsersByRole_Name("Worker");
+        List<Users> users = userRepository.getUsersByRole_Name("Worker");
         List<UserDTO> userDTOs = new ArrayList<>();
         for (Users user : users) {
             UserDTO userDTO = new UserDTO();
@@ -64,8 +64,68 @@ public class UserService implements UserServiceImp {
 
     @Override
     public Users getUserById(int id) {
-        return userRepository.findById(id).isPresent()
-                ? userRepository.findById(id).get()
-                : null ;
+        return userRepository.findById(id).isPresent() ? userRepository.findById(id).get() : null;
+    }
+
+    @Override
+    public List<UserDTO> getAllUser() {
+        List<UserDTO> dtos = new ArrayList<>();
+        List<Users> users = userRepository.findAll();
+        for (Users user : users) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUserName(user.getUserName());
+            userDTO.setEmail(user.getUserEmail());
+            userDTO.setId(user.getId());
+            userDTO.setRole(user.getRole().getName());
+            userDTO.setAddress(user.getUserAddress());
+            userDTO.setDateOfBirth(user.getUserDateOfBirth());
+            userDTO.setPhoneNumber(user.getUserPhoneNumber());
+            userDTO.setBusy(user.isBusy());
+            dtos.add(userDTO);
+        }
+        return dtos;
+    }
+
+    @Override
+    public UserDTO addUserByAdmin(UserDTO userDTO) {
+        try {
+            Users user = new Users();
+            user.setUserEmail(userDTO.getEmail());
+            user.setUserName(userDTO.getUserName());
+            user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+            Role role = roleRepository.findRoleByNameIgnoreCase(userDTO.getRole());
+            user.setRole(role);
+            user.setUserAddress(userDTO.getAddress());
+            user.setUserDateOfBirth(userDTO.getDateOfBirth());
+            user.setUserPhoneNumber(userDTO.getPhoneNumber());
+            user.setBusy(false);
+
+            userRepository.save(user);
+            return userDTO;
+        } catch (Exception e) {
+            System.out.println("Error creating user" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO updateUser(int id, UserDTO userDTO) {
+        try {
+            Users user = userRepository.findById(id).get();
+            user.setUserName(userDTO.getUserName());
+            user.setUserEmail(userDTO.getEmail());
+            user.setUserAddress(userDTO.getAddress());
+            user.setUserDateOfBirth(userDTO.getDateOfBirth());
+            user.setUserPhoneNumber(userDTO.getPhoneNumber());
+            user.setBusy(userDTO.isBusy());
+            user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+            Role role = roleRepository.findRoleByNameIgnoreCase(userDTO.getRole());
+            user.setRole(role);
+            userRepository.save(user);
+            return userDTO;
+        } catch (Exception e) {
+            System.out.println("Error updating user" + e.getMessage());
+        }
+        return null;
     }
 }

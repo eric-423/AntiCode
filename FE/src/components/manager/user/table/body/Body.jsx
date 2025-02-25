@@ -1,24 +1,31 @@
 import { useState } from "react";
+import { format } from 'date-fns';
 import PropTypes from 'prop-types';
-import ICONS from "../../../../../constant/Image.js";
-import UpdateEquipment from "../../update_equipment/UpdateEquipment.jsx";
 import "./Body.css";
+import ICONS from "../../../../../constant/Image.js";
+import UpdateUser from "../../update_user/UpdateUser.jsx";
+
 const Body = ({ item, index, itemsActive, handleSelectItem }) => {
     const [showModal, setShowModal] = useState(false);
     const [itemUpdate, setItemUpdate] = useState(null);
     const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.id);
 
+    console.log(item)
     const handleShowUpdatePopup = (event, item) => {
         event.stopPropagation();
         setItemUpdate(item);
         setShowModal(true);
     };
 
+    const formatDate = (date) => {
+        if (!date) return '';
+        return format(new Date(date), 'yyyy-MM-dd');
+    };
 
     return (
         <>
             {showModal && (
-                <UpdateEquipment itemUpdate={itemUpdate} setShowModal={setShowModal} />
+                <UpdateUser itemUpdate={itemUpdate} setShowModal={setShowModal} />
             )}
 
             <ul
@@ -26,20 +33,23 @@ const Body = ({ item, index, itemsActive, handleSelectItem }) => {
                 onClick={() => handleSelectItem(item)}
             >
                 <li>{index + 1}</li>
-                <li>{item.name}</li>
-                <li>{item.description}</li>
-                <li>{item.typeName}</li>
-                <li>{item.quantity}</li>
+                <li>{item.userName}</li>
+                <li>{item.email}</li>
+                <li>{item.role}</li>
+                <li>{item.address}</li>
+                <li>{formatDate(item.dateOfBirth)}</li>
+                <li>{item.phoneNumber}</li>
                 {
-                    item.inUsed ? <li>In Used</li> : <li>Not In Used</li>
+                    item.busy ? (
+                        <li style={{ color: "red" }}>
+                            BUSY
+                        </li>
+                    ) : (
+                        <li style={{ color: "green" }}>
+                            ACTIVE
+                        </li>
+                    )
                 }
-                {
-                    item.deleted ? <li>Deleted</li> : <li>Not Deleted</li>
-                }
-                {
-                    item.damaged ? <li>Damaged</li> : <li>Not Damaged</li>
-                }
-
                 <li>
                     <div
                         onClick={(event) => handleShowUpdatePopup(event, item)}
@@ -59,13 +69,13 @@ const Body = ({ item, index, itemsActive, handleSelectItem }) => {
 Body.propTypes = {
     item: PropTypes.shape({
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        typeName: PropTypes.string,
-        quantity: PropTypes.number,
-        inUsed: PropTypes.bool,
-        deleted: PropTypes.bool,
-        damaged: PropTypes.bool,
+        userName: PropTypes.string.isRequired,
+        email: PropTypes.string,
+        role: PropTypes.string,
+        address: PropTypes.number,
+        dateOfBirth: PropTypes.bool,
+        phoneNumber: PropTypes.bool,
+        busy: PropTypes.bool,
     }).isRequired,
     index: PropTypes.number.isRequired,
     itemsActive: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),

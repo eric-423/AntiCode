@@ -147,10 +147,10 @@ const NewEquipment = ({ setShowModal, setRefreshData }) => {
                         />
                     </Form.Group>
 
-                    <Form.Group>
+                    <Form.Group className="group-3-column-create-plant" style={{ maxWidth: "100px" }}>
                         <Form.Label className="text-label-login">QUANTITY</Form.Label>
                         <Form.Control
-                            className="input-login input-addition"
+                            className="input-login input-addition "
                             type="number"
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
@@ -160,7 +160,7 @@ const NewEquipment = ({ setShowModal, setRefreshData }) => {
                     <Button
                         text="Create"
                         handleOnClick={handleOnClick}
-                        className="button-create-plant"
+                        className="button-create-plant "
                     />
                 </Form>
                 <img

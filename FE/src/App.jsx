@@ -27,6 +27,7 @@ import PlantPot from './components/manager/plant_pot/PlantPot'
 import Equipment from './components/manager/equipment/Equipment'
 import EquipmentType from './components/manager/equipment/type/EquipmentType'
 import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
+import User from './components/manager/user/User'
 import Water from './components/manager/water/Water'
 function App() {
   const listComponent = [
@@ -103,6 +104,8 @@ function App() {
       component: <ScheduleTasks />,
     },
     {
+      name: NAVIGATION.COMPONENTS.USER,
+      component: <User />,
       name: NAVIGATION.COMPONENTS.WATER,
       component: <Water />
     }
@@ -148,8 +151,8 @@ function App() {
         </Route>
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />
-          {listRouteNavigation.map((item) => (
-            <Route path={item.path} element={item.component} />
+          {listRouteNavigation.map((item, index) => (
+            <Route key={index} path={item.path} element={item.component} />
           ))}
         </Route>
         <Route path='/worker' element={<Worker />} >
