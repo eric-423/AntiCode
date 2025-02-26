@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Body.css'
-import ICONS from '../../../../../../constant/Image'
-import UpdateFarm from '../../update_farm/UpdateFarm'
+import ICONS from '../../../../../constant/Image'
+import UpdatePlantPot from '../../update_plant_pot/UpdatePlantPot'
 
 const Body = ({
   item,
@@ -13,7 +13,7 @@ const Body = ({
   const [showModal, setShowModal] = useState(false)
   const [itemUpdate, setItemUpdate] = useState()
   const isActive =
-    Array.isArray(itemsActive) && itemsActive.includes(item.farmId)
+    Array.isArray(itemsActive) && itemsActive.includes(item.potId)
 
   const handleShowUpdatePopup = (event, item) => {
     setItemUpdate(item)
@@ -24,7 +24,7 @@ const Body = ({
   return (
     <>
       {showModal && (
-        <UpdateFarm
+        <UpdatePlantPot
           itemUpdate={itemUpdate}
           setShowModal={setShowModal}
           setRefreshData={setRefreshData}
@@ -35,11 +35,9 @@ const Body = ({
         onClick={() => handleSelectItem(item)}
       >
         <li>{index + 1}</li>
-        <li>{item.farmName}</li>
-        <li>{item.farmExtend}</li>
-        <li>{item.farmWidth}</li>
-        <li>{item.farmLength}</li>
-        <li>{item.farmAddress}</li>
+        <li>{item.potSize}</li>
+        <li>{item.potMaterial}</li>
+        <li>{item.potQuantityAvailable}</li>
         <li>
           <div
             onClick={(event) => handleShowUpdatePopup(event, item)}

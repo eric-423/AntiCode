@@ -1,20 +1,20 @@
 import { useEffect, useState } from 'react'
 import './Table.css'
-import Header from '../../../../common/table/header/Header'
+import Header from '../../../common/table/header/Header'
 import Body from './body/Body'
 import useLocalStorage from 'use-local-storage'
 
 const Table = ({ listTitle, refreshData, setRefreshData }) => {
   const [itemsActive, setItemsActive] = useState([])
-  const [selectedFarm, setSelectedFarm] = useLocalStorage(
-    'manager_farm_selected',
+  const [selectedPlantPot, setSelectedPlantPot] = useLocalStorage(
+    'manager_plant_pot_selected',
     ''
   )
   const [listItems, setListItems] = useState()
-  const handleFetchArea = async () => {
+  const handleFetchPlantPot = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/farm`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-pot`,
         {
           method: 'GET',
           headers: {
@@ -32,13 +32,13 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
     }
   }
   const handleSelectItem = (item_index) => {
-    setItemsActive([item_index.farmId])
+    setItemsActive([item_index.potId])
   }
   useEffect(() => {
-    setSelectedFarm(itemsActive)
+    setSelectedPlantPot(itemsActive)
   }, [itemsActive])
   useEffect(() => {
-    handleFetchArea()
+    handleFetchPlantPot()
   }, [refreshData])
   return (
     <>
