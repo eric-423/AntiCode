@@ -7,7 +7,7 @@ import useGridColumn from "../../../../../hook/useGridColumn";
 const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, setRefreshData}) => {
   const [showModal,setShowModal] = useState(false)
   const [itemUpdate,setItemUpdate] = useState()
-  const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.plantId);
+  const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.waterId);
   const gridColumnTemplate = useGridColumn(listTitle)
 
   const handleShowUpdatePopup = (event, item) => {

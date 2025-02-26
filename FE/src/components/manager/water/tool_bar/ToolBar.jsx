@@ -32,9 +32,9 @@ const ToolBar = ({ setRefreshData }) => {
       Array.isArray(selectedPlants) &&
         selectedPlants.forEach((element, index) => {
           if (index === selectedPlants.length - 1) {
-            param += `listPlantId=${element}`;
+            param += `waterId=${element}`;
           } else {
-            param += `listPlantId=${element}&`;
+            param += `waterId=${element}&`;
           }
         });
       const response = await axios.delete(

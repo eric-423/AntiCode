@@ -28,7 +28,7 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   const handleSelectItem = (item_index) => {
     if (itemsActive.includes(item_index.waterId)) {
       setItemsActive(itemsActive.filter((item) => {
-        return item !== item_index.taskId
+        return item !== item_index.waterId
       }));
     } else {
       setItemsActive([...itemsActive, item_index.waterId]);
