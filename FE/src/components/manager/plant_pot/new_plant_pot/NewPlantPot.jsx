@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import './NewFarm.css'
-import ICONS from '../../../../../constant/Image'
+import './NewPlantPot.css'
+import ICONS from '../../../../constant/Image'
 import { Form } from 'react-bootstrap'
-import Button from '../../../../common/button/Button'
+import Button from '../../../common/button/Button'
 import { toast } from 'react-toastify/unstyled'
 
-const NewFarm = ({ setShowModal, setRefreshData }) => {
-  const [farmName, setFarmName] = useState('')
-  const [farmExtend, setFarmExtend] = useState('')
-  const [farmAddress, setFarmAddress] = useState('')
-  const [farmLength, setFarmLength] = useState('')
-  const [farmWidth, setFarmWidth] = useState('')
+const NewPlantPot = ({ setShowModal, setRefreshData }) => {
+  const [potSize, setPotSize] = useState('')
+  const [potMaterial, setPotMaterial] = useState('')
+  const [potQuantityAvailable, setPotQuantityAvailable] = useState('')
 
   const modalRoot = document.body
 
@@ -31,22 +29,20 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
-    const farm = {
-      farmName: farmName,
-      farmExtend: farmExtend,
-      farmAddress: farmAddress,
-      farmLength: farmLength,
-      farmWidth: farmWidth,
+    const plantPot = {
+      potSize: potSize,
+      potMaterial: potMaterial,
+      potQuantityAvailable: potQuantityAvailable,
     }
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/farm`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-pot`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(farm),
+          body: JSON.stringify(plantPot),
         }
       )
 
@@ -54,10 +50,10 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
       const data = await response.json()
 
       if (!data) throw new Error()
-      showToastMessageSuccess('Farm was added!')
+      showToastMessageSuccess('Plant Pot was added!')
       setShowModal(false)
     } catch (error) {
-      showToastMessageFail('Farm can not be added!')
+      showToastMessageFail('Plant Pot can not be added!')
       setShowModal(true)
     } finally {
       setRefreshData((prev) => !prev)
@@ -69,51 +65,33 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
       <div className="modal-create-plant">
         <Form className="form-addition-plant-type form-create-plant">
           <h4 className="addition-plant-type-h4 group-3-column-create-plant">
-            NEW FARM
+            NEW PLANT POT
           </h4>
           <Form.Group>
-            <Form.Label className="text-label-login">Farm Name</Form.Label>
+            <Form.Label className="text-label-login">Size Name</Form.Label>
             <Form.Control
               className="input-login input-addition"
               type="text"
-              value={farmName}
-              onChange={(e) => setFarmName(e.target.value)}
+              value={potSize}
+              onChange={(e) => setPotSize(e.target.value)}
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label className="text-label-login">Address</Form.Label>
+            <Form.Label className="text-label-login">Material</Form.Label>
             <Form.Control
               className="input-login input-addition"
-              type="number"
-              value={farmAddress}
-              onChange={(e) => setFarmAddress(e.target.value)}
+              type="text"
+              value={potMaterial}
+              onChange={(e) => setPotMaterial(e.target.value)}
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label className="text-label-login">Extent</Form.Label>
+            <Form.Label className="text-label-login">Quantity</Form.Label>
             <Form.Control
               className="input-login input-addition"
               type="number"
-              value={farmExtend}
-              onChange={(e) => setFarmExtend(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Width</Form.Label>
-            <Form.Control
-              type="number"
-              className="input-login input-addition"
-              value={farmWidth}
-              onChange={(e) => setFarmWidth(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Length</Form.Label>
-            <Form.Control
-              type="number"
-              className="input-login input-addition"
-              value={farmLength}
-              onChange={(e) => setFarmLength(e.target.value)}
+              value={potQuantityAvailable}
+              onChange={(e) => setPotQuantityAvailable(e.target.value)}
             />
           </Form.Group>
           <Button
@@ -134,4 +112,4 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
   )
 }
 
-export default NewFarm
+export default NewPlantPot

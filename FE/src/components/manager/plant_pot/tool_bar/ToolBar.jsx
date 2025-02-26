@@ -1,25 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './ToolBar.css'
-import SearchBar from '../../../../common/search_bar/SearchBar'
-import Filter from '../../../../common/filter/Filter'
-import NewFarm from '../new_farm/NewFarm'
+import SearchBar from '../../../common/search_bar/SearchBar'
+import Filter from '../../../common/filter/Filter'
+import NewPlantPot from '../new_plant_pot/NewPlantPot'
 import useLocalStorage from 'use-local-storage'
 
 const ToolBar = ({ setRefreshData }) => {
-  const [selectedFarm, setSelectedFarm] = useLocalStorage(
-    'manager_area_selected',
+  const [selectedPlantPot, setSelectedPlantPot] = useLocalStorage(
+    'manager_plant_pot_selected',
     ''
   )
   const [showModal, setShowModal] = useState(false)
   const handleShowModal = () => {
     setShowModal((prev) => !prev)
   }
-  const handleDeleteFarm = async () => {
+  const handleDeletePlantPot = async () => {
     try {
       let id = ''
-      Array.isArray(selectedArea) &&
-        selectedArea.forEach((element, index) => {
-          if (index === selectedArea.length - 1) {
+      Array.isArray(selectedPlantPot) &&
+        selectedPlantPot.forEach((element, index) => {
+          if (index === selectedPlantPot.length - 1) {
             id += element
           } else {
             id += element
@@ -27,7 +27,7 @@ const ToolBar = ({ setRefreshData }) => {
         })
 
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/farm/${id}`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-pot/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -36,8 +36,9 @@ const ToolBar = ({ setRefreshData }) => {
         }
       )
     } catch (error) {
+      console.log(error)
     } finally {
-      setSelectedFarm([])
+      selectedPlantPot([])
       setRefreshData((prev) => !prev)
     }
   }
@@ -48,9 +49,9 @@ const ToolBar = ({ setRefreshData }) => {
       <div className="right-tool-bar-plant">
         <SearchBar />
         <div
-          onClick={() => handleDeleteFarm()}
+          onClick={() => handleDeletePlantPot()}
           className={
-            selectedFarm && selectedFarm.length > 0
+            selectedPlantPot && selectedPlantPot.length > 0
               ? 'plant-button delete-plant-button-active'
               : 'plant-button delete-plant-button-non-active'
           }
@@ -61,11 +62,14 @@ const ToolBar = ({ setRefreshData }) => {
           className="plant-button new-plant-button"
           onClick={() => handleShowModal()}
         >
-          Create Farm
+          Create Plant Pot
         </div>
       </div>
       {showModal && (
-        <NewFarm setRefreshData={setRefreshData} setShowModal={setShowModal} />
+        <NewPlantPot
+          setRefreshData={setRefreshData}
+          setShowModal={setShowModal}
+        />
       )}
     </div>
   )

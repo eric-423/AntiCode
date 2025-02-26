@@ -157,7 +157,7 @@ function App() {
             <Route key={index} path={item.path} element={item.component} />
           ))}
         </Route>
-        <Route path='/worker' element={<Worker />} >
+        <Route path="/worker" element={<Worker />}>
           <Route index element={<Tasks />} />
         </Route>
       </Routes>
