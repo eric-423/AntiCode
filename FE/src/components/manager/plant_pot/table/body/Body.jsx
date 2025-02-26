@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Body.css'
 import ICONS from '../../../../../constant/Image'
 import UpdatePlantPot from '../../update_plant_pot/UpdatePlantPot'
+import useGridColumn from '../../../../../hook/useGridColumn'
 
 const Body = ({
   item,
@@ -9,6 +10,7 @@ const Body = ({
   itemsActive,
   handleSelectItem,
   setRefreshData,
+  listTitle
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [itemUpdate, setItemUpdate] = useState()
@@ -20,7 +22,7 @@ const Body = ({
     event.stopPropagation()
     setShowModal(true)
   }
-
+  const gridColumnTemplate = useGridColumn(listTitle)
   return (
     <>
       {showModal && (
@@ -33,6 +35,7 @@ const Body = ({
       <ul
         className={isActive ? 'body-table body-table-active' : 'body-table'}
         onClick={() => handleSelectItem(item)}
+        style={{ gridTemplateColumns: gridColumnTemplate }}
       >
         <li>{index + 1}</li>
         <li>{item.potSize}</li>
