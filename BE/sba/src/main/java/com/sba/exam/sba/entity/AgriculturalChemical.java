@@ -37,6 +37,9 @@ public class AgriculturalChemical {
 
     @Column(name = "volume_available")
     private float volumeAvailable;
+    
+    @Column(name = "is_deleted")
+    private boolean deleted;
 
 
     @OneToMany(mappedBy = "agriculturalChemical")

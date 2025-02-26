@@ -92,6 +92,7 @@ public class TaskService implements TaskServiceImp {
             TaskType taskType = taskTypeRepository.findTaskTypeById(taskRequest.getTaskType());
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(taskRequest.getTaskStatus());
             task.setCreatedAt(taskRequest.getCreatedAt());
+            task.setCompletedAt(taskRequest.getCompletedAt());
             task.setDescription(taskRequest.getTaskDescription());
             task.setTaskStatus(taskStatus);
             task.setTaskType(taskType);

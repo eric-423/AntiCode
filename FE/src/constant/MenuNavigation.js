@@ -18,13 +18,24 @@ const COMPONENTS = {
   CHEMICAL_TYPE: "Chemical Type",
   EQUIPMENT: "Equipment",
   EQUIPMENT_TYPE: "Equipment Type",
-  SCHEDULE_TASKS: "Schedule Tasks"
+  SCHEDULE_TASKS: "Schedule Tasks",
+  USER: "User",
+  WATER: "Water"
 };
 
 const listMenu = [
   {
     title: "MENU",
     data: [
+      {
+        nameMenu: "User",
+        image: ICONS.icon_schedule,
+        imageActive: ICONS.icon_schedule_active,
+        sortItem: 1,
+        subItems: [],
+        component: COMPONENTS.USER,
+        path: "user-management",
+      },
       {
         nameMenu: "Schedule Tasks",
         image: ICONS.icon_schedule,
@@ -159,8 +170,8 @@ const listMenu = [
       },
       {
         nameMenu: "Equipment",
-        image: ICONS.icon_chemical,
-        imageActive: ICONS.icon_chemical,
+        image: ICONS.icon_equipment,
+        imageActive: ICONS.icon_equipment,
         sortItem: 5,
         component: COMPONENTS.EQUIPMENT,
         path: "equipment",
@@ -177,6 +188,21 @@ const listMenu = [
           },
         ]
       },
+      {
+        nameMenu: "Water",
+        image: ICONS.icon_water,
+        imageActive: ICONS.icon_water_active,
+        sortItem: 5,
+        component: null,
+        path: "water",
+        subItems:[
+          {
+            name: "Water",
+            component: COMPONENTS.WATER,
+            path: "/"
+          }
+        ]
+      }
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
   {
