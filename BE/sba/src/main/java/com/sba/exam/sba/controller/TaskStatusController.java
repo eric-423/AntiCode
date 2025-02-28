@@ -35,5 +35,9 @@ public class TaskStatusController {
         return new ResponseEntity<>(taskStatusImp.updateTaskStatus(taskStatusDTO), HttpStatus.OK);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteTaskStatus(@RequestParam int id){
+        return new ResponseEntity<>(taskStatusImp.deleteTaskStatus(id), HttpStatus.OK);
+    }
 
 }

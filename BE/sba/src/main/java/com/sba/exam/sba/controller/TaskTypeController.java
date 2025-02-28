@@ -33,4 +33,9 @@ public class TaskTypeController {
     public ResponseEntity<?> updateTaskType(@RequestBody TaskTypeDTO taskTypeDTO) {
         return new ResponseEntity<>(taskTypeImp.updateTaskType(taskTypeDTO), HttpStatus.OK);
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteTaskType(@RequestParam int id) {
+        return new ResponseEntity<>(taskTypeImp.deleteTaskType(id), HttpStatus.OK);
+    }
 }
