@@ -2,8 +2,10 @@ package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.TaskStatusDTO;
 import com.sba.exam.sba.dto.TaskTypeDTO;
+import com.sba.exam.sba.entity.Task;
 import com.sba.exam.sba.entity.TaskStatus;
 import com.sba.exam.sba.entity.TaskType;
+import com.sba.exam.sba.repository.TaskRepository;
 import com.sba.exam.sba.repository.TaskStatusRepository;
 import com.sba.exam.sba.service.imp.TaskStatusImp;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,9 @@ public class TaskStatusService implements TaskStatusImp {
 
     @Autowired
     private TaskStatusRepository taskStatusRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public TaskStatusDTO getTaskStatusById(int id) {
@@ -87,6 +92,8 @@ public class TaskStatusService implements TaskStatusImp {
     @Override
     public boolean deleteTaskStatus(int id) {
         try{
+            List<Task> taskList = taskRepository.findTasksByTaskStatus_Id(id);
+            if(!taskList.isEmpty() || taskList == null) throw new Exception();
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(id);
             taskStatus.setDeleted(true);
             taskStatusRepository.save(taskStatus);

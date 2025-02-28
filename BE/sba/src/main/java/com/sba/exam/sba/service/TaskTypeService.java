@@ -1,7 +1,9 @@
 package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.TaskTypeDTO;
+import com.sba.exam.sba.entity.Task;
 import com.sba.exam.sba.entity.TaskType;
+import com.sba.exam.sba.repository.TaskRepository;
 import com.sba.exam.sba.repository.TaskTypeRepository;
 import com.sba.exam.sba.service.imp.TaskTypeImp;
 import jakarta.transaction.Transactional;
@@ -16,6 +18,9 @@ public class TaskTypeService implements TaskTypeImp {
 
     @Autowired
     private TaskTypeRepository taskTypeRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public TaskTypeDTO getTaskTypeById(int id) {
@@ -84,6 +89,8 @@ public class TaskTypeService implements TaskTypeImp {
     @Override
     public boolean deleteTaskType(int id) {
         try{
+            List<Task> taskList = taskRepository.findTasksByTaskType_Id(id);
+            if(!taskList.isEmpty() || taskList == null) throw new Exception();
             TaskType taskType = taskTypeRepository.findTaskTypeById(id);
             taskType.setDeleted(true);
             taskTypeRepository.save(taskType);
