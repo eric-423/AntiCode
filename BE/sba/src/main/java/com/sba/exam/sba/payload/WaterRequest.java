@@ -11,4 +11,5 @@ public class WaterRequest implements Serializable {
     private double purity;
     private double pHLevel;
     private double volumeAvailable;
+    private boolean isDeleted;
 }

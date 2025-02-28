@@ -12,6 +12,7 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const [taskTypeName, setTaskTypeName] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [taskTypeDesc, setTaskTypeDesc] = useState("");
+  const [isDelete, setIsDelete] = useState(false);
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
@@ -25,12 +26,14 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const clearData = () => {
     setTaskTypeName("");
     setTaskTypeDesc("");
+    setIsUpdate("");
   };
   const handleUpdateTaskType = async () => {
     const taskType = {
       taskTypeId: updateItem.taskTypeId,
       taskTypeName: taskTypeName,
       taskTypeDesc: taskTypeDesc,
+      isDelete: isDelete,
     };
     try {
       const response = await axios.put( `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`, taskType);
@@ -48,6 +51,7 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
     const taskType = {
       taskTypeName: taskTypeName,
       taskTypeDesc: taskTypeDesc,
+      isDelete: isDelete,
     };
     console.log(taskType);
     
@@ -68,6 +72,7 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
       setIsUpdate(true);
       setTaskTypeName(updateItem.taskTypeName);
       setTaskTypeDesc(updateItem.taskTypeDesc);
+      setIsDelete(updateItem.isDelete);
     } else {
       setIsUpdate(false);
       clearData();

@@ -21,7 +21,7 @@ const Body = ({ item, setRefreshData, setUpdateItem }) => {
       const response = await axios.delete(
         `${
           import.meta.env.VITE_REACT_APP_END_POINT
-        }/task-status?taskStatusId=${item.taskStatusId}`
+        }/task-status?id=${item.taskStatusId}`
       );
       if (!response || response.status !== 200 || response.data === "Failed") throw new Error();
       showToastMessageSuccess();
