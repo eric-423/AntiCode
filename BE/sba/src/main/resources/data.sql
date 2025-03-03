@@ -153,4 +153,9 @@ VALUES ('Planting seeds directly into garden soil.', 'Seed Sowing (Direct)', 0),
        ('Building garden paths.', 'Path Construction', 0),
        ('Maintaining the greenhouse.', 'Greenhouse Maintenance', 0);
 
-
+INSERT INTO water (water_name, purity, ph_level, volume_available, is_deleted)
+VALUES ('Water 1', 1, 1, 100, 0),
+       ('Water 2', 2, 2, 90, 0),
+       ('Water 3', 3, 3, 80, 0),
+       ('Water 4', 4, 4, 70, 0),
+       ('Water 5', 5, 5, 60, 0);
