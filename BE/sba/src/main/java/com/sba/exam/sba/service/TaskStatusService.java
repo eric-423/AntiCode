@@ -93,7 +93,7 @@ public class TaskStatusService implements TaskStatusImp {
     public boolean deleteTaskStatus(int id) {
         try{
             List<Task> taskList = taskRepository.findTasksByTaskStatus_Id(id);
-            if(!taskList.isEmpty() || taskList == null) throw new Exception();
+            if(!taskList.isEmpty() || taskList == null) throw new Exception("Cannot delete task status have in Task");
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(id);
             taskStatus.setDeleted(true);
             taskStatusRepository.save(taskStatus);

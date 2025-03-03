@@ -90,7 +90,7 @@ public class TaskTypeService implements TaskTypeImp {
     public boolean deleteTaskType(int id) {
         try{
             List<Task> taskList = taskRepository.findTasksByTaskType_Id(id);
-            if(!taskList.isEmpty() || taskList == null) throw new Exception();
+            if(!taskList.isEmpty() || taskList == null) throw new Exception("Cannot delete task type have in Task");
             TaskType taskType = taskTypeRepository.findTaskTypeById(id);
             taskType.setDeleted(true);
             taskTypeRepository.save(taskType);

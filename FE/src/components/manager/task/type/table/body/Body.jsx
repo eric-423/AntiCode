@@ -11,8 +11,8 @@ const Body = ({ item, setRefreshData, setUpdateItem }) => {
       position: "top-right",
     });
   };
-  const showToastMessageFail = () => {
-    toast.error("Type can not delete !", {
+  const showToastMessageFail = (errorMessage) => {
+    toast.error(errorMessage.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
     });
   };
@@ -26,7 +26,9 @@ const Body = ({ item, setRefreshData, setUpdateItem }) => {
       if (!response || response.status !== 200 || response.data === "Failed") throw new Error();
       showToastMessageSuccess();
     } catch (error) {
-      showToastMessageFail();
+      showToastMessageFail(error.response.data.message || 'Cannot delete task type');
+      console.log(error.response);
+      
     } finally {
       setRefreshData((prev) => !prev);
     }
