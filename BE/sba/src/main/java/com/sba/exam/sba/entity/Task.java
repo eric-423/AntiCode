@@ -57,4 +57,6 @@ public class Task {
     })
     private Set<FarmingEquipmentTask> farmingEquipmentTasks;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

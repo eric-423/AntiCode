@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/task")
 public class TaskController {
@@ -77,5 +79,10 @@ public class TaskController {
     @GetMapping("/user-task")
     public ResponseEntity<?> getTaskByUserID(@RequestParam int userId, @RequestParam int statusId) {
         return new ResponseEntity<>(taskServiceImp.getListTaskByUserId(userId, statusId), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteTask(@RequestParam List<Integer> listTaskId) {
+        return new ResponseEntity<>(taskServiceImp.deleteTask(listTaskId), HttpStatus.OK);
     }
 }

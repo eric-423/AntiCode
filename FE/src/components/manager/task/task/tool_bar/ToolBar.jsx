@@ -8,7 +8,7 @@ import axios from "axios";
 import { toast } from "react-toastify/unstyled";
 
 const ToolBar = ({ setRefreshData }) => {
-  const [selectedPlants, setSelectedPlants] = useLocalStorage(
+  const [selectedTasks, setSelectedTasks] = useLocalStorage(
     "manager_task_selected",
     ""
   );
@@ -29,12 +29,12 @@ const ToolBar = ({ setRefreshData }) => {
   const handleDeletePlant = async () => {
     try {
       let param = "";
-      Array.isArray(selectedPlants) &&
-        selectedPlants.forEach((element, index) => {
-          if (index === selectedPlants.length - 1) {
-            param += `listPlantId=${element}`;
+      Array.isArray(selectedTasks) &&
+        selectedTasks.forEach((element, index) => {
+          if (index === selectedTasks.length - 1) {
+            param += `listTaskId=${element}`;
           } else {
-            param += `listPlantId=${element}&`;
+            param += `listTaskId=${element}&`;
           }
         });
       const response = await axios.delete(
@@ -57,7 +57,7 @@ const ToolBar = ({ setRefreshData }) => {
         <div
           onClick={() => handleDeletePlant()}
           className={
-            selectedPlants && selectedPlants.length > 0
+            selectedTasks && selectedTasks.length > 0
               ? "plant-button delete-plant-button-active"
               : "plant-button delete-plant-button-non-active"
           }

@@ -19,4 +19,5 @@ public interface TaskServiceImp {
     List<UserDTO> getListUserUnassignedByTaskId(int taskId);
     List<TaskDTO> getListTaskByUserId(int userId, int statusId);
     boolean deleteUserTask(int taskId, int userId, int doerId);
+    boolean deleteTask(List<Integer> listTaskId);
 }

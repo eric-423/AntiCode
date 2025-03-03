@@ -52,8 +52,10 @@ public class TaskService implements TaskServiceImp {
         List<Task> tasks = taskRepository.findAll();
         List<TaskDTO> taskDTOList = new ArrayList<TaskDTO>();
         for (Task task : tasks) {
-            TaskDTO taskDTO = getTaskById(task.getId());
-            taskDTOList.add(taskDTO);
+            if(task.isDeleted() == false) {
+                TaskDTO taskDTO = getTaskById(task.getId());
+                taskDTOList.add(taskDTO);
+            }
         }
         return taskDTOList;
     }
@@ -77,6 +79,7 @@ public class TaskService implements TaskServiceImp {
             taskDTO.setCreatedAt(task.getCreatedAt());
             taskDTO.setStartDate(task.getStartDate());
             taskDTO.setDueDate(task.getDueDate());
+            taskDTO.setDeleted(task.isDeleted());
             return taskDTO;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -96,6 +99,7 @@ public class TaskService implements TaskServiceImp {
             task.setDescription(taskRequest.getTaskDescription());
             task.setTaskStatus(taskStatus);
             task.setTaskType(taskType);
+            task.setDeleted(false);
             taskRepository.save(task);
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
@@ -126,6 +130,7 @@ public class TaskService implements TaskServiceImp {
             task.setDescription(taskRequest.getTaskDescription());
             task.setTaskStatus(taskStatus);
             task.setTaskType(taskType);
+            task.setDeleted(taskRequest.isDeleted());
             taskRepository.save(task);
             return taskDTO;
         } catch (Exception e) {
@@ -259,5 +264,18 @@ public class TaskService implements TaskServiceImp {
         }
     }
 
+    @Override
+    public boolean deleteTask(List<Integer> listTaskId) {
+        try{
+            List<Task> taskList = taskRepository.findAllById(listTaskId);
+            for(Task task : taskList) {
+                task.setDeleted(true);
+                taskRepository.save(task);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
 
 }

@@ -27,5 +27,6 @@ public class TaskDTO {
     private int taskTypeId;
     private String taskTypeName;
     private String taskTypeDescription;
+    private boolean isDeleted;
 
 }
