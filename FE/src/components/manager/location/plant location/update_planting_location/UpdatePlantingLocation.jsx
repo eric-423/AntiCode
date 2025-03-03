@@ -36,6 +36,22 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!locationId || !plantId || !startDate || !endDate) {
+      showToastMessageFail('Please fill in all fields!')
+      return
+    }
+
+    const today = new Date().toISOString().split('T')[0]
+    if (startDate < today) {
+      showToastMessageFail('Start date cannot be in the past!')
+      return
+    }
+
+    if (endDate <= startDate) {
+      showToastMessageFail('End date must be after start date!')
+      return
+    }
+
     const plantingLocation = {
       locationId: locationId,
       startDate: startDate,

@@ -61,6 +61,34 @@ const NewLocation = ({ setShowModal, setRefreshData }) => {
       locationWidth: locationWidth,
       locationLength: locationLength,
     }
+
+    if (
+      !areaId ||
+      !locationName ||
+      !locationExtend ||
+      !locationWidth ||
+      !locationLength
+    ) {
+      showToastMessageFail('All fields are required!')
+      return
+    }
+
+    const width = parseFloat(locationWidth)
+    const length = parseFloat(locationLength)
+    const extent = parseFloat(locationExtend)
+
+    if (width <= 0 || length <= 0 || extent <= 0) {
+      showToastMessageFail(
+        'Width, Length, and Extent must be positive numbers!'
+      )
+      return
+    }
+
+    if (width * length > extent) {
+      showToastMessageFail('Width x Length cannot exceed Location Extent!')
+      return
+    }
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/location`,

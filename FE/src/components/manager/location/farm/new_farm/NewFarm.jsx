@@ -31,6 +31,27 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!farmName || !farmExtend || !farmAddress || !farmLength || !farmWidth) {
+      showToastMessageFail('All fields are required!')
+      return
+    }
+
+    const width = parseFloat(farmWidth)
+    const length = parseFloat(farmLength)
+    const extent = parseFloat(farmExtend)
+
+    if (width <= 0 || length <= 0 || extent <= 0) {
+      showToastMessageFail(
+        'Width, Length, and Extent must be positive numbers!'
+      )
+      return
+    }
+
+    if (width * length > extent) {
+      showToastMessageFail('Width x Length cannot exceed Farm Extent!')
+      return
+    }
+
     const farm = {
       farmName: farmName,
       farmExtend: farmExtend,

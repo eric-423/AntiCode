@@ -41,6 +41,34 @@ const UpdateLocation = ({ setShowModal, setRefreshData }) => {
       locationLength: locationLength,
       areaId: areaId,
     }
+
+    if (
+      !areaId ||
+      !locationName ||
+      !locationExtent ||
+      !locationWidth ||
+      !locationLength
+    ) {
+      showToastMessageFail('All fields are required!')
+      return
+    }
+
+    const width = parseFloat(locationWidth)
+    const length = parseFloat(locationLength)
+    const extent = parseFloat(locationExtent)
+
+    if (width <= 0 || length <= 0 || extent <= 0) {
+      showToastMessageFail(
+        'Width, Length, and Extent must be positive numbers!'
+      )
+      return
+    }
+
+    if (width * length > extent) {
+      showToastMessageFail('Width x Length cannot exceed Location Extent!')
+      return
+    }
+
     try {
       const id = JSON.parse(localStorage.getItem('manager_location_selected'))
       const response = await fetch(

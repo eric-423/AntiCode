@@ -29,6 +29,17 @@ const NewPlantMedium = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!mediumName || !mediumWeightAvailable) {
+      showToastMessageFail('Name and Weight are required!')
+      return
+    }
+
+    const weight = parseFloat(mediumWeightAvailable)
+    if (weight <= 0) {
+      showToastMessageFail('Weight must be a positive number!')
+      return
+    }
+
     const plantMedium = {
       mediumName: mediumName,
       description: description,

@@ -29,6 +29,17 @@ const UpdateFarm = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!mediumName || !mediumWeightAvailable) {
+      showToastMessageFail('Name and Weight are required!')
+      return
+    }
+
+    const weight = parseFloat(mediumWeightAvailable)
+    if (weight <= 0) {
+      showToastMessageFail('Weight must be a positive number!')
+      return
+    }
+
     const medium = {
       mediumName: mediumName,
       description: description,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import './NewPlant.css'
+import './NewPlantingLocation.css'
 import ICONS from '../../../../../constant/Image'
 import { Form } from 'react-bootstrap'
 import Button from '../../../../common/button/Button'
@@ -11,7 +11,6 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
   const [plantId, setPlantId] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
-  const [isHarvest, setIsHarvest] = useState('')
   const modalRoot = document.body
 
   const handleClickClose = () => {
@@ -75,11 +74,28 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!locationId || !plantId || !startDate || !endDate) {
+      showToastMessageFail('Please fill in all fields!')
+      return
+    }
+
+    const today = new Date().toISOString().split('T')[0]
+
+    if (startDate < today) {
+      showToastMessageFail('Start date cannot be in the past!')
+      return
+    }
+
+    if (endDate <= startDate) {
+      showToastMessageFail('End date must be after start date!')
+      return
+    }
+
     const plantingLocation = {
       locationId: locationId,
       startDate: startDate,
       endDate: endDate,
-      harvest: isHarvest,
+      harvest: false,
       plantId: plantId,
     }
     try {
@@ -99,7 +115,7 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
       showToastMessageSuccess('Plant was added!')
       setShowModal(false)
     } catch (error) {
-      showToastMessageFail('Plant can not be added!')
+      showToastMessageFail('Plant Location can not be added!')
       setShowModal(true)
     } finally {
       setRefreshData((prev) => !prev)
@@ -159,16 +175,6 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label className="text-label-login">Is Harvest</Form.Label>
-            <Form.Check
-              type="checkbox"
-              className="input-login input-addition"
-              checked={isHarvest}
-              onChange={(e) => setIsHarvest(e.target.checked)}
-              label="Harvest"
             />
           </Form.Group>
           <Button
