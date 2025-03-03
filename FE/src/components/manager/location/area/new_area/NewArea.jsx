@@ -54,6 +54,27 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!farmId || !areaName || !areaExtend || !areaWidth || !areaLength) {
+      showToastMessageFail('All fields are required!')
+      return
+    }
+
+    const width = parseFloat(areaWidth)
+    const length = parseFloat(areaLength)
+    const extent = parseFloat(areaExtend)
+
+    if (width <= 0 || length <= 0 || extent <= 0) {
+      showToastMessageFail(
+        'Width, Length, and Area Extend must be positive numbers!'
+      )
+      return
+    }
+
+    if (width * length > extent) {
+      showToastMessageFail('Width x Length cannot exceed Area Extend!')
+      return
+    }
+
     const area = {
       areaName: areaName,
       areaExtend: areaExtend,

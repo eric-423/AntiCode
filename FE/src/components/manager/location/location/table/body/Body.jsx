@@ -9,7 +9,8 @@ const Body = ({
   index,
   itemsActive,
   handleSelectItem,
-  setRefreshData,listTitle
+  setRefreshData,
+  listTitle,
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [itemUpdate, setItemUpdate] = useState()

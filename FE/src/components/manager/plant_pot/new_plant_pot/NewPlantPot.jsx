@@ -29,6 +29,17 @@ const NewPlantPot = ({ setShowModal, setRefreshData }) => {
   }
 
   const handleOnClick = async () => {
+    if (!potSize || !potMaterial || !potQuantityAvailable) {
+      showToastMessageFail('All fields are required!')
+      return
+    }
+
+    const quantity = parseInt(potQuantityAvailable, 10)
+    if (isNaN(quantity) || quantity <= 0) {
+      showToastMessageFail('Quantity must be a positive number!')
+      return
+    }
+
     const plantPot = {
       potSize: potSize,
       potMaterial: potMaterial,

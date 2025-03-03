@@ -14,9 +14,11 @@ const Body = ({
   const [itemUpdate, setItemUpdate] = useState()
   const isActive =
     Array.isArray(itemsActive) && itemsActive.includes(item.plantingLocationId)
+
   const handleShowUpdatePopup = (event, item) => {
-    setItemUpdate(item)
     event.stopPropagation()
+    handleSelectItem(item)
+    setItemUpdate(item)
     setShowModal(true)
   }
 
