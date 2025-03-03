@@ -11,4 +11,5 @@ public interface WaterServiceImp {
     public WaterDTO getWaterById(int id);
     public WaterDTO addWater(WaterRequest waterRequest);
     public WaterDTO updateWater(WaterRequest waterRequest);
+    public boolean deleteWaters(List<Integer> listWaterId);
 }

@@ -38,6 +38,7 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
       farmLength: farmLength,
       farmWidth: farmWidth,
     }
+    console.log(farm)
     try {
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/farm`,
@@ -84,7 +85,7 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
             <Form.Label className="text-label-login">Address</Form.Label>
             <Form.Control
               className="input-login input-addition"
-              type="number"
+              type="text"
               value={farmAddress}
               onChange={(e) => setFarmAddress(e.target.value)}
             />

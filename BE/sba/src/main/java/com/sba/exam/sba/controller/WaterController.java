@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/water")
 public class WaterController {
@@ -38,4 +40,8 @@ public class WaterController {
         return new ResponseEntity<>(water, HttpStatus.OK);
     }
 
+    @DeleteMapping()
+    public ResponseEntity<?> deleteWater(@RequestParam List<Integer> listWaterId) {
+        return new ResponseEntity<>(waterServiceImp.deleteWaters(listWaterId), HttpStatus.OK);
+    }
 }

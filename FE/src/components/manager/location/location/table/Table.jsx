@@ -54,6 +54,7 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
               item={item}
               index={index}
               setRefreshData={setRefreshData}
+              listTitle={listTitle}
             />
           ))}
       </div>

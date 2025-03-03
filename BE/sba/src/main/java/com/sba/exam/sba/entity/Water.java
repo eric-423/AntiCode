@@ -24,4 +24,7 @@ public class Water {
 
     @Column(name = "volume_available")
     private double volumeAvailable;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

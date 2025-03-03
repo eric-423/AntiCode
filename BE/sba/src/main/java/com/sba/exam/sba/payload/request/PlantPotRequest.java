@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlantPotRequest {
 
-    private int potId;
-
     private String potSize;
 
     private String potMaterial;
 
     private int potQuantityAvailable;
+
 }

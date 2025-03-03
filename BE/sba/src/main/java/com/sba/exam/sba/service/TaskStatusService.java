@@ -2,8 +2,10 @@ package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.TaskStatusDTO;
 import com.sba.exam.sba.dto.TaskTypeDTO;
+import com.sba.exam.sba.entity.Task;
 import com.sba.exam.sba.entity.TaskStatus;
 import com.sba.exam.sba.entity.TaskType;
+import com.sba.exam.sba.repository.TaskRepository;
 import com.sba.exam.sba.repository.TaskStatusRepository;
 import com.sba.exam.sba.service.imp.TaskStatusImp;
 import jakarta.transaction.Transactional;
@@ -19,6 +21,9 @@ public class TaskStatusService implements TaskStatusImp {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
+    @Autowired
+    private TaskRepository taskRepository;
+
     @Override
     public TaskStatusDTO getTaskStatusById(int id) {
         TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(id);
@@ -26,6 +31,7 @@ public class TaskStatusService implements TaskStatusImp {
         taskStatusDTO.setTaskStatusId(taskStatus.getId());
         taskStatusDTO.setTaskStatusDescription(taskStatus.getStatusDescription());
         taskStatusDTO.setTaskStatusName(taskStatus.getStatusName());
+        taskStatusDTO.setDeleted(taskStatus.isDeleted());
         return taskStatusDTO;
     }
 
@@ -34,11 +40,14 @@ public class TaskStatusService implements TaskStatusImp {
         List<TaskStatus> taskStatusList = taskStatusRepository.findAll();
         List<TaskStatusDTO> taskStatusDTOList = new ArrayList<TaskStatusDTO>();
         for (TaskStatus taskStatus : taskStatusList) {
-            TaskStatusDTO taskStatusDTO = new TaskStatusDTO();
-            taskStatusDTO.setTaskStatusId(taskStatus.getId());
-            taskStatusDTO.setTaskStatusDescription(taskStatus.getStatusDescription());
-            taskStatusDTO.setTaskStatusName(taskStatus.getStatusName());
-            taskStatusDTOList.add(taskStatusDTO);
+            if(taskStatus.isDeleted() == false) {
+                TaskStatusDTO taskStatusDTO = new TaskStatusDTO();
+                taskStatusDTO.setTaskStatusId(taskStatus.getId());
+                taskStatusDTO.setTaskStatusDescription(taskStatus.getStatusDescription());
+                taskStatusDTO.setTaskStatusName(taskStatus.getStatusName());
+                taskStatusDTO.setDeleted(taskStatus.isDeleted());
+                taskStatusDTOList.add(taskStatusDTO);
+            }
         }
         return taskStatusDTOList;
     }
@@ -51,6 +60,7 @@ public class TaskStatusService implements TaskStatusImp {
             if(taskStatusDTO.getTaskStatusName().isEmpty()) throw new Exception("taskStatusName is empty");
             taskStatus.setStatusName(taskStatusDTO.getTaskStatusName());
             taskStatus.setStatusDescription(taskStatusDTO.getTaskStatusDescription());
+            taskStatus.setDeleted(false);
             taskStatusRepository.save(taskStatus);
             TaskStatusDTO result = new TaskStatusDTO();
             result.setTaskStatusId(taskStatus.getId());
@@ -69,6 +79,7 @@ public class TaskStatusService implements TaskStatusImp {
             taskStatus.setStatusName(taskStatusDTO.getTaskStatusName());
             taskStatus.setStatusDescription(taskStatusDTO.getTaskStatusDescription());
             taskStatus.setId(taskStatusDTO.getTaskStatusId());
+            taskStatus.setDeleted(taskStatusDTO.isDeleted());
             taskStatusRepository.save(taskStatus);
             TaskStatusDTO result = new TaskStatusDTO();
             result.setTaskStatusId(taskStatus.getId());
@@ -76,5 +87,19 @@ public class TaskStatusService implements TaskStatusImp {
         }catch(Exception e){
             throw new RuntimeException();
         }
+    }
+
+    @Override
+    public boolean deleteTaskStatus(int id) {
+        try{
+            List<Task> taskList = taskRepository.findTasksByTaskStatus_Id(id);
+            if(!taskList.isEmpty() || taskList == null) throw new Exception();
+            TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(id);
+            taskStatus.setDeleted(true);
+            taskStatusRepository.save(taskStatus);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 }

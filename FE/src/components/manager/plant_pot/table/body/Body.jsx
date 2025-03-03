@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import './Body.css'
-import ICONS from '../../../../../../constant/Image'
-import UpdateFarm from '../../update_farm/UpdateFarm'
+import ICONS from '../../../../../constant/Image'
+import UpdatePlantPot from '../../update_plant_pot/UpdatePlantPot'
+import useGridColumn from '../../../../../hook/useGridColumn'
 
 const Body = ({
   item,
@@ -9,22 +10,23 @@ const Body = ({
   itemsActive,
   handleSelectItem,
   setRefreshData,
+  listTitle
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [itemUpdate, setItemUpdate] = useState()
   const isActive =
-    Array.isArray(itemsActive) && itemsActive.includes(item.farmId)
+    Array.isArray(itemsActive) && itemsActive.includes(item.potId)
 
   const handleShowUpdatePopup = (event, item) => {
     setItemUpdate(item)
     event.stopPropagation()
     setShowModal(true)
   }
-
+  const gridColumnTemplate = useGridColumn(listTitle)
   return (
     <>
       {showModal && (
-        <UpdateFarm
+        <UpdatePlantPot
           itemUpdate={itemUpdate}
           setShowModal={setShowModal}
           setRefreshData={setRefreshData}
@@ -33,13 +35,12 @@ const Body = ({
       <ul
         className={isActive ? 'body-table body-table-active' : 'body-table'}
         onClick={() => handleSelectItem(item)}
+        style={{ gridTemplateColumns: gridColumnTemplate }}
       >
         <li>{index + 1}</li>
-        <li>{item.farmName}</li>
-        <li>{item.farmExtend}</li>
-        <li>{item.farmWidth}</li>
-        <li>{item.farmLength}</li>
-        <li>{item.farmAddress}</li>
+        <li>{item.potSize}</li>
+        <li>{item.potMaterial}</li>
+        <li>{item.potQuantityAvailable}</li>
         <li>
           <div
             onClick={(event) => handleShowUpdatePopup(event, item)}

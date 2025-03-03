@@ -24,4 +24,7 @@ public class TaskStatus {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<Task> taskList;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

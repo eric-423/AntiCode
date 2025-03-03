@@ -13,4 +13,5 @@ public class WaterDTO {
     private double purity;
     private double pHLevel;
     private double volumeAvailable;
+    private boolean isDeleted;
 }

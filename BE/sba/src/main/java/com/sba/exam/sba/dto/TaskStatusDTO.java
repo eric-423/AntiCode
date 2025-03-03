@@ -11,5 +11,5 @@ public class TaskStatusDTO {
     private int taskStatusId;
     private String taskStatusName;
     private String taskStatusDescription;
-
+    private boolean isDeleted;
 }

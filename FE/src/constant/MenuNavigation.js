@@ -61,6 +61,16 @@ const listMenu = [
             component: COMPONENTS.PLAN_TYPE,
             path: "/plant-type",
           },
+          {
+            name: "Plant Pot",
+            component: COMPONENTS.PLANT_POT,
+            path: "/plant-pot",
+          },
+          {
+            name: "Plant Medium",
+            component: COMPONENTS.PLANT_MEDIUM,
+            path: "/plant-medium",
+          },
         ],
         component: null,
         path: "menu-plant",
@@ -142,28 +152,10 @@ const listMenu = [
         path: "location",
       },
       {
-        nameMenu: "Plant Medium",
-        image: ICONS.icon_dashboard,
-        imageActive: ICONS.icon_dashboard_active,
-        sortItem: 3,
-        subItems: [],
-        component: COMPONENTS.PLANT_MEDIUM,
-        path: "menu-plant-medium"
-      },
-      {
-        nameMenu: "Plant Pot",
-        image: ICONS.icon_dashboard,
-        imageActive: ICONS.icon_dashboard_active,
-        sortItem: 4,
-        subItems: [],
-        component: COMPONENTS.PLANT_POT,
-        path: "menu-plant-pot"
-      },
-      {
         nameMenu: "Dashboard",
         image: ICONS.icon_dashboard,
         imageActive: ICONS.icon_dashboard_active,
-        sortItem: 5,
+        sortItem: 0,
         subItems: [],
         component: COMPONENTS.DASHBOARD,
         path: "menu-dashboard",

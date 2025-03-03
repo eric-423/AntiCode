@@ -10,4 +10,5 @@ public interface TaskTypeImp {
     public List<TaskTypeDTO> getAllTaskTypes();
     public TaskTypeDTO addTaskType(TaskTypeDTO taskTypeDTO);
     public TaskTypeDTO updateTaskType(TaskTypeDTO taskTypeDTO);
+    public boolean deleteTaskType(int id);
 }

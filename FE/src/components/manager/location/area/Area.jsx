@@ -39,6 +39,7 @@ const Area = () => {
         listTitle={listTitle}
         refreshData={refreshData}
         setRefreshData={setRefreshData}
+        
       />
     </div>
   )

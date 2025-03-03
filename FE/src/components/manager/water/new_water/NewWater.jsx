@@ -10,7 +10,7 @@ import axios from "axios";
 const NewWater = ({ setShowModal, setRefreshData }) => {
   const [waterName, setWaterName] = useState()
   const [purity, setPurity] = useState()
-  const [phLevel, setPhLevel] = useState()
+  const [phlevel, setPhLevel] = useState()
   const [volumeAvailable, setVolumeAvailable] = useState()
   const modalRoot = document.body
   const handleClickClose = () => {
@@ -32,7 +32,7 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
     const water = {
       waterName: waterName,
       purity: purity,
-      phLevel: phLevel,
+      phlevel: phlevel,
       volumeAvailable: volumeAvailable,
     }
     try {
@@ -79,7 +79,7 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
             <Form.Control
               className="input-login input-addition"
               type="number"
-              value={phLevel}
+              value={phlevel}
               onChange={(e) => setPhLevel(e.target.value)}
             />
           </Form.Group>

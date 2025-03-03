@@ -11,6 +11,7 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const [taskStatusName, setTaskStatusName] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [taskStatusDescription, setTaskStatusDescription] = useState("");
+  const [isDelete, setIsDelete] = useState(false);
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
@@ -24,12 +25,14 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const clearData = () => {
     setTaskStatusName("");
     setTaskStatusDescription("");
+    setIsUpdate("");
   };
   const handleUpdateTaskStatus = async () => {
     const taskStatus = {
       taskStatusId: updateItem.taskStatusId,
       taskStatusName: taskStatusName,
       taskStatusDescription: taskStatusDescription,
+      isDelete: isDelete,
     };
     try {
       const response = await axios.put( `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, taskStatus);
@@ -47,6 +50,7 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
     const taskStatus = {
       taskStatusName: taskStatusName,
       taskStatusDescription: taskStatusDescription,
+      isDelete: isDelete,
     };
     try {
       const response = await axios.post( `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, taskStatus);

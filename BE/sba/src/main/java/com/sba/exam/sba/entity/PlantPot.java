@@ -14,7 +14,7 @@ public class PlantPot {
     @Column(name = "pot_id")
     private int potId;
 
-    @Column(name = "pot_name")
+    @Column(name = "pot_size")
     private String potSize;
 
     @Column(name = "pot_material")

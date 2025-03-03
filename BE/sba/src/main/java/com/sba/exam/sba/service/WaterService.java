@@ -23,8 +23,10 @@ public class WaterService implements WaterServiceImp {
         List<Water> waterList = waterRepository.findAll();
         List<WaterDTO> waterDTOList = new ArrayList<WaterDTO>();
         for (Water water : waterList) {
-            WaterDTO waterDTO = getWaterById(water.getId());
-            waterDTOList.add(waterDTO);
+            if(water.isDeleted() == false) {
+                WaterDTO waterDTO = getWaterById(water.getId());
+                waterDTOList.add(waterDTO);
+            }
         }
         return waterDTOList;
     }
@@ -38,6 +40,7 @@ public class WaterService implements WaterServiceImp {
         waterDTO.setPurity(water.getPurity());
         waterDTO.setPHLevel(water.getPHLevel());
         waterDTO.setVolumeAvailable(water.getVolumeAvailable());
+        waterDTO.setDeleted(water.isDeleted());
         return waterDTO;
     }
 
@@ -50,6 +53,7 @@ public class WaterService implements WaterServiceImp {
             water.setPurity(waterRequest.getPurity());
             water.setPHLevel(waterRequest.getPHLevel());
             water.setVolumeAvailable(waterRequest.getVolumeAvailable());
+            water.setDeleted(false);
             waterRepository.save(water);
 
             WaterDTO waterDTO = new WaterDTO();
@@ -72,6 +76,7 @@ public class WaterService implements WaterServiceImp {
             water.setPurity(waterRequest.getPurity());
             water.setPHLevel(waterRequest.getPHLevel());
             water.setVolumeAvailable(waterRequest.getVolumeAvailable());
+            water.setDeleted(waterRequest.isDeleted());
             waterRepository.save(water);
             WaterDTO waterDTO = new WaterDTO();
             waterDTO.setWaterId(water.getId());
@@ -79,5 +84,19 @@ public class WaterService implements WaterServiceImp {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean deleteWaters(List<Integer> listWaterId) {
+        try{
+            List<Water> waterList = waterRepository.findAllById(listWaterId);
+            for(Water water : waterList) {
+                water.setDeleted(true);
+                waterRepository.save(water);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 }

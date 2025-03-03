@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Body.css'
 import ICONS from '../../../../../../constant/Image'
 import UpdatePlaingLocation from '../../update_area/UpdateArea'
+import useGridColumn from '../../../../../../hook/useGridColumn'
 
 const Body = ({
   item,
@@ -9,6 +10,7 @@ const Body = ({
   itemsActive,
   handleSelectItem,
   setRefreshData,
+  listTitle
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [itemUpdate, setItemUpdate] = useState()
@@ -27,6 +29,7 @@ const Body = ({
     const formattedDate = date.toLocaleDateString('en-US', options)
     return formattedDate
   }
+  const gridColumnTemplate = useGridColumn(listTitle)
   return (
     <>
       {showModal && (
@@ -39,6 +42,7 @@ const Body = ({
       <ul
         className={isActive ? 'body-table body-table-active' : 'body-table'}
         onClick={() => handleSelectItem(item)}
+        style={{ gridTemplateColumns: gridColumnTemplate }}
       >
         <li>{index + 1}</li>
         <li>{item.areaName}</li>
