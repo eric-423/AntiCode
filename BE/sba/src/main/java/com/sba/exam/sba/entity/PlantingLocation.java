@@ -36,5 +36,6 @@ public class PlantingLocation {
     @Column(name = "is_harvest")
     private boolean isHarvest;
 
-
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 }

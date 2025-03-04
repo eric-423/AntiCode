@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @RestController
 @RequestMapping("/farm")
 public class FarmController {
@@ -25,6 +27,21 @@ public class FarmController {
 
     @PostMapping
     public ResponseEntity<?> createFarm(@RequestBody FarmRequest farmRequest) {
+        float width = farmRequest.getFarmWidth();
+        float length = farmRequest.getFarmLength();
+        float extent = farmRequest.getFarmExtend();
+
+        if(width<0||length<0||extent<0){
+            ResponseData responseData = new ResponseData();
+            responseData.setData("Width, length and extent must be greater than 0");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
+        if (width * length > extent) {
+            ResponseData responseData = new ResponseData();
+            responseData.setData("Extent must be greater than width * length");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
         ResponseData responseData = new ResponseData();
         responseData.setData(farmServiceImp.addFarm(farmRequest));
         responseData.setStatus(200);
@@ -41,6 +58,23 @@ public class FarmController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateFarm(@PathVariable int id,@RequestBody FarmRequest farmRequest) {
+
+        float width = farmRequest.getFarmWidth();
+        float length = farmRequest.getFarmLength();
+        float extent = farmRequest.getFarmExtend();
+
+        if(width<0||length<0||extent<0){
+            ResponseData responseData = new ResponseData();
+            responseData.setData("Width, length and extent must be greater than 0");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
+        if (width * length > extent) {
+            ResponseData responseData = new ResponseData();
+            responseData.setData("Extent must be greater than width * length");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
         ResponseData responseData = new ResponseData();
         responseData.setData(farmServiceImp.updateFarm(farmRequest, id));
         responseData.setStatus(200);

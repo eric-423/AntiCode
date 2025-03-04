@@ -36,7 +36,7 @@ public class PlantingLocationService implements PlantLocationServiceImp {
 
     @Override
     public List<PlantingLocationDTO> getPlantLocationList() {
-        List<PlantingLocation> plantingLocationList = plantingLocationRepository.findAll();
+        List<PlantingLocation> plantingLocationList = plantingLocationRepository.findByIsDeleted(false);
         List<PlantingLocationDTO> result = new ArrayList<>();
 
         for(PlantingLocation plantingLocation : plantingLocationList){
@@ -93,7 +93,7 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             plantingLocation.setStartDate(new Date());
             plantingLocation.setEndDate(plantLocationRequest.getEndDate());
             plantingLocation.setHarvest(false);
-
+            plantingLocation.setDeleted(false);
             plantingLocationRepository.save(plantingLocation);
 
             return getPlantLocationById(plantingLocation.getPlantLocationId());
@@ -131,7 +131,8 @@ public class PlantingLocationService implements PlantLocationServiceImp {
         try{
             PlantingLocationDTO plantingLocationDTO = getPlantLocationById(id);
             PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(id);
-            plantingLocationRepository.delete(plantingLocation);
+            plantingLocation.setDeleted(true);
+            plantingLocationRepository.save(plantingLocation);
             return plantingLocationDTO;
         }catch (Exception e){
             return null;
