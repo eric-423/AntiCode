@@ -40,55 +40,55 @@ VALUES ('Apple Tree', 15, 50.0, 'Medium', false, 'Malus domestica', 'A fruit tre
        ('Sunflower', 40, 12.0, 'Medium', true, 'Helianthus annuus', 'A tall plant known for its large flowers.',
         'Bright yellow petals', 'Bees', 'USDA Zone 2-11', 'Heat Zone 5', 1);
 
-INSERT INTO farm (farm_name, farm_extent, farm_address, farm_length, farm_width)
+INSERT INTO farm (farm_name, farm_extent, farm_address, farm_length, farm_width, is_deleted)
 VALUES ('Sunny Acres', 50.0, '123 Sunny Lane, Springfield', 10.0, 5.0),
-       ('Green Valley Farm', 75.5, '456 Green Valley Road, Springfield', 15.0, 5.0),
-       ('Riverbend Farm', 30.0, '789 Riverbend Drive, Springfield', 8.0, 3.75),
-       ('Mountain View Farm', 100.0, '101 Mountain View Ave, Springfield', 20.0, 5.0),
-       ('Cedar Grove Farm', 40.0, '202 Cedar Grove St, Springfield', 8.0, 5.0),
-       ('Willow Creek Farm', 60.0, '303 Willow Creek Blvd, Springfield', 12.0, 5.0),
-       ('Maple Leaf Farm', 80.0, '404 Maple Leaf Way, Springfield', 16.0, 5.0),
-       ('Golden Harvest Farm', 90.0, '505 Golden Harvest Rd, Springfield', 18.0, 5.0),
-       ('Happy Fields Farm', 70.0, '606 Happy Fields Ct, Springfield', 14.0, 5.0),
-       ('Blue Sky Farm', 55.0, '707 Blue Sky Dr, Springfield', 11.0, 5.0);
+       ('Green Valley Farm', 75.5, '456 Green Valley Road, Springfield', 15.0, 5.0, false),
+       ('Riverbend Farm', 30.0, '789 Riverbend Drive, Springfield', 8.0, 3.75, false),
+       ('Mountain View Farm', 100.0, '101 Mountain View Ave, Springfield', 20.0, 5.0, false),
+       ('Cedar Grove Farm', 40.0, '202 Cedar Grove St, Springfield', 8.0, 5.0, false),
+       ('Willow Creek Farm', 60.0, '303 Willow Creek Blvd, Springfield', 12.0, 5.0, false),
+       ('Maple Leaf Farm', 80.0, '404 Maple Leaf Way, Springfield', 16.0, 5.0, false),
+       ('Golden Harvest Farm', 90.0, '505 Golden Harvest Rd, Springfield', 18.0, 5.0, false),
+       ('Happy Fields Farm', 70.0, '606 Happy Fields Ct, Springfield', 14.0, 5.0, false),
+       ('Blue Sky Farm', 55.0, '707 Blue Sky Dr, Springfield', 11.0, 5.0, false);
 
 
-INSERT INTO area (area_name, area_extent, area_length, area_width, farm_id)
-VALUES ('North Field', 20.0, 5.0, 4.0, 1),
-       ('South Field', 25.0, 5.0, 5.0, 1),
-       ('East Meadow', 15.0, 5.0, 3.0, 2),
-       ('West Pasture', 30.0, 5.0, 6.0, 2),
-       ('Main Crop Area', 40.0, 5.0, 8.0, 3),
-       ('Orchard', 10.0, 5.0, 2.0, 4),
-       ('Vegetable Patch', 12.5, 5.0, 2.5, 5),
-       ('Flower Garden', 8.0, 4.0, 2.0, 6),
-       ('Herb Section', 5.0, 5.0, 1.0, 7),
-       ('Livestock Area', 35.0, 5.0, 7.0, 8);
+INSERT INTO area (area_name, area_extent, area_length, area_width, farm_id, is_deleted)
+VALUES ('North Field', 20.0, 5.0, 4.0, 1, false),
+       ('South Field', 25.0, 5.0, 5.0, 1,false),
+       ('East Meadow', 15.0, 5.0, 3.0, 2,false),
+       ('West Pasture', 30.0, 5.0, 6.0, 2,false),
+       ('Main Crop Area', 40.0, 5.0, 8.0, 3,false),
+       ('Orchard', 10.0, 5.0, 2.0, 4,false),
+       ('Vegetable Patch', 12.5, 5.0, 2.5, 5,false),
+       ('Flower Garden', 8.0, 4.0, 2.0, 6,false),
+       ('Herb Section', 5.0, 5.0, 1.0, 7,false),
+       ('Livestock Area', 35.0, 5.0, 7.0, 8,false);
 
 
-INSERT INTO location (location_id, location_extent, location_name, area_id, location_width, location_length)
-VALUES (1, 5.0, 'North Corner', 1, 2.0, 2.5),
-       (2, 10.0, 'South Corner', 1, 3.0, 3.33),
-       (3, 8.0, 'East Edge', 2, 2.5, 3.2),
-       (4, 12.0, 'West Edge', 2, 4.0, 3.0),
-       (5, 4.0, 'Central Spot', 3, 1.5, 2.67),
-       (6, 6.5, 'Orchard Section', 4, 2.0, 3.25),
-       (7, 3.0, 'Vegetable Area', 5, 1.0, 3.0),
-       (8, 2.5, 'Flower Bed', 6, 1.0, 2.5),
-       (9, 7.0, 'Herb Patch', 7, 2.0, 3.5),
-       (10, 11.0, 'Livestock Pen', 8, 3.5, 3.14);
+INSERT INTO location (location_id, location_extent, location_name, area_id, location_width, location_length, is_deleted)
+VALUES (1, 5.0, 'North Corner', 1, 2.0, 2.5,false),
+       (2, 10.0, 'South Corner', 1, 3.0, 3.33,false),
+       (3, 8.0, 'East Edge', 2, 2.5, 3.2,false),
+       (4, 12.0, 'West Edge', 2, 4.0, 3.0,false),
+       (5, 4.0, 'Central Spot', 3, 1.5, 2.67,false),
+       (6, 6.5, 'Orchard Section', 4, 2.0, 3.25,false),
+       (7, 3.0, 'Vegetable Area', 5, 1.0, 3.0,false),
+       (8, 2.5, 'Flower Bed', 6, 1.0, 2.5,false),
+       (9, 7.0, 'Herb Patch', 7, 2.0, 3.5,false),
+       (10, 11.0, 'Livestock Pen', 8, 3.5, 3.14,false);
 
-INSERT INTO planting_location (plant_location_id, plant_id, location_id, start_date, end_date, is_harvest)
-VALUES (1, 1, 1, '2023-01-01', '2023-06-01', false),
-       (2, 2, 1, '2023-02-01', '2023-07-01', false),
-       (3, 1, 2, '2023-03-01', '2023-08-01', true),
-       (4, 3, 3, '2023-04-01', '2023-09-01', false),
-       (5, 2, 4, '2023-05-01', '2023-10-01', true),
-       (6, 1, 5, '2023-06-01', '2023-11-01', false),
-       (7, 3, 6, '2023-07-01', '2023-12-01', true),
-       (8, 2, 7, '2023-08-01', '2023-12-15', false),
-       (9, 1, 8, '2023-09-01', '2023-10-01', true),
-       (10, 3, 9, '2023-10-01', '2023-11-01', false);
+INSERT INTO planting_location (plant_location_id, plant_id, location_id, start_date, end_date, is_harvest, is_deleted)
+VALUES (1, 1, 1, '2023-01-01', '2023-06-01', false,false),
+       (2, 2, 1, '2023-02-01', '2023-07-01', false,false),
+       (3, 1, 2, '2023-03-01', '2023-08-01', true,false),
+       (4, 3, 3, '2023-04-01', '2023-09-01', false,false),
+       (5, 2, 4, '2023-05-01', '2023-10-01', true,false),
+       (6, 1, 5, '2023-06-01', '2023-11-01', false,false),
+       (7, 3, 6, '2023-07-01', '2023-12-01', true,false),
+       (8, 2, 7, '2023-08-01', '2023-12-15', false,false),
+       (9, 1, 8, '2023-09-01', '2023-10-01', true,false),
+       (10, 3, 9, '2023-10-01', '2023-11-01', false,false);
 
 INSERT INTO plant_medium (medium_id, medium_name, description, medium_weight_avallable)
 VALUES (1, 'Coco Peat', 'A natural fiber made from coconut husks.', 50),

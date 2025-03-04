@@ -40,4 +40,7 @@ public class Area {
     })
     private List<Location> locationList;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
 }

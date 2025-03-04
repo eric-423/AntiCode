@@ -21,7 +21,7 @@ public class FarmService implements FarmServiceImp {
 
     @Override
     public List<FarmDTO> getFarmList() {
-        List<Farm> farmList = farmRepository.findAll();
+        List<Farm> farmList = farmRepository.findByIsDeleted(false);
         List<FarmDTO> result = new ArrayList<>();
         for (Farm farm : farmList) {
             result.add(transferDTO(farm));
@@ -57,6 +57,7 @@ public class FarmService implements FarmServiceImp {
             farm.setFarmAddress(farmRequest.getFarmAddress());
             farm.setFarmWidth(farmRequest.getFarmWidth());
             farm.setFarmLength(farmRequest.getFarmLength());
+            farm.setDeleted(false);
             farmRepository.save(farm);
 
             return transferDTO(farm);
@@ -88,12 +89,9 @@ public class FarmService implements FarmServiceImp {
     public FarmDTO deleteFarm(int id) {
         try {
             Farm farm = farmRepository.findByFarmId(id);
-            farmRepository.delete(farm);
-
-            FarmDTO result = new FarmDTO();
-            result.setFarmId(farm.getFarmId());
-
-            return result;
+            farm.setDeleted(true);
+            farmRepository.save(farm);
+            return transferDTO(farm);
         } catch (Exception e) {
             return null;
         }

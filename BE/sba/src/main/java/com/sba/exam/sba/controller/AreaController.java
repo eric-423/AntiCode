@@ -38,11 +38,26 @@ public class AreaController {
     @PostMapping
     public ResponseEntity<?>createArea(@RequestBody AreaRequest areaRequest){
         ResponseData responseData = new ResponseData();
+
+        float width = areaRequest.getAreaWidth();
+        float length =areaRequest.getAreaLength();
+        float extent = areaRequest.getAreaExtend();
+
+        if(width<0||length<0||extent<0){
+            responseData.setData("Width, length and extent must be greater than 0");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
+        if (width * length > extent) {
+            responseData.setData("Extent must be greater than width * length");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
         AreaDTO areaDTO = areaServiceImp.createArea(areaRequest);
         if(areaDTO == null){
-            responseData.setData("Area Bug");
             return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
         }
+        responseData.setData(areaDTO);
         return new ResponseEntity<>(responseData, HttpStatus.CREATED);
     }
 
@@ -60,6 +75,21 @@ public class AreaController {
     @PutMapping("/{id}")
     public ResponseEntity<?>UpdateArea(@RequestBody AreaRequest areaRequest, @PathVariable("id") int id){
         ResponseData responseData = new ResponseData();
+
+        float width = areaRequest.getAreaWidth();
+        float length =areaRequest.getAreaLength();
+        float extent = areaRequest.getAreaExtend();
+
+        if(width<0||length<0||extent<0){
+            responseData.setData("Width, length and extent must be greater than 0");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
+        if (width * length > extent) {
+            responseData.setData("Extent must be greater than width * length");
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
         AreaDTO areaDTO = areaServiceImp.updateArea(areaRequest,id);
         if(areaDTO == null){
             responseData.setData("Area Bug");
