@@ -21,16 +21,18 @@ const UpdateWater = ({ setShowModal, itemUpdate, setRefreshData }) => {
     setVolumeAvailable(itemUpdate.volumeAvailable)
   }
 
-  const showToastMessageSuccess = (message) => {
-    toast.success(message, {
-      position: "top-right",
-    });
-  };
-  const showToastMessageFail = (message) => {
-    toast.error(message, {
-      position: "top-right",
-    });
-  };
+   const showToastMessageSuccess = (message) => {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
+    const showToastMessageFail = (message) => {
+      toast.error(message.replace(/^.*Exception:\s*/, ''), {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
   const handleClickClose = () => {
     setShowModal(false);
   };
@@ -58,7 +60,7 @@ const UpdateWater = ({ setShowModal, itemUpdate, setRefreshData }) => {
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail("Water can not update !");
+      showToastMessageFail(error.response.data.message || 'Cannot update water');
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);

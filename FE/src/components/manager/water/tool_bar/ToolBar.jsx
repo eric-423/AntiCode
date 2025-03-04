@@ -16,16 +16,18 @@ const ToolBar = ({ setRefreshData }) => {
   const handleShowModal = () => {
     setShowModal((prev) => !prev);
   };
-  const showToastMessageSuccess = (message) => {
-    toast.success(message, {
-      position: "top-right",
-    });
-  };
-  const showToastMessageFail = (message) => {
-    toast.error(message, {
-      position: "top-right",
-    });
-  };
+   const showToastMessageSuccess = (message) => {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
+    const showToastMessageFail = (message) => {
+      toast.error(message.replace(/^.*Exception:\s*/, ''), {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
   const handleDeletePlant = async () => {
     try {
       let param = "";
@@ -43,7 +45,7 @@ const ToolBar = ({ setRefreshData }) => {
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Water was deleted !");
     } catch (error) {
-      showToastMessageFail("Water can not delete !");
+      showToastMessageFail(error.response.data.message || 'Cannot delete water');
     } finally {
       setRefreshData((prev) => !prev);
     }
