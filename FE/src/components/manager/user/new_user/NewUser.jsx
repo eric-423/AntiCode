@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import ReactDOM from "react-dom";
 import "./NewUser.css";
 import ICONS from "../../../../constant/Image";
@@ -51,6 +51,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             return false;
         }
         if (!dateOfBirth) {
+            console.log(dateOfBirth)
             showToastMessage("Date of birth cannot be empty", false);
             return false;
         }
@@ -58,11 +59,11 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             showToastMessage("Phone number cannot be empty", false);
             return false;
         }
-
         return true;
     };
 
     const handleOnClick = async () => {
+
         if (!validateInputs()) return;
         const user = {
             userName: name,
@@ -73,6 +74,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             phoneNumber,
             role: role,
         };
+
 
         try {
             const response = await fetch(
@@ -113,10 +115,10 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
                             onChange={(e) => setRole(e.target.value)}
                             className="input-login input-addition input-plant-type-create-plant"
                         >
-                            <option value="">SELECT EQUIPMENT TYPE</option>
+                            <option value="">SELECT ROLE</option>
                             <option value="WORKER">WORKER</option>
-                            <option value="WORKER">ADMIN</option>
-                            <option value="WORKER">MANAGER</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="MANAGER">MANAGER</option>
 
                         </Form.Select>
                     </Form.Group>

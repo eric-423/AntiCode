@@ -4,9 +4,9 @@ import ICONS from "../../../../../../constant/Image";
 import UpdatePlant from "../../update_plant/UpdatePlant";
 import useGridColumn from "../../../../../../hook/useGridColumn";
 
-const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, plantTypesData, setRefreshData}) => {
-  const [showModal,setShowModal] = useState(false)
-  const [itemUpdate,setItemUpdate] = useState()
+const Body = ({ item, index, itemsActive, handleSelectItem, listTitle, plantTypesData, setRefreshData }) => {
+  const [showModal, setShowModal] = useState(false)
+  const [itemUpdate, setItemUpdate] = useState()
   const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.plantId);
   const gridColumnTemplate = useGridColumn(listTitle)
 
@@ -35,7 +35,7 @@ const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, plantTyp
         <li>{item.heatZones}</li>
         <li>{item.size}</li>
         <li>{item.price}</li>
-        <li>{item.seed ? "seed": "tree"}</li>
+        <li>{item.seed ? "seed" : "tree"}</li>
         <li>
           <div
             onClick={(event) => handleShowUpdatePopup(event, item)}
