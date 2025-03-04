@@ -19,11 +19,13 @@ const ToolBar = ({ setRefreshData }) => {
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message, {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const handleDeletePlant = async () => {
@@ -43,7 +45,7 @@ const ToolBar = ({ setRefreshData }) => {
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Task was deleted !");
     } catch (error) {
-      showToastMessageFail("Task can not delete !");
+      showToastMessageFail(error.response.data.message||"Task can not delete !");
     } finally {
       setRefreshData((prev) => !prev);
     }

@@ -13,6 +13,8 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const [taskDescription, setTaskDescription] = useState()
   const [taskType, setTaskType] = useState()
   const [taskStatus, setTaskStatus] = useState()
+  const [startDate, setStartDate] = useState()
+  const [dueDate, setDueDate] = useState()
   const modalRoot = document.body;
   const handleClickClose = () => {
     setShowModal(false);
@@ -56,11 +58,13 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message, {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const handleOnClick = async () => {
@@ -80,6 +84,8 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
     const task = {
       createdAt: createdAt,
       completedAt: completedAt,
+      startDate: startDate,
+      dueDate: dueDate,
       taskDescription: taskDescription,
       taskStatus: task_status.taskStatusId,
       taskType: task_type.taskTypeId,
@@ -91,7 +97,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail("Task can not added !");
+      showToastMessageFail(error.response.data.message||"Task can not add !");
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);
@@ -113,6 +119,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
               onChange={(e) => setCreatedAt(e.target.value)}
             />
           </Form.Group>
+
           <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">
               Completed At
@@ -124,11 +131,36 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
               onChange={(e) => setCompletedAt(e.target.value)}
             />
           </Form.Group>
+
+          <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">
+              Start Date
+            </Form.Label>
+            <Form.Control
+              className="input-login input-addition input-characteristis-create-plant"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </Form.Group>
+          
+          <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">
+              Due Date
+            </Form.Label>
+            <Form.Control
+              className="input-login input-addition input-characteristis-create-plant"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </Form.Group>
+
           <Form.Group>
             <Form.Label className="text-label-login">Description</Form.Label>
             <Form.Control
               className="input-login input-addition"
-              type="textarea"
+              as={"textarea"}
               rows={3}
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}

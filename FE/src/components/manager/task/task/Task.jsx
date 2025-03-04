@@ -12,11 +12,19 @@ const Task = () => {
     },
     {
       name: "Created At",
-      column: 2,
+      column: 1,
     },
     {
       name: "Completed At",
-      column: 2,
+      column: 1,
+    },
+    {
+      name: "Start Date",
+      column: 1,
+    },
+    {
+      name: "Due Date",
+      column: 1,
     },
     {
       name: "Description",

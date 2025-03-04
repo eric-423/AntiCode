@@ -28,6 +28,8 @@ const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, taskStat
         <li>{index + 1}</li>
         <li>{item.createdAt}</li>
         <li>{item.completedAt}</li>
+        <li>{item.startDate}</li>
+        <li>{item.dueDate}</li>
         <li>{item.taskDescription}</li>
         <li>{taskTypeName && taskTypeName.taskTypeName}</li>
         <li>{taskStatusName && taskStatusName.taskStatusName}</li>

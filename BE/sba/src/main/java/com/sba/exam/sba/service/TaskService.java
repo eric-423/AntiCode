@@ -100,6 +100,8 @@ public class TaskService implements TaskServiceImp {
             task.setTaskStatus(taskStatus);
             task.setTaskType(taskType);
             task.setDeleted(false);
+            task.setStartDate(taskRequest.getStartDate());
+            task.setDueDate(taskRequest.getDueDate());
             taskRepository.save(task);
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
