@@ -84,9 +84,9 @@ const Tasks = () => {
             .filter(
               (item) =>
                 String(item.taskStatusName).toLocaleLowerCase() !==
-                  "completed" &&
+                "completed" &&
                 String(item.taskStatusName).toLocaleLowerCase() !==
-                  "on progress"
+                "on progress"
             )
             .map((item) => (
               <Col>

@@ -195,7 +195,7 @@ const listMenu = [
         sortItem: 5,
         component: null,
         path: "water",
-        subItems:[
+        subItems: [
           {
             name: "Water",
             component: COMPONENTS.WATER,

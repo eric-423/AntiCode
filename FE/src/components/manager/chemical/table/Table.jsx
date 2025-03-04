@@ -1,15 +1,19 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import "./Table.css";
 import Header from "../../../common/table/header/Header";
 import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
+import { PropTypes } from 'prop-types';
+import { toast } from "react-toastify";
 
 const Table = ({ listTitle, refreshData }) => {
     const [itemsActive, setItemsActive] = useState([]);
-    const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
+    const [selectedChemical, setSelectedChemical] = useLocalStorage("manager_chemical_selected", "");
     const [listItems, setListItems] = useState();
 
-    const handleFetchPlantData = async () => {
+
+    const handleFetchChemicalData = async () => {
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical`,
@@ -33,17 +37,17 @@ const Table = ({ listTitle, refreshData }) => {
         if (itemsActive.includes(item_index.id)) {
             setItemsActive(itemsActive.filter((item) => item.id !== item_index.id));
         } else {
-            setItemsActive([...itemsActive, item_index.id]);
+            setItemsActive([item_index.id]);
         }
     };
 
     useEffect(() => {
-        setSelectedPlants(itemsActive);
+        setSelectedChemical(itemsActive);
     }, [itemsActive]);
 
     useEffect(() => {
-        handleFetchPlantData()
-    }, [refreshData])
+        handleFetchChemicalData();
+    }, [refreshData]);
 
 
     return (
@@ -58,16 +62,21 @@ const Table = ({ listTitle, refreshData }) => {
                             itemsActive={itemsActive}
                             item={item}
                             index={index}
+                            refreshData={refreshData}
                         />
                     ))
                 ) : (
                     <p>Fail to fetch</p>
                 )}
             </div>
-
-
         </>
     );
 };
+
+Table.propTypes = {
+    listTitle: PropTypes.array.isRequired,
+    refreshData: PropTypes.bool.isRequired,
+    setRefeshData: PropTypes.func.isRequired,
+}
 
 export default Table;
