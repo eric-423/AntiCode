@@ -5,7 +5,7 @@ import "./Body.css";
 import ICONS from "../../../../../constant/Image.js";
 import UpdateChemical from "../../update_chemical/UpdateChemical.jsx";
 
-const Body = ({ item, index, itemsActive, handleSelectItem }) => {
+const Body = ({ item, index, itemsActive, handleSelectItem, refreshData }) => {
     const [showModal, setShowModal] = useState(false);
     const [itemUpdate, setItemUpdate] = useState(null);
     const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.id);
@@ -24,7 +24,7 @@ const Body = ({ item, index, itemsActive, handleSelectItem }) => {
     return (
         <>
             {showModal && (
-                <UpdateChemical itemUpdate={itemUpdate} setShowModal={setShowModal} />
+                <UpdateChemical itemUpdate={itemUpdate} setShowModal={setShowModal} refreshData={refreshData} />
             )}
             <ul
                 className={isActive ? "body-table body-table-active" : "body-table"}
@@ -66,6 +66,7 @@ Body.propTypes = {
     index: PropTypes.number.isRequired,
     itemsActive: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
     handleSelectItem: PropTypes.func.isRequired,
+    refreshData: PropTypes.func.isRequired,
 };
 
 

@@ -48,6 +48,7 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
         {listItems &&
           listItems.map((item, index) => (
             <Body
+              key={item.areaId}
               handleSelectItem={handleSelectItem}
               itemsActive={itemsActive}
               item={item}
