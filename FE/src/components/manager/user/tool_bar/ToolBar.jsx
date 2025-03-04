@@ -5,12 +5,25 @@ import SearchBar from "../../../common/search_bar/SearchBar.jsx";
 import Filter from "../../../common/filter/Filter.jsx";
 import NewUser from "../new_user/NewUser.jsx";
 import useLocalStorage from "use-local-storage";
+import { toast } from "react-toastify";
 
 const ToolBar = ({ setRefreshData }) => {
     const [selectUser, setSelectUser] = useLocalStorage("manager_user_selected", "");
     const [showModal, setShowModal] = useState(false);
     const handleShowModal = () => {
         setShowModal((prev) => !prev);
+    };
+
+    const showToastMessageSuccess = (message) => {
+        toast.success(message, {
+            position: "top-right",
+        });
+    };
+
+    const showToastMessageFail = (message) => {
+        toast.error(message, {
+            position: "top-right",
+        });
     };
 
     const handleDeleteUser = async () => {
@@ -23,8 +36,9 @@ const ToolBar = ({ setRefreshData }) => {
                     param += `${element}&`
                 }
             });
+            console.log(param)
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/farming-equipment/${param}`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/user/${param}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -35,7 +49,9 @@ const ToolBar = ({ setRefreshData }) => {
             console.log(response)
 
             if (response === true) {
-                console.log("delete success")
+                showToastMessageSuccess("Delete user successfully")
+            } else {
+                showToastMessageFail("delete fail")
             }
 
         } catch (error) {

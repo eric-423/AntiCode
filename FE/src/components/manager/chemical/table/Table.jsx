@@ -63,6 +63,7 @@ const Table = ({ listTitle, refreshData }) => {
                             item={item}
                             index={index}
                             refreshData={refreshData}
+                            listTitle={listTitle}
                         />
                     ))
                 ) : (

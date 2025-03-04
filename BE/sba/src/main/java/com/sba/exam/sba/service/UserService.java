@@ -72,16 +72,18 @@ public class UserService implements UserServiceImp {
         List<UserDTO> dtos = new ArrayList<>();
         List<Users> users = userRepository.findAll();
         for (Users user : users) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUserName(user.getUserName());
-            userDTO.setEmail(user.getUserEmail());
-            userDTO.setId(user.getId());
-            userDTO.setRole(user.getRole().getName());
-            userDTO.setAddress(user.getUserAddress());
-            userDTO.setDateOfBirth(user.getUserDateOfBirth());
-            userDTO.setPhoneNumber(user.getUserPhoneNumber());
-            userDTO.setBusy(user.isBusy());
-            dtos.add(userDTO);
+            if (!user.isDeleted()) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setUserName(user.getUserName());
+                userDTO.setEmail(user.getUserEmail());
+                userDTO.setId(user.getId());
+                userDTO.setRole(user.getRole().getName());
+                userDTO.setAddress(user.getUserAddress());
+                userDTO.setDateOfBirth(user.getUserDateOfBirth());
+                userDTO.setPhoneNumber(user.getUserPhoneNumber());
+                userDTO.setBusy(user.isBusy());
+                dtos.add(userDTO);
+            }
         }
         return dtos;
     }
@@ -99,6 +101,7 @@ public class UserService implements UserServiceImp {
             user.setUserDateOfBirth(userDTO.getDateOfBirth());
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setBusy(false);
+            user.setDeleted(false);
 
             userRepository.save(user);
             return userDTO;
@@ -125,6 +128,33 @@ public class UserService implements UserServiceImp {
             return userDTO;
         } catch (Exception e) {
             System.out.println("Error updating user" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO deleteUser(int id) {
+        try {
+            Users user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            if (!user.getRole().getName().equalsIgnoreCase("Manager") && !user.getRole().getName().equalsIgnoreCase("Admin")) {
+                user.setDeleted(true);
+                userRepository.save(user);
+            }else{
+                throw new RuntimeException("Cannot delete manager or admin");
+            }
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUserName(user.getUserName());
+            userDTO.setEmail(user.getUserEmail());
+            userDTO.setId(user.getId());
+            userDTO.setRole(user.getRole().getName());
+            userDTO.setAddress(user.getUserAddress());
+            userDTO.setDateOfBirth(user.getUserDateOfBirth());
+            userDTO.setPhoneNumber(user.getUserPhoneNumber());
+            userDTO.setBusy(user.isBusy());
+            return userDTO;
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }
