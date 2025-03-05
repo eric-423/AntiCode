@@ -40,10 +40,35 @@ public class PlantingLocationService implements PlantLocationServiceImp {
         List<PlantingLocationDTO> result = new ArrayList<>();
 
         for(PlantingLocation plantingLocation : plantingLocationList){
-            PlantingLocationDTO plantingLocationDTO = getPlantLocationById(plantingLocation.getPlantLocationId());
+            PlantingLocationDTO plantingLocationDTO = transferDTO(plantingLocation);
             result.add(plantingLocationDTO);
         }
         return result;
+    }
+
+    private PlantingLocationDTO transferDTO(PlantingLocation plantingLocation){
+        PlantingLocationDTO plantingLocationDTO = new PlantingLocationDTO();
+        Plant plant = plantingLocation.getPlant();
+        Location location = plantingLocation.getLocation();
+        plantingLocationDTO.setPlantingLocationId(plantingLocation.getPlantLocationId());
+        plantingLocationDTO.setPlantId(plant.getPlantId());
+        plantingLocationDTO.setPlantName(plant.getPlantName());
+        plantingLocationDTO.setPlantPrice(plant.getPrice());
+        plantingLocationDTO.setPlantSize(plant.getSize());
+        plantingLocationDTO.setSeed(plant.isSeed());
+        plantingLocationDTO.setPlantSpecies(plant.getSpecies());
+        plantingLocationDTO.setPlantDescription(plant.getDescription());
+        plantingLocationDTO.setPlantCharacteristics(plant.getCharacteristics());
+        plantingLocationDTO.setPlantAttracts(plant.getAttracts());
+        plantingLocationDTO.setPlantHardiness(plant.getHardiness());
+        plantingLocationDTO.setPlantHeatZones(plant.getHeatZones());
+        plantingLocationDTO.setLocationId(location.getLocationId());
+        plantingLocationDTO.setLocationName(location.getLocationName());
+        plantingLocationDTO.setLocationExtent(location.getLocationExtent());
+        plantingLocationDTO.setStartDate(plantingLocation.getStartDate());
+        plantingLocationDTO.setEndDate(plantingLocation.getEndDate());
+        plantingLocationDTO.setHarvest(plantingLocation.isHarvest());
+        return plantingLocationDTO;
     }
 
     @Override
@@ -53,30 +78,7 @@ public class PlantingLocationService implements PlantLocationServiceImp {
         if(plantingLocation==null){
             return null;
         } else{
-            Plant plant = plantingLocation.getPlant();
-            Location location = plantingLocation.getLocation();
-
-            PlantingLocationDTO plantingLocationDTO = new PlantingLocationDTO();
-            plantingLocationDTO.setPlantingLocationId(plantingLocation.getPlantLocationId());
-            plantingLocationDTO.setPlantId(plant.getPlantId());
-            plantingLocationDTO.setPlantName(plant.getPlantName());
-            plantingLocationDTO.setPlantPrice(plant.getPrice());
-            plantingLocationDTO.setPlantSize(plant.getSize());
-            plantingLocationDTO.setSeed(plant.isSeed());
-            plantingLocationDTO.setPlantSpecies(plant.getSpecies());
-            plantingLocationDTO.setPlantDescription(plant.getDescription());
-            plantingLocationDTO.setPlantCharacteristics(plant.getCharacteristics());
-            plantingLocationDTO.setPlantAttracts(plant.getAttracts());
-            plantingLocationDTO.setPlantHardiness(plant.getHardiness());
-            plantingLocationDTO.setPlantHeatZones(plant.getHeatZones());
-            plantingLocationDTO.setLocationId(location.getLocationId());
-            plantingLocationDTO.setLocationName(location.getLocationName());
-            plantingLocationDTO.setLocationExtent(location.getLocationExtent());
-            plantingLocationDTO.setStartDate(plantingLocation.getStartDate());
-            plantingLocationDTO.setEndDate(plantingLocation.getEndDate());
-            plantingLocationDTO.setHarvest(plantingLocation.isHarvest());
-
-            return plantingLocationDTO;
+            return transferDTO(plantingLocation);
         }
     }
 
@@ -138,5 +140,4 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             return null;
         }
     }
-
 }

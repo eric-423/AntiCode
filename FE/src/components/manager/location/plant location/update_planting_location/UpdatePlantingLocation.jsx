@@ -79,10 +79,10 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
       console.log(JSON.stringify(plantingLocation))
 
       if (!data) throw new Error()
-      showToastMessageSuccess('Plant was updated!')
+      showToastMessageSuccess('Plant Location was updated!')
       setShowModal(false)
     } catch (error) {
-      showToastMessageFail('Plant can not be updated!')
+      showToastMessageFail('Plant Location can not be updated!')
       setShowModal(true)
     } finally {
       setRefreshData((prev) => !prev)
@@ -142,7 +142,9 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
 
   useEffect(() => {
     const plantUrl = `${import.meta.env.VITE_REACT_APP_END_POINT}/plant`
-    const locationUrl = `${import.meta.env.VITE_REACT_APP_END_POINT}/location`
+    const locationUrl = `${
+      import.meta.env.VITE_REACT_APP_END_POINT
+    }/location/available?id=${locationId}`
 
     fetchData(plantUrl, setPlantData)
     fetchData(locationUrl, setLocationData)
@@ -214,7 +216,7 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
           <Button
-            text="Update Plant"
+            text="Update"
             className="button-create-plant"
             handleOnClick={handleOnClick}
           />

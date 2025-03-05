@@ -18,7 +18,7 @@ public class OTP {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String email;
+    private String phoneNumber;
     private String otp;
     private LocalDateTime expiredAt;
     private boolean verified;

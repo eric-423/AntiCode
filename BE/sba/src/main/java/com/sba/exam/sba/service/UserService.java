@@ -3,6 +3,7 @@ package com.sba.exam.sba.service;
 import com.sba.exam.sba.dto.UserDTO;
 import com.sba.exam.sba.entity.Role;
 import com.sba.exam.sba.entity.Users;
+import com.sba.exam.sba.repository.OTPRepository;
 import com.sba.exam.sba.repository.RoleRepository;
 import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.OTPServiceImp;
@@ -27,17 +28,22 @@ public class UserService implements UserServiceImp {
     private OTPServiceImp OTPServiceImp;
 
     @Autowired
+    private OTPRepository otpRepository;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Override
     public boolean createUser(UserDTO userDTO) {
         try {
-            boolean isVerified = OTPServiceImp.isOtpVerified(userDTO.getEmail());
+            boolean isVerified = otpRepository.findByPhoneNumber(userDTO.getPhoneNumber()).getLast().isVerified();
             if (!isVerified) throw new Exception();
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
+            user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+            user.setVerified(false);
             Role role = roleRepository.findRoleByNameIgnoreCase("Worker");
             user.setRole(role);
             userRepository.save(user);
