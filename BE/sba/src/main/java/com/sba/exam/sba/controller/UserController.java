@@ -95,5 +95,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
+            try {
+                return new ResponseEntity<>(userServiceImp.deleteUser(id), HttpStatus.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        return null;
+    }
 
 }

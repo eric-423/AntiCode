@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './Table.css'
-import Header from '../../../common/table/header/Header'
+import Header from "../../header/Header"
 import Body from './body/Body'
 import useLocalStorage from 'use-local-storage'
 

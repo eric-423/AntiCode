@@ -11,7 +11,6 @@ const Table = ({ listTitle, refreshData }) => {
     const [listItems, setListItems] = useState();
 
     const handleFetchPlantData = async () => {
-        console.log(selectedUser);
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/user/users`,
@@ -26,7 +25,6 @@ const Table = ({ listTitle, refreshData }) => {
                 const data = await response.json()
                 setListItems(data)
             }
-            console.log(response)
         } catch (error) {
             console.log(error)
         }
@@ -57,6 +55,7 @@ const Table = ({ listTitle, refreshData }) => {
                             itemsActive={itemsActive}
                             item={item}
                             index={index}
+                            listTitle={listTitle}
                         />
                     ))
                 ) : (

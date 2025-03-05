@@ -13,9 +13,9 @@ const Chat = () => {
 
     const handleSend = () => {
         if (input.trim()) {
-
             setMessages([...messages, { text: input, isUserMessage: true }]);
             setInput('');
+
         }
     };
 
