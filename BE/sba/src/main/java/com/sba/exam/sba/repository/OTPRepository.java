@@ -4,9 +4,13 @@ import com.sba.exam.sba.entity.OTP;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OTPRepository extends JpaRepository<OTP, Integer> {
-    OTP findByEmailAndOtp(String email, String otp);
+    OTP findByPhoneNumberAndOtp(String phoneNumber, String otp);
 
-    boolean existsByVerifiedIsTrueAndEmail(String email);
+    List<OTP> findByPhoneNumber(String phoneNumber);
+
+
 }

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 
 public interface OTPServiceImp {
-    String generateOtp(String email);
-    boolean verifyOtp(String email, String otp);
-    boolean isOtpVerified(String email);
+    String generateOtp(String phoneNumber);
+    boolean verifyOtp(String phoneNumber, String otp);
 }

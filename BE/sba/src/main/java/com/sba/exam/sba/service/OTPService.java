@@ -17,11 +17,12 @@ public class OTPService implements OTPServiceImp {
     @Autowired
     private OTPRepository otpRepository;
 
+
     @Override
-    public String generateOtp(String email) {
+    public String generateOtp(String phoneNumber) {
         String otp = String.format("%06d", random.nextInt(999999));
         OTP otpRecord = new OTP();
-        otpRecord.setEmail(email);
+        otpRecord.setPhoneNumber(phoneNumber);
         otpRecord.setOtp(otp);
         otpRecord.setExpiredAt(LocalDateTime.now().plusMinutes(5));
         otpRepository.save(otpRecord);
@@ -29,9 +30,9 @@ public class OTPService implements OTPServiceImp {
     }
 
     @Override
-    public boolean verifyOtp(String email, String otp) {
+    public boolean verifyOtp(String phoneNumber, String otp) {
         try{
-            OTP otpRecord = otpRepository.findByEmailAndOtp(email, otp);
+            OTP otpRecord = otpRepository.findByPhoneNumberAndOtp(phoneNumber, otp);
             if (otpRecord == null || otpRecord.getExpiredAt().isBefore(LocalDateTime.now())) throw new Exception();
             otpRecord.setVerified(true);
             otpRepository.save(otpRecord);
@@ -42,8 +43,4 @@ public class OTPService implements OTPServiceImp {
         return false;
     }
 
-    @Override
-    public boolean isOtpVerified(String email) {
-        return otpRepository.existsByVerifiedIsTrueAndEmail(email);
-    }
 }

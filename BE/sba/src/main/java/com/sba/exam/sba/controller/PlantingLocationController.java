@@ -50,6 +50,8 @@ public class PlantingLocationController {
     public ResponseEntity<?> updatePlantingLocation(@PathVariable int id, @RequestBody PlantingLocationRequest plantingLocationRequest) {
 
         ResponseData responseData = new ResponseData();
+        System.out.println(plantingLocationRequest.getStartDate());
+        System.out.println(new Date());
         if(plantingLocationRequest.getStartDate().before(new Date())){
             responseData.setData("Start date must be after current date");
             return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);

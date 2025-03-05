@@ -43,7 +43,7 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
   const handleFetchDataLocation = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/location`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/location/available`,
         {
           method: 'GET',
           headers: {
@@ -178,7 +178,7 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
           <Button
-            text="Create Plant"
+            text="Create"
             handleOnClick={handleOnClick}
             className="button-create-plant"
           />

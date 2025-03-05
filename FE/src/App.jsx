@@ -14,7 +14,7 @@ import { ToastContainer } from 'react-toastify/unstyled'
 import PlantingLocation from './components/manager/location/plant location/PlantingLocation'
 import Register from './pages/register/Register'
 import FormRegister from './components/common/form/register/FormRegister'
-import VerifyEmail from './components/common/form/register/verify/VerifyEmail'
+import VerifyPhoneNumber from './components/common/form/register/verify/VerifyPhoneNumber'
 import Worker from './pages/worker/Worker'
 import Tasks from './components/worker/tasks/Tasks'
 import Task from './components/manager/task/task/Task'
@@ -109,8 +109,8 @@ function App() {
     },
     {
       name: NAVIGATION.COMPONENTS.WATER,
-      component: <Water />
-    }
+      component: <Water />,
+    },
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
@@ -149,7 +149,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/registrations/" element={<Register />}>
           <Route index element={<FormRegister />} />
-          <Route path="verify-otp" element={<VerifyEmail />} />
+          <Route path="verify-otp" element={<VerifyPhoneNumber />} />
         </Route>
         <Route path="/manager/" element={<Manager />}>
           <Route index element={<Dashboard />} />

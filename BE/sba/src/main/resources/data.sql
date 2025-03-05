@@ -41,7 +41,7 @@ VALUES ('Apple Tree', 15, 50.0, 'Medium', false, 'Malus domestica', 'A fruit tre
         'Bright yellow petals', 'Bees', 'USDA Zone 2-11', 'Heat Zone 5', 1);
 
 INSERT INTO farm (farm_name, farm_extent, farm_address, farm_length, farm_width, is_deleted)
-VALUES ('Sunny Acres', 50.0, '123 Sunny Lane, Springfield', 10.0, 5.0),
+VALUES ('Sunny Acres', 50.0, '123 Sunny Lane, Springfield', 10.0, 5.0, false),
        ('Green Valley Farm', 75.5, '456 Green Valley Road, Springfield', 15.0, 5.0, false),
        ('Riverbend Farm', 30.0, '789 Riverbend Drive, Springfield', 8.0, 3.75, false),
        ('Mountain View Farm', 100.0, '101 Mountain View Ave, Springfield', 20.0, 5.0, false),

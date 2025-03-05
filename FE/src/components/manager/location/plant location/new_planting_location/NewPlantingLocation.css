@@ -44,6 +44,7 @@
     display: grid;
     grid-template-columns: 4fr 4fr 4fr;
     column-gap: 40px;
+    align-items: end;
 }
 
 .group-3-column-create-plant {
