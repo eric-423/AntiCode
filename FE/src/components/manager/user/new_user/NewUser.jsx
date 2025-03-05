@@ -49,7 +49,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
 
     useEffect(() => {
         getRole();
-    }, [])
+    })
 
     const validateInputs = () => {
         if (role === "") {
@@ -60,8 +60,8 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             showToastMessage("Name cannot be empty", false);
             return false;
         }
-        if (!email) {
-            showToastMessage("Email cannot be empty", false);
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            showToastMessage("Email should have '@gmail.com' ", false);
             return false;
         }
         if (!password) {

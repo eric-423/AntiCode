@@ -205,7 +205,8 @@ VALUES ('A heavy-duty plow for breaking up the soil', 1, 0, 0, 'Heavy-Duty Plow'
        ('A spreader for evenly distributing fertilizers', 1, 0, 0, 'Fertilizer Spreader', 6, 6),
        ('A cultivator for preparing the soil before planting', 1, 0, 0, 'Soil Cultivator', 3, 7);
 
-INSERT INTO task (status_id, type_id, complete_at, create_at, due_date, start_date, task_description, is_deleted, task_name)
+INSERT INTO task (status_id, type_id, complete_at, create_at, due_date, start_date, task_description, is_deleted,
+                  task_name)
 VALUES (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Plant A', 0, 'Task 1'),
        (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Water B', 0, 'Task 2'),
        (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Havest C', 0, 'Task 3');
