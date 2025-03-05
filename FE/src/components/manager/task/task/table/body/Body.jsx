@@ -26,6 +26,7 @@ const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, taskStat
         style={{ gridTemplateColumns: gridColumnTemplate }}
       >
         <li>{index + 1}</li>
+        <li>{item.taskName}</li>
         <li>{item.createdAt}</li>
         <li>{item.completedAt}</li>
         <li>{item.startDate}</li>
