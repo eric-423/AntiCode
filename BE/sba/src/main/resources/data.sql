@@ -55,40 +55,40 @@ VALUES ('Sunny Acres', 50.0, '123 Sunny Lane, Springfield', 10.0, 5.0, false),
 
 INSERT INTO area (area_name, area_extent, area_length, area_width, farm_id, is_deleted)
 VALUES ('North Field', 20.0, 5.0, 4.0, 1, false),
-       ('South Field', 25.0, 5.0, 5.0, 1,false),
-       ('East Meadow', 15.0, 5.0, 3.0, 2,false),
-       ('West Pasture', 30.0, 5.0, 6.0, 2,false),
-       ('Main Crop Area', 40.0, 5.0, 8.0, 3,false),
-       ('Orchard', 10.0, 5.0, 2.0, 4,false),
-       ('Vegetable Patch', 12.5, 5.0, 2.5, 5,false),
-       ('Flower Garden', 8.0, 4.0, 2.0, 6,false),
-       ('Herb Section', 5.0, 5.0, 1.0, 7,false),
-       ('Livestock Area', 35.0, 5.0, 7.0, 8,false);
+       ('South Field', 25.0, 5.0, 5.0, 1, false),
+       ('East Meadow', 15.0, 5.0, 3.0, 2, false),
+       ('West Pasture', 30.0, 5.0, 6.0, 2, false),
+       ('Main Crop Area', 40.0, 5.0, 8.0, 3, false),
+       ('Orchard', 10.0, 5.0, 2.0, 4, false),
+       ('Vegetable Patch', 12.5, 5.0, 2.5, 5, false),
+       ('Flower Garden', 8.0, 4.0, 2.0, 6, false),
+       ('Herb Section', 5.0, 5.0, 1.0, 7, false),
+       ('Livestock Area', 35.0, 5.0, 7.0, 8, false);
 
 
 INSERT INTO location (location_id, location_extent, location_name, area_id, location_width, location_length, is_deleted)
-VALUES (1, 5.0, 'North Corner', 1, 2.0, 2.5,false),
-       (2, 10.0, 'South Corner', 1, 3.0, 3.33,false),
-       (3, 8.0, 'East Edge', 2, 2.5, 3.2,false),
-       (4, 12.0, 'West Edge', 2, 4.0, 3.0,false),
-       (5, 4.0, 'Central Spot', 3, 1.5, 2.67,false),
-       (6, 6.5, 'Orchard Section', 4, 2.0, 3.25,false),
-       (7, 3.0, 'Vegetable Area', 5, 1.0, 3.0,false),
-       (8, 2.5, 'Flower Bed', 6, 1.0, 2.5,false),
-       (9, 7.0, 'Herb Patch', 7, 2.0, 3.5,false),
-       (10, 11.0, 'Livestock Pen', 8, 3.5, 3.14,false);
+VALUES (1, 5.0, 'North Corner', 1, 2.0, 2.5, false),
+       (2, 10.0, 'South Corner', 1, 3.0, 3.33, false),
+       (3, 8.0, 'East Edge', 2, 2.5, 3.2, false),
+       (4, 12.0, 'West Edge', 2, 4.0, 3.0, false),
+       (5, 4.0, 'Central Spot', 3, 1.5, 2.67, false),
+       (6, 6.5, 'Orchard Section', 4, 2.0, 3.25, false),
+       (7, 3.0, 'Vegetable Area', 5, 1.0, 3.0, false),
+       (8, 2.5, 'Flower Bed', 6, 1.0, 2.5, false),
+       (9, 7.0, 'Herb Patch', 7, 2.0, 3.5, false),
+       (10, 11.0, 'Livestock Pen', 8, 3.5, 3.14, false);
 
 INSERT INTO planting_location (plant_location_id, plant_id, location_id, start_date, end_date, is_harvest, is_deleted)
-VALUES (1, 1, 1, '2023-01-01', '2023-06-01', false,false),
-       (2, 2, 1, '2023-02-01', '2023-07-01', false,false),
-       (3, 1, 2, '2023-03-01', '2023-08-01', true,false),
-       (4, 3, 3, '2023-04-01', '2023-09-01', false,false),
-       (5, 2, 4, '2023-05-01', '2023-10-01', true,false),
-       (6, 1, 5, '2023-06-01', '2023-11-01', false,false),
-       (7, 3, 6, '2023-07-01', '2023-12-01', true,false),
-       (8, 2, 7, '2023-08-01', '2023-12-15', false,false),
-       (9, 1, 8, '2023-09-01', '2023-10-01', true,false),
-       (10, 3, 9, '2023-10-01', '2023-11-01', false,false);
+VALUES (1, 1, 1, '2023-01-01', '2023-06-01', false, false),
+       (2, 2, 1, '2023-02-01', '2023-07-01', false, false),
+       (3, 1, 2, '2023-03-01', '2023-08-01', true, false),
+       (4, 3, 3, '2023-04-01', '2023-09-01', false, false),
+       (5, 2, 4, '2023-05-01', '2023-10-01', true, false),
+       (6, 1, 5, '2023-06-01', '2023-11-01', false, false),
+       (7, 3, 6, '2023-07-01', '2023-12-01', true, false),
+       (8, 2, 7, '2023-08-01', '2023-12-15', false, false),
+       (9, 1, 8, '2023-09-01', '2023-10-01', true, false),
+       (10, 3, 9, '2023-10-01', '2023-11-01', false, false);
 
 INSERT INTO plant_medium (medium_id, medium_name, description, medium_weight_avallable)
 VALUES (1, 'Coco Peat', 'A natural fiber made from coconut husks.', 50),
@@ -160,7 +160,53 @@ VALUES ('Water 1', 1, 1, 100, 0),
        ('Water 4', 4, 4, 70, 0),
        ('Water 5', 5, 5, 60, 0);
 
+-- chemical-type
+INSERT INTO chemical_type (type_name, type_description, is_deleted)
+VALUES ('Fertilizer', 'Nutrients that promote plant growth', 0),
+       ('Pesticide', 'Chemicals used to kill pests and diseases', 0),
+       ('Herbicide', 'Substances used to control unwanted plants (weeds)', 0),
+       ('Fungicide', 'Chemicals that prevent or eliminate fungal infections', 0),
+       ('Insecticide', 'Pesticides that specifically target insects', 0),
+       ('Growth Regulator', 'Chemicals that influence the growth processes of plants', 0),
+       ('Soil Conditioner', 'Materials added to soil to improve its physical properties', 0);
+
+-- chemical
+INSERT INTO agricultural_chemical (is_deleted, chemical_description, expiration_date, manufacturing_date, chemical_name,
+                                   volume_available, type_id)
+VALUES (0, 'A balanced fertilizer with NPK ratio of 10-10-10', '2025-12-31', '2023-01-15', 'All-Purpose Fertilizer',
+        1000, 1),
+       (0, 'A broad-spectrum pesticide effective against common pests', '2026-06-30', '2023-03-10', 'General Pesticide',
+        500, 2),
+       (0, 'Selective herbicide for controlling grass and broadleaf weeds', '2025-11-15', '2023-02-20',
+        'Selective Herbicide', 750, 3),
+       (0, 'Fungicide effective against powdery mildew and blight', '2026-05-20', '2023-04-05',
+        'Powdery Mildew Fungicide', 300, 4),
+       (0, 'Insecticide targeting aphids and spider mites', '2026-01-10', '2023-05-25', 'Aphid Insecticide', 200, 5),
+       (0, 'Plant growth regulator to enhance fruit size and yield', '2026-03-30', '2023-06-15', 'Growth Enhancer', 150,
+        6),
+       (0, 'Soil conditioner to improve moisture retention', '2025-09-01', '2023-07-20', 'Moisture Retainer', 400, 7);
+-- equipment-type
+INSERT INTO equipment_type (type_description, is_deleted, type_name)
+VALUES ('Used for plowing and tilling soil', 0, 'Plow'),
+       ('Machine for planting seeds in the soil', 0, 'Seeder'),
+       ('Equipment for harvesting crops', 0, 'Harvester'),
+       ('Used for irrigating crops', 0, 'Irrigation System'),
+       ('Tool for cutting grass and weeds', 0, 'Mower'),
+       ('Equipment for fertilizing plants', 0, 'Fertilizer Spreader'),
+       ('Machine for cultivating soil', 0, 'Cultivator');
+-- equipment
+INSERT INTO farming_equipment (equipment_description, in_used, is_damaged, is_deleted, equipment_name, quantity,
+                               type_id)
+VALUES ('A heavy-duty plow for breaking up the soil', 1, 0, 0, 'Heavy-Duty Plow', 5, 1),
+       ('A seed drill for planting seeds in rows', 1, 0, 0, 'Seed Drill', 3, 2),
+       ('A combine harvester for efficient crop collection', 1, 0, 0, 'Combine Harvester', 2, 3),
+       ('A drip irrigation system for efficient watering', 1, 0, 0, 'Drip Irrigation', 10, 4),
+       ('A rotary mower for cutting grass and weeds', 1, 0, 0, 'Rotary Mower', 4, 5),
+       ('A spreader for evenly distributing fertilizers', 1, 0, 0, 'Fertilizer Spreader', 6, 6),
+       ('A cultivator for preparing the soil before planting', 1, 0, 0, 'Soil Cultivator', 3, 7);
+
 INSERT INTO task (status_id, type_id, complete_at, create_at, due_date, start_date, task_description, is_deleted, task_name)
 VALUES (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Plant A', 0, 'Task 1'),
        (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Water B', 0, 'Task 2'),
        (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Havest C', 0, 'Task 3');
+
