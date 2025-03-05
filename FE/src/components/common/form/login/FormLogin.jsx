@@ -47,7 +47,7 @@ const FormLogin = () => {
       }
     } catch (error) {
       console.log(error)
-    }finally{
+    } finally {
       setIsLoading(false)
     }
   };

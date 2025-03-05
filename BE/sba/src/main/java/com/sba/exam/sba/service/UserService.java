@@ -7,6 +7,7 @@ import com.sba.exam.sba.repository.RoleRepository;
 import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.OTPServiceImp;
 import com.sba.exam.sba.service.imp.UserServiceImp;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -88,9 +89,17 @@ public class UserService implements UserServiceImp {
         return dtos;
     }
 
+
+    @Transactional
     @Override
     public UserDTO addUserByAdmin(UserDTO userDTO) {
         try {
+            List<Users> users = userRepository.findAll();
+            for (Users u : users) {
+                if (u.getUserEmail().equals(userDTO.getEmail())) {
+                    throw new Exception("This Email is already in farm");
+                }
+            }
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
@@ -102,7 +111,6 @@ public class UserService implements UserServiceImp {
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setBusy(false);
             user.setDeleted(false);
-
             userRepository.save(user);
             return userDTO;
         } catch (Exception e) {
@@ -139,7 +147,7 @@ public class UserService implements UserServiceImp {
             if (!user.getRole().getName().equalsIgnoreCase("Manager") && !user.getRole().getName().equalsIgnoreCase("Admin")) {
                 user.setDeleted(true);
                 userRepository.save(user);
-            }else{
+            } else {
                 throw new RuntimeException("Cannot delete manager or admin");
             }
 
@@ -153,7 +161,7 @@ public class UserService implements UserServiceImp {
             userDTO.setPhoneNumber(user.getUserPhoneNumber());
             userDTO.setBusy(user.isBusy());
             return userDTO;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

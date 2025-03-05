@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./NewUser.css";
 import ICONS from "../../../../constant/Image";
@@ -14,6 +14,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
+    const [listRole, setListRole] = useState([]);
 
     const modalRoot = document.body;
 
@@ -28,6 +29,27 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             toast.error(message, { position: "top-right" });
         }
     };
+
+    const getRole = async () => {
+        const baseUrl = `${import.meta.env.VITE_REACT_APP_END_POINT}`;
+        try {
+            const response = await fetch(`${baseUrl}/roles`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch role")
+            } else {
+                const data = await response.json();
+                if (!data) throw new Error("No data returned");
+                setListRole(data);
+            }
+            console.log(listRole)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getRole();
+    }, [])
 
     const validateInputs = () => {
         if (role === "") {
@@ -116,9 +138,15 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
                             className="input-login input-addition input-plant-type-create-plant"
                         >
                             <option value="">SELECT ROLE</option>
-                            <option value="WORKER">WORKER</option>
+                            {
+                                listRole.map((role) => {
+                                    return <option key={role.id} value={role.name}>{role.name}</option>
+                                })
+                            }
+
+                            {/* <option value="WORKER">WORKER</option>
                             <option value="ADMIN">ADMIN</option>
-                            <option value="MANAGER">MANAGER</option>
+                            <option value="MANAGER">MANAGER</option> */}
 
                         </Form.Select>
                     </Form.Group>
