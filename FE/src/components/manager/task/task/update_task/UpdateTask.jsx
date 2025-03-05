@@ -8,6 +8,7 @@ import { toast } from "react-toastify/unstyled";
 
 const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const [taskId, setTaskId] = useState()
+  const [taskName, setTaskName] = useState()
   const [createdAt, setCreatedAt] = useState()
   const [completedAt, setCompletedAt] = useState()
   const [taskDescription, setTaskDescription] = useState()
@@ -18,6 +19,9 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const modalRoot = document.body;
   const setDataItem = (itemUpdate) => {
     setTaskId(itemUpdate.taskId)
+    setTaskName(itemUpdate.taskName)
+    setStartDate(itemUpdate.startDate)
+    setDueDate(itemUpdate.dueDate)
     setCreatedAt(itemUpdate.createdAt)
     setCompletedAt(itemUpdate.completedAt)
     setTaskDescription(itemUpdate.taskDescription)
@@ -95,6 +99,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
 
     const task = {
       taskId: taskId,
+      taskName: taskName,
       createdAt: createdAt,
       completedAt: completedAt,
       startDate: startDate,
@@ -127,6 +132,16 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
           <h4 className="addition-plant-type-h4 group-3-column-create-plant">
             UPDATE TASK
           </h4>
+          <Form.Group>
+                      <Form.Label className="text-label-login">Name</Form.Label>
+                      <Form.Control
+                        className="input-login input-addition"
+                        type="text"
+                        value={taskName}
+                        onChange={(e) => setTaskName(e.target.value)}
+                      />
+                    </Form.Group>
+
           <Form.Group className="group-3-column-create-plant">
                       <Form.Label className="text-label-login">Created At</Form.Label>
                       <Form.Control

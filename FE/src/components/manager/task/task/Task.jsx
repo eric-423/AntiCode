@@ -11,6 +11,10 @@ const Task = () => {
       column: 0.5,
     },
     {
+      name: "Task Name",
+      column: 1.5,
+    },
+    {
       name: "Created At",
       column: 1,
     },
@@ -28,7 +32,7 @@ const Task = () => {
     },
     {
       name: "Description",
-      column: 1.75,
+      column: 1.5,
     },
     {
       name: "Task Type",

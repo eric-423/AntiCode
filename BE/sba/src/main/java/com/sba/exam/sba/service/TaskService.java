@@ -80,6 +80,7 @@ public class TaskService implements TaskServiceImp {
             taskDTO.setStartDate(task.getStartDate());
             taskDTO.setDueDate(task.getDueDate());
             taskDTO.setDeleted(task.isDeleted());
+            taskDTO.setTaskName(task.getTaskName());
             return taskDTO;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -102,6 +103,7 @@ public class TaskService implements TaskServiceImp {
             task.setDeleted(false);
             task.setStartDate(taskRequest.getStartDate());
             task.setDueDate(taskRequest.getDueDate());
+            task.setTaskName(taskRequest.getTaskName());
             taskRepository.save(task);
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
@@ -133,6 +135,7 @@ public class TaskService implements TaskServiceImp {
             task.setTaskStatus(taskStatus);
             task.setTaskType(taskType);
             task.setDeleted(taskRequest.isDeleted());
+            task.setTaskName(taskRequest.getTaskName());
             taskRepository.save(task);
             return taskDTO;
         } catch (Exception e) {

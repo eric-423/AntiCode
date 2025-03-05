@@ -18,5 +18,6 @@ public class TaskRequest implements Serializable {
     private int taskStatus;
     private int taskType;
     private boolean isDeleted;
+    private String taskName;
 
 }

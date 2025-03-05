@@ -15,6 +15,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const [taskStatus, setTaskStatus] = useState()
   const [startDate, setStartDate] = useState()
   const [dueDate, setDueDate] = useState()
+  const [taskName, setTaskName] = useState()
   const modalRoot = document.body;
   const handleClickClose = () => {
     setShowModal(false);
@@ -82,6 +83,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
       : taskStatusData[0];
 
     const task = {
+      taskName: taskName,
       createdAt: createdAt,
       completedAt: completedAt,
       startDate: startDate,
@@ -110,6 +112,16 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
           <h4 className="addition-plant-type-h4 group-3-column-create-plant">
             NEW TASK
           </h4>
+          <Form.Group>
+            <Form.Label className="text-label-login">Name</Form.Label>
+            <Form.Control
+              className="input-login input-addition"
+              type="text"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+            />
+          </Form.Group>
+
           <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">Created At</Form.Label>
             <Form.Control

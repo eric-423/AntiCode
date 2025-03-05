@@ -159,3 +159,8 @@ VALUES ('Water 1', 1, 1, 100, 0),
        ('Water 3', 3, 3, 80, 0),
        ('Water 4', 4, 4, 70, 0),
        ('Water 5', 5, 5, 60, 0);
+
+INSERT INTO task (status_id, type_id, complete_at, create_at, due_date, start_date, task_description, is_deleted, task_name)
+VALUES (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Plant A', 0, 'Task 1'),
+       (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Water B', 0, 'Task 2'),
+       (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Havest C', 0, 'Task 3');
