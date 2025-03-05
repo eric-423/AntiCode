@@ -103,16 +103,18 @@ public class FarmingEquipmentService implements FarmingEquipmentServiceImp {
         try {
             List<FarmingEquipment> farmingEquipments = farmingEquipmentRepository.findAll();
             for (FarmingEquipment farmingEquipment : farmingEquipments) {
-                FarmingEquipmentDTO farmingEquipmentDTO = new FarmingEquipmentDTO();
-                farmingEquipmentDTO.setId(farmingEquipment.getId());
-                farmingEquipmentDTO.setName(farmingEquipment.getName());
-                farmingEquipmentDTO.setDescription(farmingEquipment.getDescription());
-                farmingEquipmentDTO.setQuantity(farmingEquipment.getQuantity());
-                farmingEquipmentDTO.setInUsed(farmingEquipment.isInUsed());
-                farmingEquipmentDTO.setDamaged(farmingEquipment.isDamaged());
-                farmingEquipmentDTO.setDeleted(farmingEquipment.isDeleted());
-                farmingEquipmentDTO.setTypeName(farmingEquipment.getEquipmentType().getName());
-                farmingEquipmentDTOList.add(farmingEquipmentDTO);
+                if (!farmingEquipment.isDeleted()) {
+                    FarmingEquipmentDTO farmingEquipmentDTO = new FarmingEquipmentDTO();
+                    farmingEquipmentDTO.setId(farmingEquipment.getId());
+                    farmingEquipmentDTO.setName(farmingEquipment.getName());
+                    farmingEquipmentDTO.setDescription(farmingEquipment.getDescription());
+                    farmingEquipmentDTO.setQuantity(farmingEquipment.getQuantity());
+                    farmingEquipmentDTO.setInUsed(farmingEquipment.isInUsed());
+                    farmingEquipmentDTO.setDamaged(farmingEquipment.isDamaged());
+                    farmingEquipmentDTO.setDeleted(farmingEquipment.isDeleted());
+                    farmingEquipmentDTO.setTypeName(farmingEquipment.getEquipmentType().getName());
+                    farmingEquipmentDTOList.add(farmingEquipmentDTO);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

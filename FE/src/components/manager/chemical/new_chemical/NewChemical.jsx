@@ -49,7 +49,6 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     }, []);
 
 
-    // message for success or fail
     const showToastMessageSuccess = (message) => {
         toast.success(message, {
             position: "top-right",
@@ -63,10 +62,8 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     };
 
 
-    // Create new chemical
 
     const handleOnClick = async () => {
-        // setTypeId(chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.id || '');
         const chemical = {
             name,
             description,
@@ -75,6 +72,9 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
             volumeAvailable,
         };
 
+        if (!name || !selectedChemicalType || !manufacturingDate || !expirationDate) {
+            return showToastMessageFail("Please fill all required fields");
+        }
         if (expirationDate < manufacturingDate) {
             return showToastMessageFail("Expiration date must be greater than manufacturing date");
         }

@@ -67,8 +67,10 @@ const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
             volumeAvailable: volumeAvailable,
             chemicalType: chemicalType,
         };
-        console.log(volumeAvailable);
 
+        if (!chemicalName || !chemicalType || !manufacturingDate || !expirationDate) {
+            return showToastMessageFail("Please fill all required fields");
+        }
         if (expirationDate < manufacturingDate) {
             return showToastMessageFail("Expiration date must be greater than manufacturing date");
         }
@@ -93,6 +95,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
             showToastMessageFail("Chemical cannot be added!");
             setShowModal(true);
         } finally {
+            window.location.reload();
             refreshData((prev) => !prev);
         }
     };

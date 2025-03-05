@@ -36,7 +36,6 @@ const ToolBar = ({ setRefreshData }) => {
                     param += `${element}&`
                 }
             });
-            console.log(param)
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/user/${param}`,
                 {
@@ -46,16 +45,20 @@ const ToolBar = ({ setRefreshData }) => {
                     },
                 }
             );
-            console.log(response)
-
-            if (response === true) {
-                showToastMessageSuccess("Delete user successfully")
+            if (response.ok) {
+                showToastMessageSuccess("Delete user successfully");
             } else {
-                showToastMessageFail("delete fail")
+                if (response.status === 400) {
+                    showToastMessageFail("Delete failed: Bad Request");
+                } else {
+                    showToastMessageFail("Delete failed: An unexpected error occurred");
+                }
             }
 
         } catch (error) {
-            throw new error
+            console.error("error", error);
+            showToastMessageFail("delete fail")
+
         } finally {
             setRefreshData(prev => !prev)
         }

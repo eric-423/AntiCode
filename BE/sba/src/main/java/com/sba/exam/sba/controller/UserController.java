@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String email, @RequestParam String password) {
         ResponseData responseData = new ResponseData();
-        if(usersRepository.findByUserEmail(email)==null){
+        if (usersRepository.findByUserEmail(email) == null) {
             responseData.setData("User Not Found");
             responseData.setStatus(404);
             return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
@@ -95,15 +95,17 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
-            try {
+        try {
+            UserDTO dto = userServiceImp.deleteUser(id);
+            if (dto != null) {
                 return new ResponseEntity<>(userServiceImp.deleteUser(id), HttpStatus.OK);
-            }catch (Exception e){
-                e.printStackTrace();
             }
-
-        return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Cannot delete, Delete Failure", HttpStatus.BAD_REQUEST);
     }
 
 }

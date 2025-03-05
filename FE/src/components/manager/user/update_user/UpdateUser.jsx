@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 
 
 const UpdateUser = ({ setShowModal, itemUpdate }) => {
-    const [name, setName] = useState(itemUpdate.userName);
+    const [userName, setUserName] = useState(itemUpdate.userName);
     const [email, setEmail] = useState(itemUpdate.email);
     const [password, setPassword] = useState(itemUpdate.password);
     const [address, setAddress] = useState(itemUpdate.address);
@@ -20,6 +20,13 @@ const UpdateUser = ({ setShowModal, itemUpdate }) => {
 
     const handleClickClose = () => {
         setShowModal(false);
+        setUserName('');
+        setEmail('');
+        setPassword('');
+        setAddress('');
+        setDateOfBirth('');
+        setPhoneNumber('');
+        setRole('');
     };
 
     console.log(itemUpdate);
@@ -28,15 +35,23 @@ const UpdateUser = ({ setShowModal, itemUpdate }) => {
         return format(new Date(date), 'yyyy-MM-dd');
     };
 
-    const handleOnClick = async () => {
-        if (!name.trim()) {
-            return showToastMessageFail("Name cannot be empty");
-        }
+    const isValidEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
 
+    const handleOnClick = async () => {
+        if (!userName.trim()) {
+            return showToastMessageFail("userName cannot be empty");
+        }
+        if (!isValidEmail(email)) {
+            return showToastMessageFail("Invalid email format");
+        }
+        console.log(password)
 
         const user = {
             id: itemUpdate.id,
-            userName: name,
+            userName,
             password,
             email,
             address,
@@ -109,8 +124,8 @@ const UpdateUser = ({ setShowModal, itemUpdate }) => {
                         className="input-login input-addition input-name-create-plant"
                         type="text"
                         placeholder="Rosa Orange Glow (Shrub Rose)"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
                     />
                 </Form.Group>
 
