@@ -1,0 +1,54 @@
+.manager-chat-input {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.manager-chat-input input[type="text"] {
+    padding: 10px 20px;
+    border: none;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    width: 90%;
+    height: 50px;
+    outline: none;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.manager-chat-input button {
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    height: 50px;
+}
+
+.manager-chat-messages {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.manager-chat-message {
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 70%;
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.manager-message {
+    background-color: #258cfa;
+    color: white;
+    margin-left: auto;
+}
+
+.manager-other-message {
+    background-color: #ccc;
+    margin-right: auto;
+}

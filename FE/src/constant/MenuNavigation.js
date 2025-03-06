@@ -20,7 +20,8 @@ const COMPONENTS = {
   EQUIPMENT_TYPE: "Equipment Type",
   SCHEDULE_TASKS: "Schedule Tasks",
   USER: "User",
-  WATER: "Water"
+  WATER: "Water",
+  CHAT: "Manager Chat",
 };
 
 const listMenu = [
@@ -194,7 +195,18 @@ const listMenu = [
             path: "/"
           }
         ]
+      },
+      {
+        nameMenu: "Manager Chat",
+        image: ICONS.icon_chat,
+        imageActive: ICONS.icon_chat,
+        sortItem: 10,
+        component: COMPONENTS.CHAT,
+        path: "chat",
+        subItems: []
       }
+
+
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
   {

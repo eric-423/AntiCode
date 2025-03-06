@@ -29,6 +29,7 @@ import EquipmentType from './components/manager/equipment/type/EquipmentType'
 import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
 import User from './components/manager/user/User'
 import Water from './components/manager/water/Water'
+import ManagerChat from './components/manager_chat/ManagerChat'
 function App() {
   const listComponent = [
     {
@@ -111,6 +112,10 @@ function App() {
       name: NAVIGATION.COMPONENTS.WATER,
       component: <Water />,
     },
+    {
+      name: NAVIGATION.COMPONENTS.CHAT,
+      component: <ManagerChat />,
+    }
   ]
   const listRouteNavigation = []
   NAVIGATION.LISTS_MENU_NAVIGATION.forEach((itemMenu) => {
