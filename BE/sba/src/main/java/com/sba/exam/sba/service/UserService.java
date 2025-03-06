@@ -45,6 +45,7 @@ public class UserService implements UserServiceImp {
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
             user.setVerified(false);
+            user.setDeleted(false);
             Role role = roleRepository.findRoleByNameIgnoreCase("Worker");
             user.setRole(role);
             userRepository.save(user);
@@ -135,10 +136,7 @@ public class UserService implements UserServiceImp {
             user.setUserDateOfBirth(userDTO.getDateOfBirth());
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setBusy(userDTO.isBusy());
-
-            if (userDTO.getPassword() != null) {
-                user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
-            }
+            user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
             Role role = roleRepository.findRoleByNameIgnoreCase(userDTO.getRole());
             user.setRole(role);
             userRepository.save(user);
@@ -157,7 +155,7 @@ public class UserService implements UserServiceImp {
                 user.setDeleted(true);
                 userRepository.save(user);
             } else {
-                return null;
+                throw new RuntimeException("Cannot delete manager or admin");
             }
 
             UserDTO userDTO = new UserDTO();

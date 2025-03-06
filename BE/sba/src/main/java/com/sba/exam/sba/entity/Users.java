@@ -63,5 +63,10 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTask> userTasks;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ChatRoom chatRoom;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<Chat> chats;
 
 }
