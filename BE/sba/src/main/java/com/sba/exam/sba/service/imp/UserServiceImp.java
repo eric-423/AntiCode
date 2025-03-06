@@ -22,4 +22,5 @@ public interface UserServiceImp {
     UserDTO updateUser(int id, UserDTO userDTO);
 
     UserDTO deleteUser(int id);
+
 }

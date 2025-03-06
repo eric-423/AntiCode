@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
 import './Chat.css';
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 
 const Chat = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+    const [client, setClient] = useState();
 
     const toggleChat = () => {
         setIsOpen(!isOpen);
+    };
+    const handleConnectWebSocket = async () => {
+        const socket = new SockJS(`${BASE.BASE_URL}/web-socket`);
+        const client = new Client({
+            webSocketFactory: () => socket,
+            debug: (str) => {
+                console.log(str);
+            },
+        });
+
+
+        client.onConnect = () => {
+            client.subscribe("/topic/tasks", (message) => {
+
+            });
+
+
+            client.subscribe("/topic/tasks/users", (message) => {
+                const userID = JSON.stringify(message.body).replaceAll(`\"`, ``);
+                setTimeout(() => {
+                    setRefreshDataManager(userID);
+                }, 2000);
+            });
+        };
+        client.activate();
+        setClient(client);
     };
 
 
