@@ -24,7 +24,7 @@ public class ChatController {
     public ResponseEntity<?> sendMessage(@RequestBody ChatRequest chatRequest) {
         try {
             chatServiceImp.sendMessage(chatRequest.getUserId(), chatRequest.getChatRoomId(), chatRequest.getMessage());
-            messagingTemplate.convertAndSend("/topic/messages", chatRequest.getMessage());
+            messagingTemplate.convertAndSend("/topic/messages/", chatRequest.getMessage() + "|" + chatRequest.getUserId() + "|" + chatRequest.getChatRoomId());
             return ResponseEntity.status(201).body("Message sent");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error sending message: " + e.getMessage());

@@ -22,8 +22,7 @@ const StatusBar = () => {
   const handleFetchRecentActivities = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/recent-activity/receiver?receiverId=${
-          jwtDecode(atob(accountLoginInformation))?.id
+        `${BASE.BASE_URL}/recent-activity/receiver?receiverId=${jwtDecode(atob(accountLoginInformation))?.id
         }`
       );
       if (!response || response.status === 200) throw new Error();
@@ -38,7 +37,7 @@ const StatusBar = () => {
       refreshDataUser &&
       refreshDataUser !== "" &&
       String(jwtDecode(atob(accountLoginInformation))?.id) ===
-        String(refreshDataUser)
+      String(refreshDataUser)
     ) {
       handleFetchRecentActivities();
     }

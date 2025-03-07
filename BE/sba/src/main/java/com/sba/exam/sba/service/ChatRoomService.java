@@ -19,9 +19,9 @@ public class ChatRoomService implements ChatRoomServiceImp {
 
     @Override
     public List<ChatRoomDTO> getAllChatRoom() {
-        List<ChatRoom> chatRooms =chatRoomRepository.findAll();
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
         List<ChatRoomDTO> result = new ArrayList<>();
-        for(ChatRoom chatRoom: chatRooms){
+        for (ChatRoom chatRoom : chatRooms) {
             result.add(tranferDTO(chatRoom));
         }
         return result;
@@ -34,6 +34,7 @@ public class ChatRoomService implements ChatRoomServiceImp {
         chatRoomDTO.setCreateAt(chatRoom.getCreateAt());
         chatRoomDTO.setLastUpdate(chatRoom.getLastUpdate());
         chatRoomDTO.setSenderId(chatRoom.getUser().getId());
+        chatRoomDTO.setWorkerId(chatRoom.getUser().getId());
         return chatRoomDTO;
     }
 
