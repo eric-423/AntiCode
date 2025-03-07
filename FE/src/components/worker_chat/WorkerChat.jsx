@@ -6,9 +6,10 @@ import { toast } from 'react-toastify/unstyled';
 import useLocalStorage from 'use-local-storage'
 import { jwtDecode } from 'jwt-decode';
 import LOCALSTORAGE from '../../constant/localStorage'
-import { de } from 'date-fns/locale';
 
 const WorkerChat = () => {
+    const messagesEndRef = useRef(null);
+
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
@@ -18,6 +19,7 @@ const WorkerChat = () => {
     const [decodeId, setDecodeId] = useState(jwtDecode(atob(auth)).id);
 
     const chatRoomIdRef = useRef(chatRoomId);
+
     useEffect(() => {
         handleGetAllChatRoom();
         chatRoomIdRef.current = chatRoomId;
@@ -27,6 +29,12 @@ const WorkerChat = () => {
     const toggleChat = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     useEffect(() => {
         if (!client) {
@@ -144,7 +152,7 @@ const WorkerChat = () => {
                     <div className='chat-header'>
                         Chat With Manager
                     </div>
-                    <div className="chat-messages">
+                    <div ref={messagesEndRef} className="chat-messages">
                         {messages.map((msg, index) => (
                             <div key={index} className={`chat-message ${msg.isUserMessage ? 'user-message' : 'other-message'}`}>
                                 {msg.text}

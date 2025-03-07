@@ -11,11 +11,12 @@ import LOCALSTORAGE from '../../constant/localStorage'
 
 
 const ManagerChat = memo(() => {
+    const messagesEndRef = useRef(null);
+
     const [workers, setWorkers] = useState([]);
     const [client, setClient] = useState();
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const messagesEndRef = useRef(null);
     const [chatRoomId, setChatRoomId] = useState(null);
     const [userChatRoom, setUserChatRoom] = useState("");
     const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
@@ -23,6 +24,9 @@ const ManagerChat = memo(() => {
 
 
     const chatRoomIdRef = useRef(chatRoomId);
+
+
+
     useEffect(() => {
         chatRoomIdRef.current = chatRoomId;
     }, [chatRoomId]);
@@ -42,11 +46,15 @@ const ManagerChat = memo(() => {
 
     }, [auth]);
 
+
     useEffect(() => {
         if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+            messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
         }
     }, [messages]);
+
+
+
 
     const handleSetUserChat = async (worker) => {
         setUserChatRoom(worker);
@@ -184,7 +192,7 @@ const ManagerChat = memo(() => {
 
     return (
         <Row className='w-100'>
-            <Col md={9} className='position-relative'>
+            <Col md={9} className='Chat'>
                 <div>
                     <h6 className='manager-chat-room-name'>
                         {userChatRoom.userName}
@@ -192,13 +200,12 @@ const ManagerChat = memo(() => {
                 </div>
 
 
-                <div className='manager-chat-messages'>
+                <div ref={messagesEndRef} className='manager-chat-messages'>
                     {messages.map((msg, index) => (
                         <div key={index} className={`manager-chat-message ${msg.isUserMessage ? 'manager-message' : 'manager-other-message'}`}>
                             <div>{msg.text}</div>
                         </div>
                     ))}
-                    <div ref={messagesEndRef} />
                 </div>
 
 
@@ -206,6 +213,7 @@ const ManagerChat = memo(() => {
                     <input
                         type="text"
                         value={input}
+                        disabled={!userChatRoom}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') {
@@ -223,12 +231,14 @@ const ManagerChat = memo(() => {
 
             </Col>
             <Col md={3}>
-                <div className='manager-chat-list-users'>
-                    <h5>Danh sách người dùng</h5>
+                <div
+                    className='manager-chat-list-users mt-5'
+                >
+                    <h5>Workers</h5>
                     {
                         workers.map((worker, index) => (
                             <button key={index} className='' onClick={() => handleSetUserChat(worker)}>
-                                <h6>{worker.userName}</h6>
+                                <h6 className='m-0'>{worker.userName}</h6>
                             </button>
                         ))
                     }
