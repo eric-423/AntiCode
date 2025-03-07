@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "planting_location")
@@ -27,6 +28,9 @@ public class PlantingLocation {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @ManyToMany(mappedBy = "plantLocations")
+    private List<Task> tasks;
+
     @Column(name = "start_date")
     private Date startDate;
 
@@ -38,4 +42,6 @@ public class PlantingLocation {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+
 }
