@@ -20,5 +20,6 @@ public class ChatRoomDTO {
 
     private int senderId;
 
+    private int workerId;
     private List<ChatDTO> chats = new ArrayList<>();
 }

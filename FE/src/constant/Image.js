@@ -70,7 +70,7 @@ const ICONS = {
     icon_water: icon_water,
     icon_water_active: icon_water_active,
     icon_user: icon_user,
-    icon_user_active: icon_user_active
+    icon_user_active: icon_user_active,
     icon_chat: icon_chat,
 }
 

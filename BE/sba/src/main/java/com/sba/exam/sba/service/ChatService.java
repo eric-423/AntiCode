@@ -54,7 +54,7 @@ public class ChatService implements ChatServiceImp {
             chat.setSender(user);
             chatRepository.save(chat);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -63,13 +63,13 @@ public class ChatService implements ChatServiceImp {
     public List<ChatDTO> readMessage(int chatRoomId) {
         List<Chat> chats = chatRepository.findByChatRoom(chatRoomRepository.findById(chatRoomId).get());
         List<ChatDTO> result = new ArrayList<>();
-        for (Chat chat : chats){
+        for (Chat chat : chats) {
             result.add(tranferDTO(chat));
         }
         return result;
     }
 
-    private ChatDTO tranferDTO(Chat chat){
+    private ChatDTO tranferDTO(Chat chat) {
         ChatDTO result = new ChatDTO();
         result.setChatId(chat.getChatId());
         result.setMessage(chat.getMessage());

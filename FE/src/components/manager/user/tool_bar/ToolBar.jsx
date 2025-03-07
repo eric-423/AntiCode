@@ -5,7 +5,7 @@ import SearchBar from "../../../common/search_bar/SearchBar.jsx";
 import Filter from "../../../common/filter/Filter.jsx";
 import NewUser from "../new_user/NewUser.jsx";
 import useLocalStorage from "use-local-storage";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify/unstyled";
 
 const ToolBar = ({ setRefreshData }) => {
     const [selectUser, setSelectUser] = useLocalStorage("manager_user_selected", "");
