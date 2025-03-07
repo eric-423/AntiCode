@@ -57,6 +57,14 @@ public class Task {
     })
     private Set<FarmingEquipmentTask> farmingEquipmentTasks;
 
+    @ManyToMany
+    @JoinTable(
+            name = "planting_location_task",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "planting_location"))
+    private List<PlantingLocation> plantLocations;
+
+
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
