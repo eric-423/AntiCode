@@ -67,7 +67,9 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleAssignWorker = async (worker) => {
     try {
       const response = await axios.post(
-        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id}&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${
+          worker.id
+        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
       );
       if (!response || response.status !== 201) throw new Error();
 
@@ -81,7 +83,9 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleUnAssignWorker = async (worker) => {
     try {
       const response = await axios.delete(
-        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id}&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${
+          worker.id
+        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
       );
       if (!response || response.status !== 201) throw new Error();
 
@@ -185,7 +189,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   return ReactDOM.createPortal(
     <div className="modal-create-plant-container">
       <div className="modal-create-plant">
-        <h5 className="modal-schedule-task-h5">Pruning and Trimming</h5>
+        {console.log(itemDetail)}
+        <h5 className="modal-schedule-task-h5">{itemDetail.taskTypeName}</h5>
         <div className="modal-schedule-task-assign-worker mt-4">
           <div className="modal-schedule-add-worker">
             <img
@@ -276,25 +281,73 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
           <div></div>
         </div>
         <div className="mt-5">
-          <label className="schedule-label">Description</label>
+          <div className="report-task-modal">
+            <label>Water</label>
+            <div className="report-task-modal-input">
+              <Form.Select
+                className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+              >
+                {status &&
+                  Array.isArray(status) &&
+                  status.map((item) => (
+                    <option value={item.taskStatusId}>
+                      {item.taskStatusName}
+                    </option>
+                  ))}
+              </Form.Select>
+              <Form.Control
+                className="input-login input-addition input-name-create-plant input-width-report-modal"
+                type="number"
+                placeholder="Volumn"
+              />
+            </div>
+          </div>
+          <div className="report-task-modal mt-3">
+            <label>Equipment</label>
+            <div className="report-task-modal-input">
+              <Form.Select
+                className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+              >
+                {status &&
+                  Array.isArray(status) &&
+                  status.map((item) => (
+                    <option value={item.taskStatusId}>
+                      {item.taskStatusName}
+                    </option>
+                  ))}
+              </Form.Select>
+            </div>
+          </div>
+          <div className="report-task-modal mt-3">
+            <label>Chemical</label>
+            <div className="report-task-modal-input">
+              <Form.Select
+                className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+              >
+                {status &&
+                  Array.isArray(status) &&
+                  status.map((item) => (
+                    <option value={item.taskStatusId}>
+                      {item.taskStatusName}
+                    </option>
+                  ))}
+              </Form.Select>
+              <Form.Control
+                className="input-login input-addition input-name-create-plant"
+                type="number"
+                placeholder="Volumn"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mt-5">
+          <label className="schedule-label ">Description</label>
           <Form.Control
             className="input-login-textarea"
             as="textarea"
             rows={10}
             placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
           />
-        </div>
-        <div className="mt-4">
-          <label className="schedule-label">Comments</label>
-          <Form.Control
-            className="input-login-textarea"
-            as="textarea"
-            rows={3}
-            placeholder=""
-          />
-          <div className="mt-2 comment-button-schedule-tasks">
-            <Button text="Comment" />
-          </div>
         </div>
         <img
           className="icon-close"

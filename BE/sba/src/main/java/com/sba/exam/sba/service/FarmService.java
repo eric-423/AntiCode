@@ -41,7 +41,6 @@ public class FarmService implements FarmServiceImp {
         farmDTO.setFarmName(farm.getFarmName());
         farmDTO.setFarmExtend(farm.getFarmExtend());
         farmDTO.setFarmAddress(farm.getFarmAddress());
-        farmDTO.setFarmWidth(farm.getFarmWidth());
         farmDTO.setFarmLength(farm.getFarmLength());
         return farmDTO;
     }
@@ -57,6 +56,7 @@ public class FarmService implements FarmServiceImp {
             farm.setFarmAddress(farmRequest.getFarmAddress());
             farm.setFarmWidth(farmRequest.getFarmWidth());
             farm.setFarmLength(farmRequest.getFarmLength());
+
             farmRepository.save(farm);
 
             return transferDTO(farm);

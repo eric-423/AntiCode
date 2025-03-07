@@ -80,3 +80,20 @@
     padding: 8px 10px;
     border-radius: .375rem;
 }
+.report-task-modal{
+    display: grid;
+    row-gap: 5px;
+}
+.report-task-modal-input{
+    display: flex;
+    column-gap: 20px;
+}
+.report-task-input-select{
+    width: 200px;
+    height: 48px;
+    background-color: #ffffff;
+    border: 1px solid var(--bs-border-color);
+}
+.input-width-report-modal{
+    width: 150px;
+}
