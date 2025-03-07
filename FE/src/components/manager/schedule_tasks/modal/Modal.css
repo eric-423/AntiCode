@@ -97,3 +97,26 @@
 .input-width-report-modal{
     width: 150px;
 }
+.report-task-modal-container{
+    border-radius: .375rem;
+}
+.report-task-modal-container > h6{
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.report-input-modal-container{
+    padding: 20px 20px;
+}
+.button-report-task{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.report-label{
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 2px;
+    color: rgba(0, 0, 0, 0.5);
+}

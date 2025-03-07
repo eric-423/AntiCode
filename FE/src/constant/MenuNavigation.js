@@ -77,12 +77,12 @@ const listMenu = [
         path: "menu-plant",
       },
       {
-        nameMenu: "Chemical",
-        image: ICONS.icon_chemical,
-        imageActive: ICONS.icon_chemical,
+        nameMenu: "Resources",
+        image: ICONS.icon_resources,
+        imageActive: ICONS.icon_resource_active,
         sortItem: 4,
-        component: COMPONENTS.CHEMICAL,
-        path: "menu-chemical",
+        component: "",
+        path: "menu-resources",
         subItems: [
           {
             name: "Chemical",
@@ -94,9 +94,23 @@ const listMenu = [
             component: COMPONENTS.CHEMICAL_TYPE,
             path: "/chemical-type",
           },
+          {
+            name: "Equipment",
+            component: COMPONENTS.EQUIPMENT,
+            path: "/equipment"
+          },
+          {
+            name: "Equipment Type",
+            component: COMPONENTS.EQUIPMENT_TYPE,
+            path: "/equipment-type"
+          },
+          {
+            name: "Water",
+            component: COMPONENTS.WATER,
+            path: "/water"
+          }
         ],
       },
-
       {
         nameMenu: "Task",
         image: ICONS.icon_task,
@@ -161,45 +175,11 @@ const listMenu = [
         component: COMPONENTS.DASHBOARD,
         path: "menu-dashboard",
       },
-      {
-        nameMenu: "Equipment",
-        image: ICONS.icon_equipment,
-        imageActive: ICONS.icon_equipment,
-        sortItem: 5,
-        component: COMPONENTS.EQUIPMENT,
-        path: "equipment",
-        subItems: [
-          {
-            name: "Equipment",
-            component: COMPONENTS.EQUIPMENT,
-            path: "/"
-          },
-          {
-            name: "Equipment Type",
-            component: COMPONENTS.EQUIPMENT_TYPE,
-            path: "/equipment-type"
-          },
-        ]
-      },
-      {
-        nameMenu: "Water",
-        image: ICONS.icon_water,
-        imageActive: ICONS.icon_water_active,
-        sortItem: 5,
-        component: null,
-        path: "water",
-        subItems: [
-          {
-            name: "Water",
-            component: COMPONENTS.WATER,
-            path: "/"
-          }
-        ]
-      },
+    
       {
         nameMenu: "Manager Chat",
         image: ICONS.icon_chat,
-        imageActive: ICONS.icon_chat,
+        imageActive: ICONS.icon_chat_active,
         sortItem: 10,
         component: COMPONENTS.CHAT,
         path: "chat",

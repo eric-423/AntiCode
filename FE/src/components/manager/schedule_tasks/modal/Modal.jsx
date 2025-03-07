@@ -5,11 +5,14 @@ import "./Modal.css";
 import { Form } from "react-bootstrap";
 import BASE from "../../../../constant/base";
 import axios from "axios";
-import Button from "../../../common/button/Button";
 import useFormattedDate from "../../../../hook/useFormatDate";
 import useLocalStorage from "use-local-storage";
 import LOCALSTORAGE from "../../../../constant/localStorage";
 import { jwtDecode } from "jwt-decode";
+import Button from "../../../common/button/Button";
+import ROLES from "../../../../constant/role";
+
+const NOT_USE = "Not Use";
 
 const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const [status, setStatus] = useState();
@@ -20,6 +23,16 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const [startDate, setStartDate] = useState();
   const [dueDate, setDueDate] = useState();
   const [itemStatus, setItemStatus] = useState();
+  const [isManager,setIsManager] = useState()
+
+  const [water, setWater] = useState();
+  const [equipment, setEquiqment] = useState();
+  const [chemical, setChemical] = useState();
+
+  const [waterList, setWaterList] = useState();
+  const [equiqmentList, setEquiqmentList] = useState();
+  const [chemicalList, setChemicalList] = useState();
+
   const [accountLoginInformation, setAccountLoginInformation] = useLocalStorage(
     LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
     ""
@@ -40,6 +53,33 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
     setItemDetail();
   };
 
+  const handleFetchWater = async () => {
+    try {
+      const response = await axios.get(`${BASE.BASE_URL}/water`);
+      if (!response || response.status !== 200) throw new Error();
+      setWaterList([NOT_USE, ...response.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleFetchEquipment = async () => {
+    try {
+      const response = await axios.get(`${BASE.BASE_URL}/farming-equipment/`);
+      if (!response || response.status !== 200) throw new Error();
+      setEquiqmentList([NOT_USE, ...response.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleFetchChemical = async () => {
+    try {
+      const response = await axios.get(`${BASE.BASE_URL}/chemical`);
+      if (!response || response.status !== 200) throw new Error();
+      setChemicalList([NOT_USE, ...response.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleFetchUserAssigned = async () => {
     try {
       const response = await axios.get(
@@ -160,6 +200,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   };
 
   useEffect(() => {
+   if( jwtDecode(atob(accountLoginInformation))?.role === ROLES.MANAGER){
+    setIsManager(true)
+   }
+  },[accountLoginInformation])
+
+  useEffect(() => {
     if (!workerAssigned) {
       handleFetchUserAssigned();
     }
@@ -185,6 +231,19 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       handleFetchTaskStatus();
     }
   }, []);
+
+  useEffect(() => {
+    if (!waterList) {
+      handleFetchWater();
+    }
+    if (!equiqmentList) {
+      handleFetchEquipment();
+    }
+    if (!chemicalList) {
+      handleFetchChemical();
+    }
+  }, []);
+
   const modalRoot = document.body;
   return ReactDOM.createPortal(
     <div className="modal-create-plant-container">
@@ -275,71 +334,13 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
               type="date"
               placeholder="Start any time"
               value={dueDate}
+              disabled={!isManager}
               onChange={(event) => handleUpdateDueDate(event.target.value)}
             />
           </div>
           <div></div>
         </div>
-        <div className="mt-5">
-          <div className="report-task-modal">
-            <label>Water</label>
-            <div className="report-task-modal-input">
-              <Form.Select
-                className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
-              >
-                {status &&
-                  Array.isArray(status) &&
-                  status.map((item) => (
-                    <option value={item.taskStatusId}>
-                      {item.taskStatusName}
-                    </option>
-                  ))}
-              </Form.Select>
-              <Form.Control
-                className="input-login input-addition input-name-create-plant input-width-report-modal"
-                type="number"
-                placeholder="Volumn"
-              />
-            </div>
-          </div>
-          <div className="report-task-modal mt-3">
-            <label>Equipment</label>
-            <div className="report-task-modal-input">
-              <Form.Select
-                className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
-              >
-                {status &&
-                  Array.isArray(status) &&
-                  status.map((item) => (
-                    <option value={item.taskStatusId}>
-                      {item.taskStatusName}
-                    </option>
-                  ))}
-              </Form.Select>
-            </div>
-          </div>
-          <div className="report-task-modal mt-3">
-            <label>Chemical</label>
-            <div className="report-task-modal-input">
-              <Form.Select
-                className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
-              >
-                {status &&
-                  Array.isArray(status) &&
-                  status.map((item) => (
-                    <option value={item.taskStatusId}>
-                      {item.taskStatusName}
-                    </option>
-                  ))}
-              </Form.Select>
-              <Form.Control
-                className="input-login input-addition input-name-create-plant"
-                type="number"
-                placeholder="Volumn"
-              />
-            </div>
-          </div>
-        </div>
+
         <div className="mt-5">
           <label className="schedule-label ">Description</label>
           <Form.Control
@@ -348,6 +349,105 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
             rows={10}
             placeholder="The Orange Glow™ Knock Out® Rose is an upright, bushy shrub that produces abundant clusters of very full, cupped blooms..."
           />
+        </div>
+        <div className="mt-3 report-task-modal-container">
+          <h6>Report</h6>
+          <div className="report-input-modal-container">
+            <div className="report-task-modal">
+              <label className="report-label">Water</label>
+              <div className="report-task-modal-input">
+                <Form.Select
+                  value={water}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === NOT_USE) {
+                      setWater();
+                    } else {
+                      setWater(value);
+                    }
+                  }}
+                  className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+                >
+                  {waterList &&
+                    Array.isArray(waterList) &&
+                    waterList.map((item, indexWater) => (
+                      <option value={item.waterId}>
+                        {indexWater === 0 ? item : item.waterName}
+                      </option>
+                    ))}
+                </Form.Select>
+                {water && (
+                  <Form.Control
+                    className="input-login input-addition input-name-create-plant input-width-report-modal"
+                    type="number"
+                    placeholder="Volumn"
+                  />
+                )}
+              </div>
+            </div>
+            <div className="report-task-modal mt-3">
+              <label  className="report-label">Equipment</label>
+              <div className="report-task-modal-input">
+                <Form.Select
+                  value={equipment}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === NOT_USE) {
+                      setEquiqment();
+                    } else {
+                      setEquiqment(value);
+                    }
+                  }}
+                  className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+                >
+                  {equiqmentList &&
+                    Array.isArray(equiqmentList) &&
+                    equiqmentList.map((item, indexEquiqment) => (
+                      <option value={item.id}>
+                        {indexEquiqment === 0 ? item : item.name}
+                      </option>
+                    ))}
+                </Form.Select>
+              </div>
+            </div>
+            <div className="report-task-modal mt-3">
+              <label  className="report-label">Chemical</label>
+              <div className="report-task-modal-input">
+                <Form.Select
+                  value={chemical}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === NOT_USE) {
+                      setChemical();
+                    } else {
+                      setChemical(value);
+                    }
+                  }}
+                  className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+                >
+                  {chemicalList &&
+                    Array.isArray(chemicalList) &&
+                    chemicalList.map((item, indexChemical) => (
+                      <option value={item.id}>
+                        {indexChemical === 0 ? item : item.name}
+                      </option>
+                    ))}
+                </Form.Select>
+                {chemical && (
+                  <Form.Control
+                    className="input-login input-addition input-name-create-plant"
+                    type="number"
+                    placeholder="Volumn"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="button-report-task">
+            <div style={{width: "200px"}}>
+              <Button text="Report" />
+            </div>
+          </div>
         </div>
         <img
           className="icon-close"
