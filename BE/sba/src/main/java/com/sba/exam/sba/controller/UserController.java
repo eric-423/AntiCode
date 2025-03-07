@@ -32,6 +32,11 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestParam String email, @RequestParam String password) {
         ResponseData responseData = new ResponseData();
+        if(usersRepository.findByUserEmail(email)==null){
+            responseData.setData("User Not Found");
+            responseData.setStatus(404);
+            return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
+        }
         boolean checkLogin = loginServiceImp.checkLogin(email, password);
         String token;
 
@@ -90,5 +95,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
+            try {
+                return new ResponseEntity<>(userServiceImp.deleteUser(id), HttpStatus.OK);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        return null;
+    }
 
 }

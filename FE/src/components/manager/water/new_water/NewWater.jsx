@@ -20,11 +20,13 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message, {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const handleOnClick = async () => {
@@ -42,7 +44,7 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail("Water can not added !");
+      showToastMessageFail(error.response.data.message || 'Cannot add water');
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);
@@ -69,7 +71,7 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
             <Form.Control
               className="input-login input-addition"
               type="number"
-              
+              placeholder="Enter purity"
               value={purity}
               onChange={(e) => setPurity(e.target.value)}
             />
@@ -79,6 +81,7 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
             <Form.Control
               className="input-login input-addition"
               type="number"
+              placeholder="0 - 14"
               value={phlevel}
               onChange={(e) => setPhLevel(e.target.value)}
             />
@@ -88,6 +91,7 @@ const NewWater = ({ setShowModal, setRefreshData }) => {
             <Form.Control
               className="input-login input-addition"
               type="number"
+              placeholder="Enter volume available"
               value={volumeAvailable}
               onChange={(e) => setVolumeAvailable(e.target.value)}
             />

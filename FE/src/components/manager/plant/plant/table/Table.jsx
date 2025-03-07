@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Table.css";
-import Header from "../../../../common/table/header/Header";
+import Header from "../../../../common/table/header/Header"
 import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
 import axios from "axios";
+import PropTypes from "prop-types";
 
-const Table = ({ listTitle, refreshData , setRefreshData}) => {
+const Table = ({ listTitle, refreshData, setRefreshData }) => {
   const [itemsActive, setItemsActive] = useState([]);
   const [selectedPlants, setSelectedPlants] = useLocalStorage(
     "manager_plants_selected",
@@ -50,7 +51,7 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   };
   useEffect(() => {
     handleFetchDataPlantType()
-  },[])
+  }, [])
   useEffect(() => {
     setSelectedPlants(itemsActive);
   }, [itemsActive]);
@@ -76,6 +77,11 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
       </div>
     </>
   );
+};
+Table.propTypes = {
+  listTitle: PropTypes.string.isRequired,
+  refreshData: PropTypes.bool.isRequired,
+  setRefreshData: PropTypes.func.isRequired,
 };
 
 export default Table;

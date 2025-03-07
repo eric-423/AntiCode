@@ -8,14 +8,20 @@ import { toast } from "react-toastify/unstyled";
 
 const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const [taskId, setTaskId] = useState()
+  const [taskName, setTaskName] = useState()
   const [createdAt, setCreatedAt] = useState()
   const [completedAt, setCompletedAt] = useState()
   const [taskDescription, setTaskDescription] = useState()
+  const [startDate, setStartDate] = useState()
+  const [dueDate, setDueDate] = useState()
   const [taskType, setTaskType] = useState()
   const [taskStatus, setTaskStatus] = useState()
   const modalRoot = document.body;
   const setDataItem = (itemUpdate) => {
     setTaskId(itemUpdate.taskId)
+    setTaskName(itemUpdate.taskName)
+    setStartDate(itemUpdate.startDate)
+    setDueDate(itemUpdate.dueDate)
     setCreatedAt(itemUpdate.createdAt)
     setCompletedAt(itemUpdate.completedAt)
     setTaskDescription(itemUpdate.taskDescription)
@@ -26,11 +32,13 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message, {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const handleClickClose = () => {
@@ -91,8 +99,11 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
 
     const task = {
       taskId: taskId,
+      taskName: taskName,
       createdAt: createdAt,
       completedAt: completedAt,
+      startDate: startDate,
+      dueDate: dueDate,
       taskDescription: taskDescription,
       taskStatus: task_status.taskStatusId,
       taskType: task_type.taskTypeId,
@@ -108,7 +119,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail("Task can not update !");
+      showToastMessageFail(error.response.data.message||"Task can not update !");
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);
@@ -121,6 +132,16 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
           <h4 className="addition-plant-type-h4 group-3-column-create-plant">
             UPDATE TASK
           </h4>
+          <Form.Group>
+                      <Form.Label className="text-label-login">Name</Form.Label>
+                      <Form.Control
+                        className="input-login input-addition"
+                        type="text"
+                        value={taskName}
+                        onChange={(e) => setTaskName(e.target.value)}
+                      />
+                    </Form.Group>
+
           <Form.Group className="group-3-column-create-plant">
                       <Form.Label className="text-label-login">Created At</Form.Label>
                       <Form.Control
@@ -141,11 +162,36 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
                         onChange={(e) => setCompletedAt(e.target.value)}
                       />
                     </Form.Group>
+
+                    <Form.Group className="group-3-column-create-plant">
+                      <Form.Label className="text-label-login">
+                        Start Date
+                      </Form.Label>
+                      <Form.Control
+                        className="input-login input-addition input-characteristis-create-plant"
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="group-3-column-create-plant">
+                      <Form.Label className="text-label-login">
+                        Due Date
+                      </Form.Label>
+                      <Form.Control
+                        className="input-login input-addition input-characteristis-create-plant"
+                        type="date"
+                        value={dueDate}
+                        onChange={(e) => setDueDate(e.target.value)}
+                      />
+                    </Form.Group>
+
                     <Form.Group>
                       <Form.Label className="text-label-login">Description</Form.Label>
                       <Form.Control
                         className="input-login input-addition"
-                        type="textarea"
+                        as={"textarea"}
                         rows={3}
                         value={taskDescription}
                         onChange={(e) => setTaskDescription(e.target.value)}

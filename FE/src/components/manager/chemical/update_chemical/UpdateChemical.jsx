@@ -7,7 +7,7 @@ import Button from "../../../common/button/Button";
 import { toast } from "react-toastify";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const UpdateChemical = ({ setShowModal, itemUpdate }) => {
+const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
     const [chemicalName, setChemicalName] = useState(itemUpdate.name || '');
     const [description, setDescription] = useState(itemUpdate.description || '');
     const [manufacturingDate, setManufacturingDate] = useState(itemUpdate.manufacturingDate);
@@ -20,6 +20,11 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
 
     const handleClickClose = () => {
         setShowModal(false);
+    };
+
+    const formatDate = (date) => {
+        if (!date) return '';
+        return format(new Date(date), 'yyyy-MM-dd');
     };
 
     const handleFetchDataChemicalType = async () => {
@@ -37,10 +42,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
         }
     };
 
-    const formatDate = (date) => {
-        if (!date) return '';
-        return format(new Date(date), 'yyyy-MM-dd');
-    };
+
 
     useEffect(() => {
         handleFetchDataChemicalType();
@@ -65,8 +67,10 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
             volumeAvailable: volumeAvailable,
             chemicalType: chemicalType,
         };
-        console.log(volumeAvailable);
 
+        if (!chemicalName || !chemicalType || !manufacturingDate || !expirationDate) {
+            return showToastMessageFail("Please fill all required fields");
+        }
         if (expirationDate < manufacturingDate) {
             return showToastMessageFail("Expiration date must be greater than manufacturing date");
         }
@@ -90,8 +94,12 @@ const UpdateChemical = ({ setShowModal, itemUpdate }) => {
             console.error(error);
             showToastMessageFail("Chemical cannot be added!");
             setShowModal(true);
+        } finally {
+            window.location.reload();
+            refreshData((prev) => !prev);
         }
     };
+
 
 
     const showToastMessageSuccess = (message) => {

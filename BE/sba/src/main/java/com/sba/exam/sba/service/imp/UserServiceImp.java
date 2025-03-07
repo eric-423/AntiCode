@@ -20,4 +20,7 @@ public interface UserServiceImp {
     UserDTO addUserByAdmin(UserDTO userDTO);
 
     UserDTO updateUser(int id, UserDTO userDTO);
+
+    UserDTO deleteUser(int id);
+
 }

@@ -47,14 +47,36 @@ const UpdateEquipment = ({ setShowModal, itemUpdate }) => {
         }
     };
 
-    const handleOnClick = async () => {
-        if (!name.trim()) {
-            return showToastMessageFail("Name cannot be empty");
+    const validateInputs = () => {
+        if (!equipmentType) {
+            showToastMessage("Please select equipment type", false);
+            return false;
         }
-
+        if (!name) {
+            showToastMessage("Name cannot be empty", false);
+            return false;
+        }
+        if (!description) {
+            showToastMessage("Description cannot be empty", false);
+            return false;
+        }
         if (quantity < 1) {
-            return showToastMessageFail("Quantity must be greater than 0");
+            showToastMessage("Quantity must be greater than 0", false);
+            return false;
         }
+        return true;
+    };
+
+    const showToastMessage = (message, isSuccess = true) => {
+        if (isSuccess) {
+            toast.success(message, { position: "top-right" });
+        } else {
+            toast.error(message, { position: "top-right" });
+        }
+    };
+
+    const handleOnClick = async () => {
+        if (!validateInputs()) return;
 
         const equipment = {
             id: itemUpdate.id,

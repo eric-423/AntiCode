@@ -1,8 +1,10 @@
 package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.LocationDTO;
+import com.sba.exam.sba.dto.PlantingLocationDTO;
 import com.sba.exam.sba.entity.Area;
 import com.sba.exam.sba.entity.Location;
+import com.sba.exam.sba.entity.PlantingLocation;
 import com.sba.exam.sba.payload.request.LocationRequest;
 import com.sba.exam.sba.repository.AreaRepository;
 import com.sba.exam.sba.repository.LocationRepository;
@@ -103,6 +105,23 @@ public class LocationService implements LocationServiceImp {
         }
     }
 
+    @Override
+    public List<LocationDTO> getAllLocationAvailable(Integer id) {
+        List<Location> locations = locationRepository.findAll();
+        List<LocationDTO> result = new ArrayList<>();
+        for(Location location : locations){
+            if(id!=null){
+                if(location.getLocationId() == id){
+                    result.add(transferDTO(location));
+                }
+            }
+            if(checkLocationAvailable(location)){
+                result.add(transferDTO(location));
+            }
+        }
+        return result;
+    }
+
     public LocationDTO transferDTO(Location location){
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setLocationId(location.getLocationId());
@@ -114,4 +133,26 @@ public class LocationService implements LocationServiceImp {
         locationDTO.setArea(areaServiceImp.getAreaById(location.getArea().getAreaId()));
         return locationDTO;
     }
+
+
+
+    private boolean checkLocationAvailable(Location location){
+        try {
+            List<PlantingLocation> plantingLocations = location.getPlantingLocationList();
+
+            if (plantingLocations.size() == 0) {
+                return true;
+            }
+            PlantingLocation plantingLocation = plantingLocations.getLast();
+            if(plantingLocation.isDeleted()){
+                return true;
+            }
+            return plantingLocation.isHarvest();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
+
 }

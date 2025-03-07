@@ -3,10 +3,12 @@ package com.sba.exam.sba.service;
 import com.sba.exam.sba.dto.UserDTO;
 import com.sba.exam.sba.entity.Role;
 import com.sba.exam.sba.entity.Users;
+import com.sba.exam.sba.repository.OTPRepository;
 import com.sba.exam.sba.repository.RoleRepository;
 import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.OTPServiceImp;
 import com.sba.exam.sba.service.imp.UserServiceImp;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,17 +29,23 @@ public class UserService implements UserServiceImp {
     private OTPServiceImp OTPServiceImp;
 
     @Autowired
+    private OTPRepository otpRepository;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Override
     public boolean createUser(UserDTO userDTO) {
         try {
-            boolean isVerified = OTPServiceImp.isOtpVerified(userDTO.getEmail());
+            boolean isVerified = otpRepository.findByPhoneNumber(userDTO.getPhoneNumber()).getLast().isVerified();
             if (!isVerified) throw new Exception();
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
+            user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+            user.setVerified(false);
+            user.setDeleted(false);
             Role role = roleRepository.findRoleByNameIgnoreCase("Worker");
             user.setRole(role);
             userRepository.save(user);
@@ -72,23 +80,33 @@ public class UserService implements UserServiceImp {
         List<UserDTO> dtos = new ArrayList<>();
         List<Users> users = userRepository.findAll();
         for (Users user : users) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUserName(user.getUserName());
-            userDTO.setEmail(user.getUserEmail());
-            userDTO.setId(user.getId());
-            userDTO.setRole(user.getRole().getName());
-            userDTO.setAddress(user.getUserAddress());
-            userDTO.setDateOfBirth(user.getUserDateOfBirth());
-            userDTO.setPhoneNumber(user.getUserPhoneNumber());
-            userDTO.setBusy(user.isBusy());
-            dtos.add(userDTO);
+            if (!user.isDeleted()) {
+                UserDTO userDTO = new UserDTO();
+                userDTO.setUserName(user.getUserName());
+                userDTO.setEmail(user.getUserEmail());
+                userDTO.setId(user.getId());
+                userDTO.setRole(user.getRole().getName());
+                userDTO.setAddress(user.getUserAddress());
+                userDTO.setDateOfBirth(user.getUserDateOfBirth());
+                userDTO.setPhoneNumber(user.getUserPhoneNumber());
+                userDTO.setBusy(user.isBusy());
+                dtos.add(userDTO);
+            }
         }
         return dtos;
     }
 
+
+    @Transactional
     @Override
     public UserDTO addUserByAdmin(UserDTO userDTO) {
         try {
+            List<Users> users = userRepository.findAll();
+            for (Users u : users) {
+                if (u.getUserEmail().equals(userDTO.getEmail())) {
+                    throw new Exception("This Email is already in farm");
+                }
+            }
             Users user = new Users();
             user.setUserEmail(userDTO.getEmail());
             user.setUserName(userDTO.getUserName());
@@ -99,7 +117,7 @@ public class UserService implements UserServiceImp {
             user.setUserDateOfBirth(userDTO.getDateOfBirth());
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setBusy(false);
-
+            user.setDeleted(false);
             userRepository.save(user);
             return userDTO;
         } catch (Exception e) {
@@ -125,6 +143,33 @@ public class UserService implements UserServiceImp {
             return userDTO;
         } catch (Exception e) {
             System.out.println("Error updating user" + e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public UserDTO deleteUser(int id) {
+        try {
+            Users user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            if (!user.getRole().getName().equalsIgnoreCase("Manager") && !user.getRole().getName().equalsIgnoreCase("Admin")) {
+                user.setDeleted(true);
+                userRepository.save(user);
+            } else {
+                throw new RuntimeException("Cannot delete manager or admin");
+            }
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUserName(user.getUserName());
+            userDTO.setEmail(user.getUserEmail());
+            userDTO.setId(user.getId());
+            userDTO.setRole(user.getRole().getName());
+            userDTO.setAddress(user.getUserAddress());
+            userDTO.setDateOfBirth(user.getUserDateOfBirth());
+            userDTO.setPhoneNumber(user.getUserPhoneNumber());
+            userDTO.setBusy(user.isBusy());
+            return userDTO;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

@@ -16,11 +16,13 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message, {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const clearData = () => {
@@ -40,7 +42,7 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
       if (!response || response.status !== 200 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Task type was updated !");
     } catch (error) {
-      showToastMessageFail("Task type can not update !");
+      showToastMessageFail(error.response.data.message||"Task type can not update !");
     } finally {
       clearData();
       setUpdateItem(false)
@@ -61,7 +63,7 @@ const NewType = ({ setRefreshData, updateItem , setUpdateItem}) => {
       showToastMessageSuccess("Task type was added !");
     } catch (error) {
       console.log(error)
-      showToastMessageFail("Task type can not add !");
+      showToastMessageFail(error.response.data.message||"Task type can not add !");
     } finally {
       clearData();
       setRefreshData((prev) => !prev);

@@ -6,14 +6,16 @@ import { toast } from "react-toastify/unstyled";
 import axios from "axios";
 
 const Body = ({ item, setRefreshData, setUpdateItem }) => {
-  const showToastMessageSuccess = () => {
-    toast.success("Task type was deleted !", {
+  const showToastMessageSuccess = (message) => {
+    toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
-  const showToastMessageFail = (errorMessage) => {
-    toast.error(errorMessage.replace(/^.*Exception:\s*/, ''), {
+  const showToastMessageFail = (message) => {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const handleDeleteItem = async (item) => {

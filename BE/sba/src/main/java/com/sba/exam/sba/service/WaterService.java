@@ -49,6 +49,8 @@ public class WaterService implements WaterServiceImp {
     public WaterDTO addWater(WaterRequest waterRequest) {
         try{
             Water water = new Water();
+            if(waterRequest.getPurity() <= 0 || waterRequest.getPHLevel() < 0 || waterRequest.getPHLevel() > 14 || waterRequest.getVolumeAvailable() <= 0)
+                throw new Exception("Not Valid Value!!");
             water.setWaterName(waterRequest.getWaterName());
             water.setPurity(waterRequest.getPurity());
             water.setPHLevel(waterRequest.getPHLevel());
@@ -71,6 +73,8 @@ public class WaterService implements WaterServiceImp {
     @Transactional
     public WaterDTO updateWater(WaterRequest waterRequest) {
         try{
+            if(waterRequest.getPurity() <= 0 || waterRequest.getPHLevel() < 0 || waterRequest.getPHLevel() > 14 || waterRequest.getVolumeAvailable() <= 0)
+                throw new Exception("Not Valid Value!!");
             Water water = waterRepository.findWaterById(waterRequest.getWaterId());
             water.setWaterName(waterRequest.getWaterName());
             water.setPurity(waterRequest.getPurity());

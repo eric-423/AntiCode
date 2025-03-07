@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./NewUser.css";
 import ICONS from "../../../../constant/Image";
@@ -14,6 +14,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
+    const [listRole, setListRole] = useState([]);
 
     const modalRoot = document.body;
 
@@ -29,6 +30,27 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
         }
     };
 
+    const getRole = async () => {
+        const baseUrl = `${import.meta.env.VITE_REACT_APP_END_POINT}`;
+        try {
+            const response = await fetch(`${baseUrl}/roles`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch role")
+            } else {
+                const data = await response.json();
+                if (!data) throw new Error("No data returned");
+                setListRole(data);
+            }
+            console.log(listRole)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getRole();
+    })
+
     const validateInputs = () => {
         if (role === "") {
             showToastMessage("Please select role type", false);
@@ -38,8 +60,8 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             showToastMessage("Name cannot be empty", false);
             return false;
         }
-        if (!email) {
-            showToastMessage("Email cannot be empty", false);
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            showToastMessage("Email should have '@gmail.com' ", false);
             return false;
         }
         if (!password) {
@@ -51,6 +73,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             return false;
         }
         if (!dateOfBirth) {
+            console.log(dateOfBirth)
             showToastMessage("Date of birth cannot be empty", false);
             return false;
         }
@@ -58,11 +81,11 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             showToastMessage("Phone number cannot be empty", false);
             return false;
         }
-
         return true;
     };
 
     const handleOnClick = async () => {
+
         if (!validateInputs()) return;
         const user = {
             userName: name,
@@ -73,6 +96,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
             phoneNumber,
             role: role,
         };
+
 
         try {
             const response = await fetch(
@@ -113,10 +137,16 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
                             onChange={(e) => setRole(e.target.value)}
                             className="input-login input-addition input-plant-type-create-plant"
                         >
-                            <option value="">SELECT EQUIPMENT TYPE</option>
-                            <option value="WORKER">WORKER</option>
-                            <option value="WORKER">ADMIN</option>
-                            <option value="WORKER">MANAGER</option>
+                            <option value="">SELECT ROLE</option>
+                            {
+                                listRole.map((role) => {
+                                    return <option key={role.id} value={role.name}>{role.name}</option>
+                                })
+                            }
+
+                            {/* <option value="WORKER">WORKER</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="MANAGER">MANAGER</option> */}
 
                         </Form.Select>
                     </Form.Group>

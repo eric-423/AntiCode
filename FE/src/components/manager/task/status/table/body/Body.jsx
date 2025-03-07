@@ -9,11 +9,13 @@ const Body = ({ item, setRefreshData, setUpdateItem }) => {
   const showToastMessageSuccess = () => {
     toast.success("Task status was deleted !", {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (errorMessage) => {
     toast.error(errorMessage.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const handleDeleteItem = async (item) => {

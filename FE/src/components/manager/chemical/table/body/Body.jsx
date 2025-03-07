@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import "./Body.css";
 import ICONS from "../../../../../constant/Image.js";
 import UpdateChemical from "../../update_chemical/UpdateChemical.jsx";
+import useGridColumn from "../../../../../hook/useGridColumn.js";
 
-const Body = ({ item, index, itemsActive, handleSelectItem }) => {
+const Body = ({ item, index, itemsActive, listTitle, handleSelectItem, refreshData }) => {
     const [showModal, setShowModal] = useState(false);
     const [itemUpdate, setItemUpdate] = useState(null);
     const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.id);
+    const gridColumnTemplate = useGridColumn(listTitle);
 
     const handleShowUpdatePopup = (event, item) => {
         event.stopPropagation();
@@ -24,11 +26,12 @@ const Body = ({ item, index, itemsActive, handleSelectItem }) => {
     return (
         <>
             {showModal && (
-                <UpdateChemical itemUpdate={itemUpdate} setShowModal={setShowModal} />
+                <UpdateChemical itemUpdate={itemUpdate} setShowModal={setShowModal} refreshData={refreshData} />
             )}
             <ul
                 className={isActive ? "body-table body-table-active" : "body-table"}
                 onClick={() => handleSelectItem(item)}
+                style={{ gridTemplateColumns: gridColumnTemplate }}
             >
                 <li>{index + 1}</li>
                 <li>{item.name}</li>
@@ -66,6 +69,8 @@ Body.propTypes = {
     index: PropTypes.number.isRequired,
     itemsActive: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
     handleSelectItem: PropTypes.func.isRequired,
+    refreshData: PropTypes.func.isRequired,
+    listTitle: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 

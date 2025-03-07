@@ -55,6 +55,7 @@ const Table = ({ listTitle, refreshData }) => {
                             itemsActive={itemsActive}
                             item={item}
                             index={index}
+                            listTitle={listTitle}
                         />
                     ))
                 ) : (

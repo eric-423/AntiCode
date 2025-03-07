@@ -5,19 +5,36 @@ import SearchBar from "../../../common/search_bar/SearchBar.jsx";
 import Filter from "../../../common/filter/Filter.jsx";
 import NewChemical from "../new_chemical/NewChemical.jsx";
 import useLocalStorage from "use-local-storage";
+import { toast } from "react-toastify";
 
 const ToolBar = ({ setRefreshData }) => {
-    const [selectedPlants, setSelectedPlants] = useLocalStorage("manager_plants_selected", "");
+    const [selectedChemical, setSelectedChemical] = useLocalStorage("manager_chemical_selected", "");
     const [showModal, setShowModal] = useState(false);
+
     const handleShowModal = () => {
         setShowModal((prev) => !prev);
     };
 
+
+    // message for success or fail
+    const showToastMessageSuccess = (message) => {
+        toast.success(message, {
+            position: "top-right",
+        });
+    };
+
+    const showToastMessageFail = (message) => {
+        toast.error(message, {
+            position: "top-right",
+        });
+    };
+
+
     const handleDeleteChemical = async () => {
         try {
             let param = ''
-            Array.isArray(selectedPlants) && selectedPlants.forEach((element, index) => {
-                if (index === selectedPlants.length - 1) {
+            Array.isArray(selectedChemical) && selectedChemical.forEach((element, index) => {
+                if (index === selectedChemical.length - 1) {
                     param += `${element}`
                 } else {
                     param += `${element}&`
@@ -34,13 +51,15 @@ const ToolBar = ({ setRefreshData }) => {
                 }
             );
 
-            if (response === true) {
-                console.log("delete success")
+            if (response.ok) {
+                showToastMessageSuccess("Delete chemical successfully !")
+            } else {
+                showToastMessageFail("Fail to delete chemical !")
             }
         } catch (error) {
             throw new error
         } finally {
-            setRefreshData(prev => !prev)
+            setRefreshData((prev) => !prev)
         }
     }
 
@@ -50,7 +69,7 @@ const ToolBar = ({ setRefreshData }) => {
             <div className="right-tool-bar-plant">
                 <SearchBar />
                 <div onClick={() => handleDeleteChemical()}
-                    className={selectedPlants && selectedPlants.length > 0 ? "plant-button delete-plant-button-active" : "plant-button delete-plant-button-non-active"}>
+                    className={selectedChemical && selectedChemical.length > 0 ? "plant-button delete-plant-button-active" : "plant-button delete-plant-button-non-active"}>
                     Delete
                 </div>
                 <div

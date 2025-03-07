@@ -13,8 +13,7 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     const [expirationDate, setExpirationDate] = useState("");
     const [volumeAvailable, setVolumeAvailable] = useState();
     const [chemicalTypes, setChemicalTypes] = useState([]);
-    const [selectedChemicalType, setSelectedChemicalType] = useState("");
-    const [typeId, setTypeId] = useState("");
+    const [selectedChemicalType, setSelectedChemicalTypeId] = useState("");
 
     const modalRoot = document.body;
 
@@ -36,7 +35,6 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
             if (!response.ok) throw new Error("Failed to fetch chemical types");
 
             const data = await response.json();
-            console.log(data);
             setChemicalTypes(data);
         } catch (error) {
             console.error("Error fetching chemical types:", error);
@@ -51,7 +49,6 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     }, []);
 
 
-    // message for success or fail
     const showToastMessageSuccess = (message) => {
         toast.success(message, {
             position: "top-right",
@@ -65,19 +62,19 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     };
 
 
-    // Create new chemical
 
     const handleOnClick = async () => {
-        setTypeId(chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.id || '');
         const chemical = {
             name,
             description,
             manufacturingDate,
             expirationDate,
             volumeAvailable,
-            chemicalType: chemicalTypes.find(item => Number(item.id) === Number(selectedChemicalType))?.name || '',
         };
 
+        if (!name || !selectedChemicalType || !manufacturingDate || !expirationDate) {
+            return showToastMessageFail("Please fill all required fields");
+        }
         if (expirationDate < manufacturingDate) {
             return showToastMessageFail("Expiration date must be greater than manufacturing date");
         }
@@ -86,8 +83,9 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
         }
 
         try {
+            console.log(selectedChemicalType);
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${typeId}`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${selectedChemicalType}`,
                 {
                     method: "POST",
                     headers: {
@@ -96,6 +94,7 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     body: JSON.stringify(chemical),
                 }
             );
+
             if (!response.ok) throw new Error("Failed to create Chemical");
             const data = await response.json();
             if (!data) throw new Error("No data returned");
@@ -120,21 +119,20 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     <h4 className="addition-plant-type-h4 group-3-column-create-plant">
                         NEW CHEMICAL
                     </h4>
-
-
                     <Form.Group className="mb-2 group-3-column-create-plant">
                         <Form.Label className="text-label-login">Chemical Type</Form.Label>
                         <Form.Select
-                            onChange={(e) => setSelectedChemicalType(e.target.value)}
+                            onChange={(e) => setSelectedChemicalTypeId(e.target.value)}
                             className="input-login input-addition input-plant-type-create-plant"
-
                         >
                             <option value="">Select Chemical Type</option>
-                            {chemicalTypes &&
+                            {
+                                chemicalTypes &&
                                 Array.isArray(chemicalTypes) &&
                                 chemicalTypes.map((item) => (
                                     <option key={item.id} value={item.id}>{item.name}</option>
-                                ))}
+                                ))
+                            }
                         </Form.Select>
                     </Form.Group>
 

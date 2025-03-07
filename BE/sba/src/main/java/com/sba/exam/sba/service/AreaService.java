@@ -46,7 +46,7 @@ public class AreaService implements AreaServiceImp {
 
     @Override
     public List<AreaDTO> getALlArea() {
-        List<Area> areas = areaRepository.findAll();
+        List<Area> areas = areaRepository.findByIsDeleted(false);
         List<AreaDTO> result = new ArrayList<>();
         for(Area area:areas){
             result.add(transferDTO(area));
@@ -78,8 +78,9 @@ public class AreaService implements AreaServiceImp {
     public AreaDTO deleteArea(int id) {
         try {
             Area area = areaRepository.findByAreaId(id);
+            area.setDeleted(true);
             AreaDTO areaDTO = transferDTO(area);
-            areaRepository.delete(area);
+            areaRepository.save(area);
             return areaDTO;
         } catch (Exception e) {
             return null;

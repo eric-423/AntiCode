@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import './Table.css'
-import Header from '../../../common/table/header/Header'
+import Header from "../../../common/table/header/Header"
 import Body from './body/Body'
 import useLocalStorage from 'use-local-storage'
 
@@ -59,6 +60,11 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
       </div>
     </>
   )
+}
+Table.propTypes = {
+  listTitle: PropTypes.string.isRequired,
+  refreshData: PropTypes.bool.isRequired,
+  setRefreshData: PropTypes.func.isRequired,
 }
 
 export default Table

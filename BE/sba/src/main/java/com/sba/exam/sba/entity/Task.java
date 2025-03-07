@@ -59,4 +59,7 @@ public class Task {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    @Column(name = "task_name")
+    private String taskName;
 }

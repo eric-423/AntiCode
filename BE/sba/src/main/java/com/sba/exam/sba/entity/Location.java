@@ -13,6 +13,7 @@ import java.util.List;
 public class Location {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationId;
 
     @Column(name = "location_extent")
@@ -26,6 +27,9 @@ public class Location {
 
     @Column(name = "location_length")
     private float locationLength;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH

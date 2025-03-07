@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,26 +33,38 @@ public class PlantingLocationController {
 
     @PostMapping
     public ResponseEntity<?> createPlantingLocation(@RequestBody PlantingLocationRequest plantingLocationRequest) {
-        PlantingLocationDTO plantingLocationDTO = plantLocationServiceImp.addPlantLocation(plantingLocationRequest);
-
-        if(plantingLocationDTO==null){
-            return new ResponseEntity<>("",HttpStatus.INTERNAL_SERVER_ERROR);
-        } else{
-            ResponseData responseData = new ResponseData();
-            responseData.setData(plantingLocationDTO);
-            return new ResponseEntity<>(responseData, HttpStatus.OK);
+        ResponseData responseData = new ResponseData();
+        if(plantingLocationRequest.getStartDate().before(new Date())){
+            responseData.setData("Start date must be after current date");
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
+        } else if(plantingLocationRequest.getEndDate().before(plantingLocationRequest.getStartDate())){
+            responseData.setData("End date must be after start date");
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
         }
+        PlantingLocationDTO plantingLocationDTO = plantLocationServiceImp.addPlantLocation(plantingLocationRequest);
+        responseData.setData(plantingLocationDTO);
+        return new ResponseEntity<>(responseData, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePlantingLocation(@PathVariable int id, @RequestBody PlantingLocationRequest plantingLocationRequest) {
+
+        ResponseData responseData = new ResponseData();
+        System.out.println(plantingLocationRequest.getStartDate());
+        System.out.println(new Date());
+        if(plantingLocationRequest.getStartDate().before(new Date())){
+            responseData.setData("Start date must be after current date");
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
+        } else if(plantingLocationRequest.getEndDate().before(plantingLocationRequest.getStartDate())){
+            responseData.setData("End date must be after start date");
+            return new ResponseEntity<>(new ResponseData(), HttpStatus.BAD_REQUEST);
+        }
+
         PlantingLocationDTO plantingLocationDTO = plantLocationServiceImp.updatePlantLocation(id, plantingLocationRequest);
 
-        System.out.println(plantingLocationRequest.toString());
         if(plantingLocationDTO==null){
             return new ResponseEntity<>("",HttpStatus.NOT_FOUND);
         } else{
-            ResponseData responseData = new ResponseData();
             responseData.setData(plantingLocationDTO);
             return new ResponseEntity<>(responseData, HttpStatus.OK);
         }
@@ -61,12 +74,12 @@ public class PlantingLocationController {
     public ResponseEntity<?> deletePlantingLocation(@PathVariable int id) {
         PlantingLocationDTO plantingLocationDTO = plantLocationServiceImp.deletePlantLocation(id);
 
-        if(plantingLocationDTO==null){
-            return new ResponseEntity<>(HttpStatus.OK);
+        if(plantingLocationRepository.findByPlantLocationId(id)==null){
+            return new ResponseEntity<>("",HttpStatus.NOT_FOUND);
         } else{
             ResponseData responseData = new ResponseData();
             responseData.setData(plantingLocationDTO);
-            return new ResponseEntity<>(responseData,HttpStatus.OK);
+            return new ResponseEntity<>(responseData, HttpStatus.OK);
         }
     }
 

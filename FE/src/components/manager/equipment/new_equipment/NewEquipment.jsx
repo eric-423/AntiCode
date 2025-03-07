@@ -53,12 +53,16 @@ const NewEquipment = ({ setShowModal, setRefreshData }) => {
     };
 
     const validateInputs = () => {
+        if (!selectedEquipmentType) {
+            showToastMessage("Please select equipment type", false);
+            return false;
+        }
         if (!name) {
             showToastMessage("Name cannot be empty", false);
             return false;
         }
-        if (!selectedEquipmentType) {
-            showToastMessage("Please select equipment type", false);
+        if (!description) {
+            showToastMessage("Description cannot be empty", false);
             return false;
         }
         if (quantity < 1) {

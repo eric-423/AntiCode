@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Chemical.css";
 import ToolBar from "./tool_bar/ToolBar";
 import Table from "./table/Table";
+// import Chat from "../../chat/Chat";
 
 const Chemical = () => {
     const [refreshData, setRefreshData] = useState(false)
@@ -44,6 +45,7 @@ const Chemical = () => {
         <div className="plant-container">
             <ToolBar setRefreshData={setRefreshData} />
             <Table listTitle={listTitle} refreshData={refreshData} />
+            {/* <Chat /> */}
         </div>
     );
 };

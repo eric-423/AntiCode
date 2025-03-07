@@ -15,11 +15,13 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message, {
+    toast.error(message.replace(/^.*Exception:\s*/, ''), {
       position: "top-right",
+      autoClose: 1000,
     });
   };
   const clearData = () => {
@@ -39,7 +41,7 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
       if (!response || response.status !== 200 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Task status was updated !");
     } catch (error) {
-      showToastMessageFail("Task status can not update !");
+      showToastMessageFail(error.response.data.message || 'Cannot update task status');
     } finally {
       clearData();
       setUpdateItem(false)
@@ -58,7 +60,7 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
       showToastMessageSuccess("Task status was added !");
     } catch (error) {
       console.log(error)
-      showToastMessageFail("Task status can not add !");
+      showToastMessageFail(error.response.data.message || 'Cannot add task status');
     } finally {
       clearData();
       setRefreshData((prev) => !prev);

@@ -48,6 +48,20 @@ public class LocationController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<?> getAllLocationAvailable(@RequestParam(required = false) Integer locationId){
+        try {
+            ResponseData responseData = new ResponseData();
+            responseData.setData(locationServiceImp.getAllLocationAvailable(locationId));
+            responseData.setStatus(200);
+            return new ResponseEntity<>(responseData, HttpStatus.OK);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteLocation(@PathVariable int id) {
         ResponseData responseData = new ResponseData();
