@@ -30,9 +30,9 @@ const listMenu = [
     data: [
       {
         nameMenu: "User",
-        image: ICONS.icon_schedule,
-        imageActive: ICONS.icon_schedule_active,
-        sortItem: 1,
+        image: ICONS.icon_user,
+        imageActive: ICONS.icon_user_active,
+        sortItem: 10,
         subItems: [],
         component: COMPONENTS.USER,
         path: "user-management",
