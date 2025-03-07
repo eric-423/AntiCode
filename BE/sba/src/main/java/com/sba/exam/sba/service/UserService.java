@@ -136,7 +136,9 @@ public class UserService implements UserServiceImp {
             user.setUserDateOfBirth(userDTO.getDateOfBirth());
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setBusy(userDTO.isBusy());
-            user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+            if (userDTO.getPassword() != null){
+                user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+            }
             Role role = roleRepository.findRoleByNameIgnoreCase(userDTO.getRole());
             user.setRole(role);
             userRepository.save(user);

@@ -4,6 +4,11 @@ import { toast } from 'react-toastify';
 import './ManagerChat.css';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+import useLocalStorage from 'use-local-storage'
+import { jwtDecode } from 'jwt-decode';
+import LOCALSTORAGE from '../../constant/localStorage'
+
+
 
 const ManagerChat = memo(() => {
     const [workers, setWorkers] = useState([]);
@@ -11,14 +16,23 @@ const ManagerChat = memo(() => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const messagesEndRef = useRef(null);
+    const [chatRoomId, setChatRoomId] = useState(null);
+    const [userChatRoom, setUserChatRoom] = useState("");
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [decodeId, setDecodeId] = useState(jwtDecode(atob(auth)).id);
 
-    const [chatRoomId, setChatRoomId] = useState("");
+
+    const chatRoomIdRef = useRef(chatRoomId);
+    useEffect(() => {
+        chatRoomIdRef.current = chatRoomId;
+    }, [chatRoomId]);
 
 
     useEffect(() => {
         getALlWorkersChatRoom();
         if (!client) {
             handleConnectWebSocket();
+
         }
         return () => {
             if (client && client.connected) {
@@ -26,7 +40,7 @@ const ManagerChat = memo(() => {
             }
         };
 
-    }, []);
+    }, [auth]);
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -34,33 +48,63 @@ const ManagerChat = memo(() => {
         }
     }, [messages]);
 
-    const handleFetchChatMessages = async (userid) => {
+    const handleSetUserChat = async (worker) => {
+        setUserChatRoom(worker);
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/1/messages`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            if (!response.ok) throw new Error("Failed to fetch chat messages");
-            const data = await response.json();
-            setMessages(data);
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/chat-room`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch chat rooms");
+
+            const result = await response.json();
+            const chatRooms = result.data;
+
+            const targetRoom = chatRooms.find(item => item.name === worker.userName);
+
+            if (!targetRoom) {
+                toast.error("Không tìm thấy phòng chat");
+                return;
+            }
+
+            setChatRoomId(targetRoom.id);
         } catch (error) {
-            console.error("Error fetching chat messages:", error);
-            toast.error("Error fetching chat messages");
+            console.error("Error:", error);
+            toast.error("Lỗi khi tải phòng chat");
         }
     }
 
+
+    // const handleFetchChatMessages = async (userid) => {
+    //     try {
+    //         const response = await fetch(
+    //             `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/1/messages`,
+    //             {
+    //                 method: "GET",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //             }
+    //         );
+    //         if (!response.ok) throw new Error("Failed to fetch chat messages");
+    //         const data = await response.json();
+    //         setMessages(data);
+    //     } catch (error) {
+    //         console.error("Error fetching chat messages:", error);
+    //         toast.error("Error fetching chat messages");
+    //     }
+    // }
+
     const handleSend = async () => {
         if (!input.trim()) return;
+        console.log(chatRoomId)
         const body = {
-            userId: 1,
-            chatRoomId: 1,
+            userId: userChatRoom.id,
+            chatRoomId: chatRoomId,
             message: input.trim(),
         };
+        console.log(body)
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/send`,
@@ -96,18 +140,22 @@ const ManagerChat = memo(() => {
         const socket = new SockJS(`${import.meta.env.VITE_REACT_APP_END_POINT}/web-socket`);
         const newClient = new Client({
             webSocketFactory: () => socket,
-            debug: (str) => console.log(str),
             reconnectDelay: 2000,
         });
 
         newClient.onConnect = () => {
             console.log('Connected to WebSocket');
-            newClient.subscribe("/topic/messages", (message) => {
+            newClient.subscribe("/topic/messages/", (message) => {
                 console.log(message)
-                setMessages(prev => [...prev, {
-                    text: message.body,
-                    isUserMessage: false,
-                }]);
+                const splitMessage = message.body.split('|')[1];
+                const splitIdChatRoom = message.body.split('|')[2];
+                if (splitMessage == decodeId && splitIdChatRoom == chatRoomIdRef.current) {
+                    setMessages(prev => [...prev, {
+                        text: message.body.split('|')[0],
+                        isUserMessage: false,
+                    }]);
+                }
+
             });
         };
         newClient.activate();
@@ -137,6 +185,13 @@ const ManagerChat = memo(() => {
     return (
         <Row className='w-100'>
             <Col md={9} className='position-relative'>
+                <div>
+                    <h6 className='manager-chat-room-name'>
+                        {userChatRoom.userName}
+                    </h6>
+                </div>
+
+
                 <div className='manager-chat-messages'>
                     {messages.map((msg, index) => (
                         <div key={index} className={`manager-chat-message ${msg.isUserMessage ? 'manager-message' : 'manager-other-message'}`}>
@@ -145,6 +200,8 @@ const ManagerChat = memo(() => {
                     ))}
                     <div ref={messagesEndRef} />
                 </div>
+
+
                 <div className='manager-chat-input'>
                     <input
                         type="text"
@@ -166,19 +223,18 @@ const ManagerChat = memo(() => {
 
             </Col>
             <Col md={3}>
-                <div>
+                <div className='manager-chat-list-users'>
                     <h5>Danh sách người dùng</h5>
-                    <ul className='manager-chat-list-users'>
-                        {workers.map(worker => (
-                            <li onClick={""} key={worker.id}>
-                                <buuton>{worker.name}</buuton>
-                                <button>{worker.email}</button>
-                            </li>
-                        ))}
-                    </ul>
+                    {
+                        workers.map((worker, index) => (
+                            <button key={index} className='' onClick={() => handleSetUserChat(worker)}>
+                                <h6>{worker.userName}</h6>
+                            </button>
+                        ))
+                    }
                 </div>
             </Col>
-        </Row>
+        </Row >
     );
 });
 

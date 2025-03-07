@@ -11,6 +11,15 @@
     border-radius: 10px;
 }
 
+.manager-chat-room-name {
+    font-size: 20px;
+    padding-left: 30px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
 .manager-chat-input input[type="text"] {
     padding: 10px 20px;
     border: none;
