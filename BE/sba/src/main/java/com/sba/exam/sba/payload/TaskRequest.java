@@ -1,7 +1,5 @@
 package com.sba.exam.sba.payload;
 
-import com.sba.exam.sba.entity.TaskStatus;
-import com.sba.exam.sba.entity.TaskType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,5 +17,10 @@ public class TaskRequest implements Serializable {
     private int taskType;
     private boolean isDeleted;
     private String taskName;
+    private int equipmentId;
+    private PlantPotTaskRequest plantPotTask;
+    private PlantMediumTaskRequest plantMediumTask;
+    private ChemicalTaskRequest chemicalTaskRequest;
+    private WaterTaskRequest waterTaskRequest;
 
 }

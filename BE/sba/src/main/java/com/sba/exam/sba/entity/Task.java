@@ -57,6 +57,12 @@ public class Task {
     })
     private Set<FarmingEquipmentTask> farmingEquipmentTasks;
 
+    @OneToMany( mappedBy = "task",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PlantMediumTask> plantMediumTasks;
+
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PlantPotTask> plantPotTasks;
+
     @ManyToMany
     @JoinTable(
             name = "planting_location_task",

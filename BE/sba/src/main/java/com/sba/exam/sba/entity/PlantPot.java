@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "plant_pot")
 @Data
@@ -22,4 +24,7 @@ public class PlantPot {
 
     @Column(name = "pot_quantity_available")
     private int potQuantityAvailable;
+
+    @OneToMany(mappedBy = "plantPot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PlantPotTask> plantPotTasks;
 }
