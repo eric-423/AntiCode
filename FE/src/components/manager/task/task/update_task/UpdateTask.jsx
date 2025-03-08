@@ -25,8 +25,8 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
     setCreatedAt(itemUpdate.createdAt)
     setCompletedAt(itemUpdate.completedAt)
     setTaskDescription(itemUpdate.taskDescription)
-    setTaskType(itemUpdate.taskType)
-    setTaskStatus(itemUpdate.setTaskStatus)
+    setTaskType(itemUpdate.taskTypeId)
+    setTaskStatus(itemUpdate.taskStatusId)
   }
 
   const showToastMessageSuccess = (message) => {
@@ -203,6 +203,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
                       <Form.Select
                         onChange={(e) => setTaskType(e.target.value)}
                         className="input-login input-addition input-plant-type-create-plant"
+                        value={taskType}
                       >
                         {taskTypesData &&
                           Array.isArray(taskTypesData) &&
@@ -217,6 +218,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
                       <Form.Select
                         onChange={(e) => setTaskStatus(e.target.value)}
                         className="input-login input-addition input-plant-type-create-plant"
+                        value = {taskStatus}
                       >
                         {taskStatusData &&
                           Array.isArray(taskStatusData) &&
