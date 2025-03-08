@@ -22,4 +22,6 @@ public class TaskAgriculturalChemical {
     @ManyToOne
     @JoinColumn(name = "chemical_id", insertable = false, updatable = false)
     private AgriculturalChemical agriculturalChemical;
+
+    private float volumn;
 }
