@@ -76,7 +76,7 @@ const Body = ({ item, index, itemsActive, handleSelectItem , listTitle, taskStat
             onClick={(event) => handleShowAddFromExistPopup(event, item)}
             className="update-table-body"
           >
-            <img src={ICONS.icon_update} alt="" />
+            <img src={ICONS.icon_add} alt="" />
           </div>
           </li>
 
