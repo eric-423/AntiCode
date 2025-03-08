@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import "./WorkerChat.css";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { toast } from "react-toastify/unstyled";
 import useLocalStorage from "use-local-storage";
 import { jwtDecode } from "jwt-decode";
 import LOCALSTORAGE from "../../constant/localStorage";
@@ -53,7 +52,7 @@ const WorkerChat = () => {
 
       const result = await response.json();
       const chatRooms = result.data;
-   
+
       const targetRoom = chatRooms.find((item) => item.workerId == jwtDecode(atob(auth)).id);
       setChatRoomId(targetRoom.id);
       if (!targetRoom) {
@@ -77,10 +76,12 @@ const WorkerChat = () => {
       reconnectDelay: 2000,
     });
     newClient.onConnect = () => {
+      console.log('Connected to WebSocket');
       newClient.subscribe("/topic/messages/", (message) => {
-        console.log(message.body, "message");
         const splitMessage = message.body.split("|")[1];
         const splitIdChatRoom = message.body.split("|")[2];
+        console.log(jwtDecode(atob(auth)).id)
+
         if (
           splitMessage == jwtDecode(atob(auth)).id &&
           splitIdChatRoom == chatRoomIdRef.current
@@ -102,7 +103,7 @@ const WorkerChat = () => {
   const handleSend = async () => {
     if (!input.trim()) return;
     const body = {
-      userId: 1,
+      userId: 2,
       chatRoomId: chatRoomId,
       message: input.trim(),
     };
@@ -168,13 +169,11 @@ const WorkerChat = () => {
         <div className="chat-window">
           <div className="chat-header">Chat With Manager</div>
           <div ref={messagesEndRef} className="chat-messages">
-            {console.log(messages)}
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`chat-message ${
-                  msg.isUserMessage ? "user-message" : "other-message"
-                }`}
+                className={`chat-message ${msg.isUserMessage ? "user-message" : "other-message"
+                  }`}
               >
                 {msg.text}
               </div>

@@ -21,6 +21,7 @@ const ManagerChat = memo(() => {
     const [userChatRoom, setUserChatRoom] = useState("");
     const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
     const [decodeId, setDecodeId] = useState(jwtDecode(atob(auth)).id);
+    const [sizeMes, setSizeMes] = useState(10);
 
 
     const chatRoomIdRef = useRef(chatRoomId);
@@ -84,25 +85,60 @@ const ManagerChat = memo(() => {
     }
 
 
-    // const handleFetchChatMessages = async (userid) => {
-    //     try {
-    //         const response = await fetch(
-    //             `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/1/messages`,
-    //             {
-    //                 method: "GET",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-    //         if (!response.ok) throw new Error("Failed to fetch chat messages");
-    //         const data = await response.json();
-    //         setMessages(data);
-    //     } catch (error) {
-    //         console.error("Error fetching chat messages:", error);
-    //         toast.error("Error fetching chat messages");
-    //     }
-    // }
+    const handleFetchChatMessages = async (chatRoomIdRef) => {
+        try {
+            const params = new URLSearchParams({
+                chatRoomId: chatRoomIdRef,
+                page: 0,
+                size: sizeMes
+            });
+
+            const response = await fetch(
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read/?${params}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!response.ok) throw new Error("Failed to fetch chat messages");
+
+            const data = await response.json();
+
+            if (jwtDecode(atob(auth)).id == data.senderId) {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    ...data,
+                    {
+                        isUserMessage: true,
+                    }
+                ]);
+            } else {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    ...data,
+                    {
+                        isUserMessage: false,
+                    }
+                ]);
+            }
+
+
+            setMessages((prevMessages) => [...prevMessages, {
+                text: input,
+                isUserMessage: true,
+                timestamp: new Date().toISOString()
+            }]);
+
+
+        } catch (error) {
+            console.error("Error fetching chat messages:", error);
+            toast.error("Error fetching chat messages");
+        }
+    }
+
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -154,10 +190,12 @@ const ManagerChat = memo(() => {
         newClient.onConnect = () => {
             console.log('Connected to WebSocket');
             newClient.subscribe("/topic/messages/", (message) => {
-                console.log(message)
                 const splitMessage = message.body.split('|')[1];
                 const splitIdChatRoom = message.body.split('|')[2];
-                if (splitMessage == decodeId && splitIdChatRoom == chatRoomIdRef.current) {
+                if (
+                    splitMessage == jwtDecode(atob(auth)).id &&
+                    splitIdChatRoom == chatRoomIdRef.current
+                ) {
                     setMessages(prev => [...prev, {
                         text: message.body.split('|')[0],
                         isUserMessage: false,
