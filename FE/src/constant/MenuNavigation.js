@@ -62,16 +62,6 @@ const listMenu = [
             component: COMPONENTS.PLAN_TYPE,
             path: "/plant-type",
           },
-          {
-            name: "Plant Pot",
-            component: COMPONENTS.PLANT_POT,
-            path: "/plant-pot",
-          },
-          {
-            name: "Plant Medium",
-            component: COMPONENTS.PLANT_MEDIUM,
-            path: "/plant-medium",
-          },
         ],
         component: null,
         path: "menu-plant",
@@ -97,18 +87,28 @@ const listMenu = [
           {
             name: "Equipment",
             component: COMPONENTS.EQUIPMENT,
-            path: "/equipment"
+            path: "/equipment",
           },
           {
             name: "Equipment Type",
             component: COMPONENTS.EQUIPMENT_TYPE,
-            path: "/equipment-type"
+            path: "/equipment-type",
           },
           {
             name: "Water",
             component: COMPONENTS.WATER,
-            path: "/water"
-          }
+            path: "/water",
+          },
+          {
+            name: "Plant Pot",
+            component: COMPONENTS.PLANT_POT,
+            path: "/plant-pot",
+          },
+          {
+            name: "Plant Medium",
+            component: COMPONENTS.PLANT_MEDIUM,
+            path: "/plant-medium",
+          },
         ],
       },
       {
@@ -175,7 +175,7 @@ const listMenu = [
         component: COMPONENTS.DASHBOARD,
         path: "menu-dashboard",
       },
-    
+
       {
         nameMenu: "Manager Chat",
         image: ICONS.icon_chat,
@@ -183,10 +183,8 @@ const listMenu = [
         sortItem: 10,
         component: COMPONENTS.CHAT,
         path: "chat",
-        subItems: []
-      }
-
-
+        subItems: [],
+      },
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
   {

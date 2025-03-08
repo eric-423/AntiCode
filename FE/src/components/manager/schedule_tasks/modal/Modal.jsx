@@ -23,12 +23,16 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const [startDate, setStartDate] = useState();
   const [dueDate, setDueDate] = useState();
   const [itemStatus, setItemStatus] = useState();
-  const [isManager,setIsManager] = useState()
+  const [isManager, setIsManager] = useState();
 
   const [water, setWater] = useState();
   const [equipment, setEquiqment] = useState();
   const [chemical, setChemical] = useState();
+  const [plantPot, setPlanPot] = useState();
+  const [plantMedium, setPlantMedium] = useState();
 
+  const [plantMediumList, setPlantMediumList] = useState();
+  const [plantPotList, setPlantPotList] = useState();
   const [waterList, setWaterList] = useState();
   const [equiqmentList, setEquiqmentList] = useState();
   const [chemicalList, setChemicalList] = useState();
@@ -51,6 +55,26 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleCloseModalDetail = () => {
     setShowModalDetail(false);
     setItemDetail();
+  };
+
+  const handleFetchPlantMedium = async () => {
+    try {
+      const response = await axios.get(`${BASE.BASE_URL}/plant-medium`);
+      if (!response || response.status !== 200) throw new Error();
+      setPlantMediumList([NOT_USE, ...response.data.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleFetchPlantPot = async () => {
+    try {
+      const response = await axios.get(`${BASE.BASE_URL}/plant-pot`);
+      if (!response || response.status !== 200) throw new Error();
+      setPlantPotList([NOT_USE, ...response.data.data]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleFetchWater = async () => {
@@ -200,10 +224,10 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   };
 
   useEffect(() => {
-   if( jwtDecode(atob(accountLoginInformation))?.role === ROLES.MANAGER){
-    setIsManager(true)
-   }
-  },[accountLoginInformation])
+    if (jwtDecode(atob(accountLoginInformation))?.role === ROLES.MANAGER) {
+      setIsManager(true);
+    }
+  }, [accountLoginInformation]);
 
   useEffect(() => {
     if (!workerAssigned) {
@@ -241,6 +265,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
     }
     if (!chemicalList) {
       handleFetchChemical();
+    }
+    if (!plantPotList) {
+      handleFetchPlantPot();
+    }
+    if (!plantMediumList) {
+      handleFetchPlantMedium();
     }
   }, []);
 
@@ -376,17 +406,16 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                       </option>
                     ))}
                 </Form.Select>
-                {water && (
-                  <Form.Control
-                    className="input-login input-addition input-name-create-plant input-width-report-modal"
-                    type="number"
-                    placeholder="Volumn"
-                  />
-                )}
+
+                <Form.Control
+                  className="input-login input-addition input-name-create-plant input-width-report-modal"
+                  type="number"
+                  placeholder="Volumn"
+                />
               </div>
             </div>
             <div className="report-task-modal mt-3">
-              <label  className="report-label">Equipment</label>
+              <label className="report-label">Equipment</label>
               <div className="report-task-modal-input">
                 <Form.Select
                   value={equipment}
@@ -411,7 +440,7 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
               </div>
             </div>
             <div className="report-task-modal mt-3">
-              <label  className="report-label">Chemical</label>
+              <label className="report-label">Chemical</label>
               <div className="report-task-modal-input">
                 <Form.Select
                   value={chemical}
@@ -433,18 +462,79 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                       </option>
                     ))}
                 </Form.Select>
-                {chemical && (
-                  <Form.Control
-                    className="input-login input-addition input-name-create-plant"
-                    type="number"
-                    placeholder="Volumn"
-                  />
-                )}
+
+                <Form.Control
+                  className="input-login input-addition input-name-create-plant"
+                  type="number"
+                  placeholder="Volumn"
+                />
+              </div>
+            </div>
+            <div className="report-task-modal mt-3">
+              <label className="report-label">Plant Pot</label>
+              <div className="report-task-modal-input">
+                <Form.Select
+                  value={plantPot}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === NOT_USE) {
+                      setPlanPot();
+                    } else {
+                      setPlanPot(value);
+                    }
+                  }}
+                  className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+                >
+                  {plantPotList &&
+                    Array.isArray(plantPotList) &&
+                    plantPotList.map((item, indexChemical) => (
+                      <option value={item.potId}>
+                        {indexChemical === 0 ? item : item.potSize}
+                      </option>
+                    ))}
+                </Form.Select>
+
+                <Form.Control
+                  className="input-login input-addition input-name-create-plant"
+                  type="number"
+                  placeholder="Quantity"
+                />
+              </div>
+            </div>
+            <div className="report-task-modal mt-3">
+              <label className="report-label">Plant Medium</label>
+              <div className="report-task-modal-input">
+                <Form.Select
+                  value={plantMedium}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value === NOT_USE) {
+                      setPlantMedium();
+                    } else {
+                      setPlantMedium(value);
+                    }
+                  }}
+                  className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
+                >
+                  {plantMediumList &&
+                    Array.isArray(plantMediumList) &&
+                    plantMediumList.map((item, indexChemical) => (
+                      <option value={item.mediumId}>
+                        {indexChemical === 0 ? item : item.mediumName}
+                      </option>
+                    ))}
+                </Form.Select>
+
+                <Form.Control
+                  className="input-login input-addition input-name-create-plant"
+                  type="number"
+                  placeholder="Medium Weight"
+                />
               </div>
             </div>
           </div>
           <div className="button-report-task">
-            <div style={{width: "200px"}}>
+            <div style={{ width: "200px" }}>
               <Button text="Report" />
             </div>
           </div>
