@@ -10,6 +10,9 @@ import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.ChatServiceImp;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -60,13 +63,20 @@ public class ChatService implements ChatServiceImp {
     }
 
     @Override
-    public List<ChatDTO> readMessage(int chatRoomId) {
-        List<Chat> chats = chatRepository.findByChatRoom(chatRoomRepository.findById(chatRoomId).get());
-        List<ChatDTO> result = new ArrayList<>();
+    public Page<ChatDTO> readMessage(int chatRoomId, int page, int size) {
+        List<Chat> chats = chatRepository.findByChatRoom(chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new RuntimeException("Chat room not found")));
+        List<ChatDTO> chatDTOS = new ArrayList<>();
+
         for (Chat chat : chats) {
-            result.add(tranferDTO(chat));
+            chatDTOS.add(tranferDTO(chat));
         }
-        return result;
+
+        int totalElement = chatDTOS.size();
+        int start = Math.min(page * size, chats.size());
+        int end = Math.min(page + size, chats.size());
+
+        List<ChatDTO> chatSublist = chatDTOS.subList(start, end);
+        return new PageImpl<>(chatSublist, PageRequest.of(page, size), totalElement);
     }
 
     private ChatDTO tranferDTO(Chat chat) {

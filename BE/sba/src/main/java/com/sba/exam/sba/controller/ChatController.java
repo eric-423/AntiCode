@@ -32,7 +32,7 @@ public class ChatController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<?> readMessage(@RequestParam int chatRoomId) {
-        return ResponseEntity.ok(chatServiceImp.readMessage(chatRoomId));
+    public ResponseEntity<?> readMessage(@RequestParam int chatRoomId, @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(chatServiceImp.readMessage(chatRoomId, page, size));
     }
 }

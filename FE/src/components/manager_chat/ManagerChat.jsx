@@ -85,16 +85,16 @@ const ManagerChat = memo(() => {
     }
 
 
-    const handleFetchChatMessages = async (chatRoomIdRef) => {
+    const handleFetchChatMessages = async (chatRoomId) => {
         try {
             const params = new URLSearchParams({
-                chatRoomId: chatRoomIdRef,
+                chatRoomId: chatRoomId.current,
                 page: 0,
                 size: sizeMes
             });
 
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read/?${params}`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read?${params}`,
                 {
                     method: "GET",
                     headers: {
@@ -105,7 +105,9 @@ const ManagerChat = memo(() => {
 
             if (!response.ok) throw new Error("Failed to fetch chat messages");
 
-            const data = await response.json();
+            var data = await response.json();
+            data = data.content;
+            console.log(data)
 
             if (jwtDecode(atob(auth)).id == data.senderId) {
                 setMessages((prevMessages) => [
@@ -124,14 +126,6 @@ const ManagerChat = memo(() => {
                     }
                 ]);
             }
-
-
-            setMessages((prevMessages) => [...prevMessages, {
-                text: input,
-                isUserMessage: true,
-                timestamp: new Date().toISOString()
-            }]);
-
 
         } catch (error) {
             console.error("Error fetching chat messages:", error);
@@ -231,6 +225,14 @@ const ManagerChat = memo(() => {
     return (
         <Row className='w-100'>
             <Col md={9} className='Chat'>
+                <div>
+                    <button
+                        className='manager-chat-load-old-message'
+                        onClick={() => handleFetchChatMessages(chatRoomIdRef)}
+                    >
+                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" />
+                    </button>
+                </div>
                 <div>
                     <h6 className='manager-chat-room-name'>
                         {userChatRoom.userName}
