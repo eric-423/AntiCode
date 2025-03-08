@@ -62,12 +62,10 @@
     /* Đẩy tin nhắn của người khác sang trái */
 }
 
-
-
-input[type="text"] {
+.input-text-worker {
     padding: 10px;
     border: none;
-    border-top: 1px solid #ccc;
+   
     font-size: 13px;
     width: 100%;
     height: auto;
@@ -75,7 +73,7 @@ input[type="text"] {
     background-color: white;
 }
 
-button {
+.button-worker-chat {
     padding: 10px 15px;
     color: white;
     border: none;
