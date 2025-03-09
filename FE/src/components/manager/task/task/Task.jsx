@@ -46,6 +46,10 @@ const Task = () => {
       name: "",
       column: 0.5,
     },
+    {
+      name: "",
+      column: 0.5,
+    },
   ];
 
   return (
