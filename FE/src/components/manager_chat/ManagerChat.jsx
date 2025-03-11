@@ -21,7 +21,7 @@ const ManagerChat = memo(() => {
     const [userChatRoom, setUserChatRoom] = useState("");
     const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
     const [decodeId, setDecodeId] = useState(jwtDecode(atob(auth)).id);
-    const [sizeMes, setSizeMes] = useState(10);
+    const [sizeMes, setSizeMes] = useState(100000);
 
 
     const chatRoomIdRef = useRef(chatRoomId);
@@ -93,6 +93,7 @@ const ManagerChat = memo(() => {
                 size: sizeMes
             });
 
+            console.log(chatRoomId.current)
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read?${params}`,
                 {
@@ -107,25 +108,20 @@ const ManagerChat = memo(() => {
 
             var data = await response.json();
             data = data.content;
+
+
             console.log(data)
 
-            if (jwtDecode(atob(auth)).id == data.senderId) {
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    ...data,
-                    {
-                        isUserMessage: true,
-                    }
-                ]);
-            } else {
-                setMessages((prevMessages) => [
-                    ...prevMessages,
-                    ...data,
-                    {
-                        isUserMessage: false,
-                    }
-                ]);
-            }
+
+            const formattedMessages = data.map(msg => ({
+                text: msg.message,
+                isUserMessage: msg.senderId === jwtDecode(atob(auth)).id,
+            }));
+
+            setMessages((prevMessages) => [...prevMessages, ...formattedMessages]);
+
+
+
 
         } catch (error) {
             console.error("Error fetching chat messages:", error);
@@ -159,7 +155,6 @@ const ManagerChat = memo(() => {
                 setMessages((prevMessages) => [...prevMessages, {
                     text: input,
                     isUserMessage: true,
-                    timestamp: new Date().toISOString()
                 }]);
                 setInput('');
             }

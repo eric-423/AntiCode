@@ -80,7 +80,7 @@ const WorkerChat = () => {
       newClient.subscribe("/topic/messages/", (message) => {
         const splitMessage = message.body.split("|")[1];
         const splitIdChatRoom = message.body.split("|")[2];
-        console.log(jwtDecode(atob(auth)).id)
+        console.log(chatRoomIdRef.current);
 
         if (
           splitMessage == jwtDecode(atob(auth)).id &&
@@ -107,6 +107,7 @@ const WorkerChat = () => {
       chatRoomId: chatRoomId,
       message: input.trim(),
     };
+    console.log(chatRoomId)
     try {
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/send`,
@@ -125,7 +126,6 @@ const WorkerChat = () => {
           {
             text: input,
             isUserMessage: true,
-            timestamp: new Date().toISOString(),
           },
         ]);
         setInput("");
