@@ -22,7 +22,7 @@ const WorkerChat = () => {
   );
   const chatRoomIdRef = useRef(chatRoomId);
   const [sizeMes, setSizeMes] = useState(1000);
-
+  const [managerId, setManagerId] = useState(2);
 
   useEffect(() => {
     handleGetAllChatRoom();
@@ -81,7 +81,7 @@ const WorkerChat = () => {
 
       const params = new URLSearchParams({
         senderId: parseInt(jwtDecode(atob(auth)).id),
-        receiveId: 2,
+        receiveId: managerId,
         page: 0,
         size: sizeMes
       });
@@ -166,7 +166,7 @@ const WorkerChat = () => {
 
     try {
       const body = {
-        receiveId: 2, // thí dụ gửi cho thằng 2
+        receiveId: managerId, // thí dụ gửi cho thằng 2
         senderId: jwtDecode(atob(auth)).id, // id của thằng gửi
         chatRoomId: chatRoomId,
         message: input.trim(),
