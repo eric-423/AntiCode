@@ -122,7 +122,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
 
-          <Form.Group className="group-3-column-create-plant">
+          {/* <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">Created At</Form.Label>
             <Form.Control
               className="input-login input-addition input-name-create-plant"
@@ -166,7 +166,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
             />
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group>
             <Form.Label className="text-label-login">Description</Form.Label>
@@ -193,7 +193,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
             </Form.Select>
           </Form.Group>
 
-          <Form.Group className="group-3-column-create-plant">
+          {/* <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">Task Status</Form.Label>
             <Form.Select
               onChange={(e) => setTaskStatus(e.target.value)}
@@ -205,7 +205,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
                   <option value={item.taskStatusId}>{item.taskStatusName}</option>
                 ))}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
           
           <Button
             text="Create Task"
