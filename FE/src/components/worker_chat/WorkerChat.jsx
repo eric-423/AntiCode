@@ -6,6 +6,7 @@ import useLocalStorage from "use-local-storage";
 import { jwtDecode } from "jwt-decode";
 import LOCALSTORAGE from "../../constant/localStorage";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const WorkerChat = () => {
   const messagesEndRef = useRef(null);
@@ -20,12 +21,13 @@ const WorkerChat = () => {
     ""
   );
   const chatRoomIdRef = useRef(chatRoomId);
-
+  const [sizeMes, setSizeMes] = useState(1000);
 
 
   useEffect(() => {
     handleGetAllChatRoom();
     chatRoomIdRef.current = chatRoomId;
+    handleFetchChatMessages();
   }, [chatRoomId]);
 
   const toggleChat = () => {
@@ -53,17 +55,69 @@ const WorkerChat = () => {
       const result = await response.json();
       const chatRooms = result.data;
 
-      const targetRoom = chatRooms.find((item) => item.workerId == jwtDecode(atob(auth)).id);
-      setChatRoomId(targetRoom.id);
-      if (!targetRoom) {
-        return;
-      }
+      // Kiểm tra và sử dụng try-catch cho decode
+      try {
+        const workerId = jwtDecode(atob(auth)).id;
+        const targetRoom = chatRooms.find((item) => parseInt(item.workerId) === parseInt(workerId));
 
-      setChatRoomId(targetRoom.id);
+        if (!targetRoom) {
+          console.error("No chat room found for this worker");
+          return;
+        }
+
+        setChatRoomId(targetRoom.id);
+      } catch (error) {
+        console.error("Error decoding authentication token:", error);
+        navigate('/login'); // Chuyển hướng đến trang đăng nhập khi token không hợp lệ
+      }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching chat rooms:", error);
     }
   };
+
+  const handleFetchChatMessages = async () => {
+    try {
+      setMessages([]); // Xóa tin nhắn cũ khi chuyển chat room
+
+      const params = new URLSearchParams({
+        senderId: parseInt(jwtDecode(atob(auth)).id),
+        receiveId: 2,
+        page: 0,
+        size: sizeMes
+      });
+
+      console.log(params.toString())
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read?${params}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch chat messages");
+
+      const data = await response.json();
+      const messagesContent = data.content;
+      console.log(messagesContent)
+
+
+      const userId = jwtDecode(atob(auth)).id;
+
+      const formattedMessages = messagesContent.map(msg => ({
+        text: msg.message,
+        isUserMessage: msg.senderId === userId,
+      }));
+
+      setMessages(formattedMessages);
+
+    } catch (error) {
+      console.error("Error fetching chat messages:", error);
+      toast.error("Error fetching chat messages");
+    }
+  }
 
   const handleConnectWebSocket = async () => {
     if (client && client.connected) return;
@@ -75,24 +129,31 @@ const WorkerChat = () => {
       webSocketFactory: () => socket,
       reconnectDelay: 2000,
     });
+
     newClient.onConnect = () => {
       console.log('Connected to WebSocket');
       newClient.subscribe("/topic/messages/", (message) => {
-        const splitMessage = message.body.split("|")[1];
-        const splitIdChatRoom = message.body.split("|")[2];
-        console.log(chatRoomIdRef.current);
+        try {
+          const messageText = message.body.split("|")[0];
+          const senderId = message.body.split("|")[1];
+          const receiveId = message.body.split("|")[2];
+          const currentUserId = jwtDecode(atob(auth)).id;
 
-        if (
-          splitMessage == jwtDecode(atob(auth)).id &&
-          splitIdChatRoom == chatRoomIdRef.current
-        ) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              text: message.body.split("|")[0],
-              isUserMessage: false,
-            },
-          ]);
+          console.log(message);
+          if (
+            parseInt(receiveId) === parseInt(currentUserId)
+            // parseInt(roomId) === parseInt(chatRoomIdRef.current)
+          ) {
+            setMessages((prev) => [
+              ...prev,
+              {
+                text: messageText,
+                isUserMessage: false,
+              },
+            ]);
+          }
+        } catch (error) {
+          console.error("Error processing WebSocket message:", error);
         }
       });
     };
@@ -102,13 +163,16 @@ const WorkerChat = () => {
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    const body = {
-      userId: 2,
-      chatRoomId: chatRoomId,
-      message: input.trim(),
-    };
-    console.log(chatRoomId)
+
     try {
+      const body = {
+        receiveId: 2, // thí dụ gửi cho thằng 2
+        senderId: jwtDecode(atob(auth)).id, // id của thằng gửi
+        chatRoomId: chatRoomId,
+        message: input.trim(),
+      };
+
+
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/send`,
         {
@@ -120,7 +184,7 @@ const WorkerChat = () => {
         }
       );
 
-      if (response) {
+      if (response.ok) {
         setMessages((prevMessages) => [
           ...prevMessages,
           {
@@ -129,11 +193,11 @@ const WorkerChat = () => {
           },
         ]);
         setInput("");
+      } else {
+        throw new Error("Failed to send message");
       }
-
-      if (!response.ok) throw new Error("Failed to sedn mess");
     } catch (error) {
-      console.error("Error fetching workers:", error);
+      console.error("Error sending message:", error);
     }
   };
 
@@ -142,11 +206,11 @@ const WorkerChat = () => {
       handleConnectWebSocket();
     }
 
-    return () => {
-      if (client && client.connected) {
-        client.deactivate();
-      }
-    };
+    // return () => {
+    //   if (client && client.connected) {
+    //     client.deactivate();
+    //   }
+    // };
   }, []);
 
   return (

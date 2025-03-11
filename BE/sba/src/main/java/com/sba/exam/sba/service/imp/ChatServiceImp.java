@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ChatServiceImp {
 
-    boolean sendMessage(int userId, int chatRoomId, String message);
+    boolean sendMessage(int senderId, int receiveId, int chatRoomId, String message);
 
-    Page<ChatDTO> readMessage(int chatRoomId, int page, int size);
+    Page<ChatDTO> readMessage(int senderId, int receiveId, int page, int size);
 
     void deleteMessage(int userId, int chatRoomId);
 

@@ -23,8 +23,8 @@ public class ChatController {
     @SendTo("/topic/messages")
     public ResponseEntity<?> sendMessage(@RequestBody ChatRequest chatRequest) {
         try {
-            chatServiceImp.sendMessage(chatRequest.getUserId(), chatRequest.getChatRoomId(), chatRequest.getMessage());
-            messagingTemplate.convertAndSend("/topic/messages/", chatRequest.getMessage() + "|" + chatRequest.getUserId() + "|" + chatRequest.getChatRoomId());
+            chatServiceImp.sendMessage(chatRequest.getSenderId(), chatRequest.getReceiveId(), chatRequest.getChatRoomId(), chatRequest.getMessage());
+            messagingTemplate.convertAndSend("/topic/messages/", chatRequest.getMessage() + "|" + chatRequest.getSenderId() + "|" + chatRequest.getReceiveId() + "|" + chatRequest.getChatRoomId());
             return ResponseEntity.status(201).body("Message sent");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error sending message: " + e.getMessage());
@@ -32,7 +32,7 @@ public class ChatController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<?> readMessage(@RequestParam int chatRoomId, @RequestParam int page, @RequestParam int size) {
-        return ResponseEntity.ok(chatServiceImp.readMessage(chatRoomId, page, size));
+    public ResponseEntity<?> readMessage(@RequestParam int senderId, @RequestParam int receiveId, @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(chatServiceImp.readMessage(senderId, receiveId, page, size));
     }
 }
