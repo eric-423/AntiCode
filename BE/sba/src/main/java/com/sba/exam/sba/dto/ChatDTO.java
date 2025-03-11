@@ -18,5 +18,6 @@ public class ChatDTO {
     private boolean isRead;
 
     private int chatRoomId;
+    
     private int senderId;
 }
