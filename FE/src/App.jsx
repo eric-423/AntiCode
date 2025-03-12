@@ -30,6 +30,8 @@ import ScheduleTasks from './components/manager/schedule_tasks/ScheduleTasks'
 import User from './components/manager/user/User'
 import Water from './components/manager/water/Water'
 import ManagerChat from './components/manager_chat/ManagerChat'
+import PlansPlanting from './components/manager/plans_planting/PlansPlanting'
+import LocationPlansPlanting from './components/manager/plans_planting/content/location/Location'
 function App() {
   const listComponent = [
     {
@@ -115,6 +117,9 @@ function App() {
     {
       name: NAVIGATION.COMPONENTS.CHAT,
       component: <ManagerChat />,
+    },{
+      name: NAVIGATION.COMPONENTS.PLANS_PLANTING,
+      component: <PlansPlanting />,
     }
   ]
   const listRouteNavigation = []
@@ -161,6 +166,7 @@ function App() {
           {listRouteNavigation.map((item, index) => (
             <Route key={index} path={item.path} element={item.component} />
           ))}
+          <Route path='/manager/menu-plans-planting/:id'  element={<LocationPlansPlanting />}/>
         </Route>
         <Route path="/worker" element={<Worker />}>
           <Route index element={<Tasks />} />

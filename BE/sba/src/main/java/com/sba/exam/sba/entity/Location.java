@@ -28,6 +28,9 @@ public class Location {
     @Column(name = "location_length")
     private float locationLength;
 
+    @Column(name = "is_planted")
+    private boolean isPlanted;
+
     @Column(name = "is_deleted")
     private boolean isDeleted;
 

@@ -3,6 +3,7 @@ package com.sba.exam.sba.payload;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -11,7 +12,7 @@ public class TaskRequest implements Serializable {
     private Date createdAt;
     private Date completedAt;
     private Date startDate;
-    private Date dueDate;
+    private LocalDate dueDate;
     private String taskDescription;
     private int taskStatus;
     private int taskType;
