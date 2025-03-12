@@ -122,6 +122,16 @@ public class LocationService implements LocationServiceImp {
         return result;
     }
 
+    @Override
+    public LocationDTO getLocationByArea_AreaId(int areaId) {
+        try{
+            Location location = locationRepository.findLocationByArea_AreaId(areaId);
+            return transferDTO(location);
+        }catch(Exception e){
+            return null;
+        }
+    }
+
     public LocationDTO transferDTO(Location location){
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setLocationId(location.getLocationId());
