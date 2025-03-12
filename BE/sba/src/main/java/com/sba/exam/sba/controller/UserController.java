@@ -4,6 +4,7 @@ package com.sba.exam.sba.controller;
 import com.sba.exam.sba.dto.UserDTO;
 import com.sba.exam.sba.entity.Users;
 import com.sba.exam.sba.payload.ResponseData;
+import com.sba.exam.sba.payload.request.RequestLogin;
 import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.LoginServiceImp;
 import com.sba.exam.sba.service.imp.UserServiceImp;
@@ -30,16 +31,19 @@ public class UserController {
     UserRepository usersRepository;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> signin(@RequestBody RequestLogin requestLogin) {
+        String email = requestLogin.getEmail();
+        String password = requestLogin.getPassword();
+
+
         ResponseData responseData = new ResponseData();
-        if(usersRepository.findByUserEmail(email)==null){
+        if (usersRepository.findByUserEmail(email) == null) {
             responseData.setData("User Not Found");
             responseData.setStatus(404);
             return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
         }
         boolean checkLogin = loginServiceImp.checkLogin(email, password);
         String token;
-
         if (checkLogin) {
             token = jwtTokenHelper.generateToken(usersRepository.findByUserEmail(email));
             responseData.setData(token);
@@ -95,13 +99,13 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
-            try {
-                return new ResponseEntity<>(userServiceImp.deleteUser(id), HttpStatus.OK);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        try {
+            return new ResponseEntity<>(userServiceImp.deleteUser(id), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return null;
     }

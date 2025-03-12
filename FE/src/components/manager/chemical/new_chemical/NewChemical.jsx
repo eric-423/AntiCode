@@ -16,6 +16,7 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     const [selectedChemicalType, setSelectedChemicalTypeId] = useState("");
 
     const modalRoot = document.body;
+    // const [bearerToken, setBearerToken] = useState(atob(auth))
 
     const handleClickClose = () => {
         setShowModal(false);
@@ -29,6 +30,7 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
+                        // "Authorization": `Bearer ${bearerToken}`,
                     },
                 }
             );

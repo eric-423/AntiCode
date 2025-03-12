@@ -41,6 +41,7 @@ public class JwtCustom extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromHeader(request);
+
         if (token != null) {
             if (jwtTokenHelper.verifyToken(token)) {
                 SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));

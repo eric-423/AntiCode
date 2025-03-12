@@ -32,14 +32,29 @@ public class CustomFilterSecurity {
     public static final String[] url = {
             "/user/signin/**",
             "/h2-console/**",
+            "/user/signup/**",
+            "/chat/**",
+            "/topic/messages",
+            "/web-socket/**",
+            "/send-otp",
+            "/verify-otp"
     };
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults()).sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).csrf(csrf -> csrf.disable()).authorizeHttpRequests(request -> {
-            request.anyRequest().permitAll();
-            });
+        http.cors(Customizer.withDefaults()).sessionManagement(
+                        (session)
+                                -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .csrf(csrf
+                        -> csrf.disable()
+                )
+
+                .authorizeHttpRequests(request -> {
+                    request
+                            .requestMatchers(url).permitAll()
+                            .anyRequest().authenticated();
+                });
         http.addFilterBefore(jwtCustom, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -48,7 +63,7 @@ public class CustomFilterSecurity {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

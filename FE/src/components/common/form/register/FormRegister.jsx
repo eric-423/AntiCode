@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from '../../button/Button'
@@ -24,14 +24,14 @@ const FormRegister = () => {
     setIsLoading(true)
     try {
       const response = await axios.post(
-        `${
-          import.meta.env.VITE_REACT_APP_END_POINT
+        `${import.meta.env.VITE_REACT_APP_END_POINT
         }/send-otp?phoneNumber=${phoneNumber}`
       )
       if (!response || response.status !== 200) throw new Error()
       setGuestRegisterInformation(btoa([email, password, name, phoneNumber]))
       navigate('verify-otp')
     } catch (error) {
+      console.log(error)
     } finally {
       setIsLoading(false)
     }
