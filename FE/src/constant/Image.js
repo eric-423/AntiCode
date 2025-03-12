@@ -38,6 +38,8 @@ import icon_resources from '../assets/image/resources.png'
 import icon_resource_active from '../assets/image/resource-active.png'
 import icon_chat_active from '../assets/image/chat-active.png'
 import icon_add from '../assets/image/add.png'
+import icon_plans_planting from '../assets/image/plans-planting.png'
+import icon_plans_planting_active from '../assets/image/plans-planting-active.png'
 
 const ICONS = {
     icon_google: icon_google,
@@ -79,7 +81,9 @@ const ICONS = {
     icon_resources: icon_resources,
     icon_resource_active: icon_resource_active,
     icon_chat_active: icon_chat_active,
-    icon_add: icon_add
+    icon_add: icon_add,
+    icon_plans_planting: icon_plans_planting,
+    icon_plans_planting_active: icon_plans_planting_active
 }
 
 export default ICONS;

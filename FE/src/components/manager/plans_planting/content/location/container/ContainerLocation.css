@@ -1,0 +1,26 @@
+
+.container-location-to-planting >div  > h6 {
+  color: rgba(0, 0, 0, 0.5);
+}
+.location-container-location-to-planting {
+  width: 100%;
+}
+.location-container-flex {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.location-container-flex > div {
+  width: 116px;
+  height: 100px;
+  background-color: #f7f7f7;
+  cursor: pointer;
+}
+.head-container-location-to-planting{
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.button-container-location-to-planting{
+    width: 200px;
+}

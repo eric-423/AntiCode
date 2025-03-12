@@ -12,7 +12,6 @@ import LOCALSTORAGE from '../../constant/localStorage'
 
 const ManagerChat = memo(() => {
     const messagesEndRef = useRef(null);
-
     const [workers, setWorkers] = useState([]);
     const [client, setClient] = useState();
     const [messages, setMessages] = useState([]);
@@ -22,10 +21,7 @@ const ManagerChat = memo(() => {
     const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
     const [decodeId, setDecodeId] = useState(jwtDecode(atob(auth)).id);
 
-
     const chatRoomIdRef = useRef(chatRoomId);
-
-
 
     useEffect(() => {
         chatRoomIdRef.current = chatRoomId;

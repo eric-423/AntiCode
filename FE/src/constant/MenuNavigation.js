@@ -19,6 +19,7 @@ const COMPONENTS = {
   EQUIPMENT: "Equipment",
   EQUIPMENT_TYPE: "Equipment Type",
   SCHEDULE_TASKS: "Schedule Tasks",
+  PLANS_PLANTING: "Plans Planting",
   USER: "User",
   WATER: "Water",
   CHAT: "Manager Chat",
@@ -45,6 +46,15 @@ const listMenu = [
         subItems: [],
         component: COMPONENTS.SCHEDULE_TASKS,
         path: "menu-schedule-tasks",
+      },
+      {
+        nameMenu: "Plans Planting",
+        image: ICONS.icon_plans_planting,
+        imageActive: ICONS.icon_plans_planting_active,
+        sortItem: 1,
+        subItems: [],
+        component: COMPONENTS.PLANS_PLANTING,
+        path: "menu-plans-planting",
       },
       {
         nameMenu: "Plant",
@@ -187,20 +197,20 @@ const listMenu = [
       },
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
-  {
-    title: "Settings",
-    data: [
-      {
-        nameMenu: "Settings",
-        image: ICONS.icon_setting,
-        imageActive: ICONS.icon_setting_active,
-        sortItem: 0,
-        subItems: [],
-        component: COMPONENTS.SETTINGS,
-        path: "settings",
-      },
-    ].sort((a, b) => a.sortItem - b.sortItem),
-  },
+  // {
+  //   title: "Settings",
+  //   data: [
+  //     {
+  //       nameMenu: "Settings",
+  //       image: ICONS.icon_setting,
+  //       imageActive: ICONS.icon_setting_active,
+  //       sortItem: 0,
+  //       subItems: [],
+  //       component: COMPONENTS.SETTINGS,
+  //       path: "settings",
+  //     },
+  //   ].sort((a, b) => a.sortItem - b.sortItem),
+  // },
 ];
 
 const NAVIGATION = {
