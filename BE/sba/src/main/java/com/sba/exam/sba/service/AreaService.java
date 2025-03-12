@@ -99,10 +99,14 @@ public class AreaService implements AreaServiceImp {
     }
 
     @Override
-    public AreaDTO getAreaByFarm_FarmId(int farmId) {
+    public List<AreaDTO> getAreaByFarm_FarmId(int farmId) {
         try{
-            Area area = areaRepository.findAreaByFarm_FarmId(farmId);
-            return transferDTO(area);
+            List<Area> areaList = areaRepository.findAreaByFarm_FarmId(farmId);
+            List<AreaDTO> areaDTOList = new ArrayList<>();
+            for(Area area:areaList){
+                areaDTOList.add(transferDTO(area));
+            }
+            return areaDTOList;
         }catch(Exception e){
             return null;
         }

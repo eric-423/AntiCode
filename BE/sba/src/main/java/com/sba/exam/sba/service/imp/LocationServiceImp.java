@@ -19,5 +19,5 @@ public interface LocationServiceImp {
     LocationDTO deleteLocation(int id);
     public List<LocationDTO> getAllLocationAvailable(Integer locationId);
 
-    LocationDTO getLocationByArea_AreaId(int areaId);
+    List<LocationDTO> getLocationByArea_AreaId(int areaId);
 }
