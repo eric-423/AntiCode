@@ -142,7 +142,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
                       />
                     </Form.Group>
 
-          <Form.Group className="group-3-column-create-plant">
+          {/* <Form.Group className="group-3-column-create-plant">
                       <Form.Label className="text-label-login">Created At</Form.Label>
                       <Form.Control
                         className="input-login input-addition input-name-create-plant"
@@ -161,7 +161,7 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
                         value={completedAt}
                         onChange={(e) => setCompletedAt(e.target.value)}
                       />
-                    </Form.Group>
+                    </Form.Group> */}
 
                     <Form.Group className="group-3-column-create-plant">
                       <Form.Label className="text-label-login">

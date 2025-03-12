@@ -15,4 +15,6 @@ public interface AreaServiceImp {
     AreaDTO deleteArea(int id);
 
     AreaDTO getAreaById(int id);
+
+    List<AreaDTO> getAreaByFarm_FarmId(int farmId);
 }

@@ -2,6 +2,7 @@ package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.AreaDTO;
 import com.sba.exam.sba.entity.Area;
+import com.sba.exam.sba.entity.Farm;
 import com.sba.exam.sba.entity.Location;
 import com.sba.exam.sba.payload.request.AreaRequest;
 import com.sba.exam.sba.repository.AreaRepository;
@@ -93,6 +94,20 @@ public class AreaService implements AreaServiceImp {
             Area area = areaRepository.findByAreaId(id);
             return transferDTO(area);
         } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<AreaDTO> getAreaByFarm_FarmId(int farmId) {
+        try{
+            List<Area> areaList = areaRepository.findAreaByFarm_FarmId(farmId);
+            List<AreaDTO> areaDTOList = new ArrayList<>();
+            for(Area area:areaList){
+                areaDTOList.add(transferDTO(area));
+            }
+            return areaDTOList;
+        }catch(Exception e){
             return null;
         }
     }

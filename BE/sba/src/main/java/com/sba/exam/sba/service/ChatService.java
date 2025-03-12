@@ -10,6 +10,9 @@ import com.sba.exam.sba.repository.UserRepository;
 import com.sba.exam.sba.service.imp.ChatServiceImp;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
@@ -31,18 +34,19 @@ public class ChatService implements ChatServiceImp {
 
     @Override
     @Transactional
-    public boolean sendMessage(int userId, int chatRoomId, String message) {
+    public boolean sendMessage(int senderId, int receiveId, int chatRoomId, String message) {
 
         try {
-            Users user = userRepository.findById(userId).get();
-            ChatRoom chatRoom = chatRoomRepository.findByUser_Id(userId);
+            Users sender = userRepository.findById(senderId).get();
+            Users receive = userRepository.findById(receiveId).get();
+            ChatRoom chatRoom = chatRoomRepository.findByUser_Id(senderId);
 
             if (chatRoom == null) {
                 chatRoom = new ChatRoom();
-                chatRoom.setName(user.getUserName());
+                chatRoom.setName(sender.getUserName());
                 chatRoom.setCreateAt(new Date());
                 chatRoom.setLastUpdate(new Date());
-                chatRoom.setUser(user);
+                chatRoom.setUser(sender);
                 chatRoomRepository.save(chatRoom);
             }
 
@@ -51,7 +55,10 @@ public class ChatService implements ChatServiceImp {
             chat.setSendTime(new Date());
             chat.setRead(false);
             chat.setChatRoom(chatRoom);
-            chat.setSender(user);
+            chat.setSender(sender);
+            chat.setReceive(receive);
+
+
             chatRepository.save(chat);
             return true;
         } catch (Exception e) {
@@ -60,13 +67,21 @@ public class ChatService implements ChatServiceImp {
     }
 
     @Override
-    public List<ChatDTO> readMessage(int chatRoomId) {
-        List<Chat> chats = chatRepository.findByChatRoom(chatRoomRepository.findById(chatRoomId).get());
-        List<ChatDTO> result = new ArrayList<>();
+    public Page<ChatDTO> readMessage(int senderId,int receiveId, int page, int size) {
+//        List<Chat> chats = chatRepository.findByChatRoom(chatRoomRepository.findById(chatRoomId).orElseThrow(() -> new RuntimeException("Chat room not found")));
+        List<ChatDTO> chatDTOS = new ArrayList<>();
+        List<Chat> chats = chatRepository.findBySender_IdAndReceive_Id(senderId, receiveId);
+
         for (Chat chat : chats) {
-            result.add(tranferDTO(chat));
+            chatDTOS.add(tranferDTO(chat));
         }
-        return result;
+
+        int totalElement = chatDTOS.size();
+        int start = Math.min(page * size, chats.size());
+        int end = Math.min(page + size, chats.size());
+
+        List<ChatDTO> chatSublist = chatDTOS.subList(start, end);
+        return new PageImpl<>(chatSublist, PageRequest.of(page, size), totalElement);
     }
 
     private ChatDTO tranferDTO(Chat chat) {

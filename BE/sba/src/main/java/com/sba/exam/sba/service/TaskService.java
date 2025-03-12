@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,7 +97,7 @@ public class TaskService implements TaskServiceImp {
             Task task = new Task();
             TaskType taskType = taskTypeRepository.findTaskTypeById(taskRequest.getTaskType());
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(taskRequest.getTaskStatus());
-            task.setCreatedAt(taskRequest.getCreatedAt());
+            task.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
             task.setCompletedAt(taskRequest.getCompletedAt());
             task.setDescription(taskRequest.getTaskDescription());
             task.setTaskStatus(taskStatus);

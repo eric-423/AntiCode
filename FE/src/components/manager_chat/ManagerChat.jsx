@@ -19,26 +19,28 @@ const ManagerChat = memo(() => {
     const [chatRoomId, setChatRoomId] = useState(null);
     const [userChatRoom, setUserChatRoom] = useState("");
     const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
-    const [decodeId, setDecodeId] = useState(jwtDecode(atob(auth)).id);
+    const [sizeMes, setSizeMes] = useState(1000);
 
     const chatRoomIdRef = useRef(chatRoomId);
 
+
+
     useEffect(() => {
         chatRoomIdRef.current = chatRoomId;
-    }, [chatRoomId]);
+        userChatRoomRef.current = userChatRoom;
+    }, [chatRoomId, userChatRoom]);
 
 
     useEffect(() => {
         getALlWorkersChatRoom();
         if (!client) {
             handleConnectWebSocket();
-
         }
-        return () => {
-            if (client && client.connected) {
-                client.deactivate();
-            }
-        };
+        // return () => {
+        //     if (client && client.connected) {
+        //         client.deactivate();
+        //     }
+        // };
 
     }, [auth]);
 
@@ -49,8 +51,56 @@ const ManagerChat = memo(() => {
         }
     }, [messages]);
 
+    const handleFetchChatMessages = async () => {
+        try {
+            setMessages([]); // Xóa tin nhắn cũ khi chuyển chat room
+
+            const params = new URLSearchParams({
+                senderId: parseInt(jwtDecode(atob(auth)).id),
+                receiveId: userChatRoomRef.current.id,
+                page: 0,
+                size: sizeMes
+            });
+
+            console.log(params.toString())
+            const response = await fetch(
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read?${params}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!response.ok) throw new Error("Failed to fetch chat messages");
+
+            const data = await response.json();
+            const messagesContent = data.content;
+            console.log(messagesContent)
 
 
+            const userId = jwtDecode(atob(auth)).id;
+
+            const formattedMessages = messagesContent.map(msg => ({
+                text: msg.message,
+                isUserMessage: msg.senderId === userId,
+            }));
+
+            setMessages(formattedMessages);
+
+        } catch (error) {
+            console.error("Error fetching chat messages:", error);
+            toast.error("Error fetching chat messages");
+        }
+    }
+
+    useEffect(() => {
+        if (chatRoomId) {
+            setMessages([]);
+            handleFetchChatMessages();
+        }
+    }, [chatRoomId]);
 
     const handleSetUserChat = async (worker) => {
         setUserChatRoom(worker);
@@ -65,13 +115,12 @@ const ManagerChat = memo(() => {
             const result = await response.json();
             const chatRooms = result.data;
 
-            const targetRoom = chatRooms.find(item => item.name === worker.userName);
+            const targetRoom = chatRooms.find(item => item.workerId === worker.id);
 
             if (!targetRoom) {
                 toast.error("Không tìm thấy phòng chat");
                 return;
             }
-
             setChatRoomId(targetRoom.id);
         } catch (error) {
             console.error("Error:", error);
@@ -80,35 +129,14 @@ const ManagerChat = memo(() => {
     }
 
 
-    // const handleFetchChatMessages = async (userid) => {
-    //     try {
-    //         const response = await fetch(
-    //             `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/1/messages`,
-    //             {
-    //                 method: "GET",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         );
-    //         if (!response.ok) throw new Error("Failed to fetch chat messages");
-    //         const data = await response.json();
-    //         setMessages(data);
-    //     } catch (error) {
-    //         console.error("Error fetching chat messages:", error);
-    //         toast.error("Error fetching chat messages");
-    //     }
-    // }
-
     const handleSend = async () => {
         if (!input.trim()) return;
-        console.log(chatRoomId)
         const body = {
-            userId: userChatRoom.id,
+            receiveId: userChatRoom.id, // thí dụ gửi cho thằng 1
+            senderId: jwtDecode(atob(auth)).id, // id của thằng gửi
             chatRoomId: chatRoomId,
             message: input.trim(),
         };
-        console.log(body)
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/send`,
@@ -125,7 +153,6 @@ const ManagerChat = memo(() => {
                 setMessages((prevMessages) => [...prevMessages, {
                     text: input,
                     isUserMessage: true,
-                    timestamp: new Date().toISOString()
                 }]);
                 setInput('');
             }
@@ -150,18 +177,28 @@ const ManagerChat = memo(() => {
         newClient.onConnect = () => {
             console.log('Connected to WebSocket');
             newClient.subscribe("/topic/messages/", (message) => {
-                console.log(message)
-                const splitMessage = message.body.split('|')[1];
-                const splitIdChatRoom = message.body.split('|')[2];
-                if (splitMessage == decodeId && splitIdChatRoom == chatRoomIdRef.current) {
+                const messageText = message.body.split("|")[0];
+                const senderId = message.body.split("|")[1];
+                const receiveId = message.body.split("|")[2];
+                console.log(message.body)
+
+                if (
+                    parseInt(receiveId) === parseInt(jwtDecode(atob(auth)).id)
+                    &&
+                    senderId == userChatRoomRef.current.id
+
+                    // &&
+                    // parseInt(roomId) === parseInt(chatRoomIdRef.current)
+                ) {
                     setMessages(prev => [...prev, {
-                        text: message.body.split('|')[0],
+                        text: messageText,
                         isUserMessage: false,
                     }]);
                 }
-
             });
         };
+
+
         newClient.activate();
         setClient(newClient);
     };
@@ -189,6 +226,22 @@ const ManagerChat = memo(() => {
     return (
         <Row className='w-100'>
             <Col md={9} className='Chat'>
+                {/* <div>
+                    <button
+                        className='manager-chat-load-old-message'
+                        onClick={() => {
+                            setSizeMes(prevSize => prevSize + 10); // Tăng số lượng tin nhắn cần load
+                            handleFetchChatMessages(chatRoomIdRef);
+                        }}
+                    >
+                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4V14M12 14L16 10M12 14L8 10" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4" stroke="#000000" strokeWidth="2" strokeLinecap="round" />
+                        </svg>
+                        Load more
+                    </button>
+                </div> */}
+
                 <div>
                     <h6 className='manager-chat-room-name'>
                         {userChatRoom.userName}
