@@ -71,6 +71,8 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "planting_location"))
     private List<PlantingLocation> plantLocations;
 
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<WaterTask> waterTasks;
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
