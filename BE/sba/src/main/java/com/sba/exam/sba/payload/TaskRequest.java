@@ -5,6 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TaskRequest implements Serializable {
@@ -22,6 +23,6 @@ public class TaskRequest implements Serializable {
     private PlantPotTaskRequest plantPotTask;
     private PlantMediumTaskRequest plantMediumTask;
     private ChemicalTaskRequest chemicalTaskRequest;
-    private WaterTaskRequest waterTaskRequest;
+    private List<WaterTaskRequest> waterTaskRequest;
 
 }

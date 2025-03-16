@@ -61,7 +61,7 @@ const ToolBar = ({ setRefreshData }) => {
           className="plant-button new-plant-button"
           onClick={() => handleShowModal()}
         >
-          Create Plant
+          Create Area
         </div>
       </div>
       {showModal && (

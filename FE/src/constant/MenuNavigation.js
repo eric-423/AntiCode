@@ -147,26 +147,26 @@ const listMenu = [
         path: "menu-task",
       },
       {
-        nameMenu: "Location",
+        nameMenu: "Farm",
         image: ICONS.icon_location,
         imageActive: ICONS.icon_location_active,
         sortItem: 2,
         subItems: [
-          {
-            name: "Location",
-            component: COMPONENTS.LOCATION,
-            path: "/",
-          },
+          // {
+          //   name: "Location",
+          //   component: COMPONENTS.LOCATION,
+          //   path: "/",
+          // },
           {
             name: "Farm",
             component: COMPONENTS.FARM,
             path: "/farm",
           },
-          {
-            name: "Area",
-            component: COMPONENTS.AREA,
-            path: "/area",
-          },
+          // {
+          //   name: "Area",
+          //   component: COMPONENTS.AREA,
+          //   path: "/area",
+          // },
           {
             name: "Plant Location",
             component: COMPONENTS.PLANT_LOCATION,

@@ -11,4 +11,6 @@ public interface WaterTaskRepository extends JpaRepository<WaterTask, Integer> {
     List<WaterTask> getWaterTaskByWaterId(int waterId);
     List<WaterTask> getWaterTasksByTaskId(int taskId);
     WaterTask getWaterTaskByWaterIdAndTaskId(int waterId, int taskId);
+
+    WaterTask findWaterTaskByTask_Id(int taskId);
 }

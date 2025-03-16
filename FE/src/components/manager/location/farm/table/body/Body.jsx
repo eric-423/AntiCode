@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Body.css'
 import ICONS from '../../../../../../constant/Image'
 import UpdateFarm from '../../update_farm/UpdateFarm'
@@ -23,7 +24,13 @@ const Body = ({
     setShowModal(true)
   }
   const gridColumnTemplate = useGridColumn(listTitle)
- 
+  const navigate = useNavigate()
+
+  const handleViewAreas = (event, farmId) => {
+    event.stopPropagation()
+    navigate(`/manager/location/area/api/${farmId}`)
+  }
+
   return (
     <>
       {showModal && (
@@ -44,6 +51,11 @@ const Body = ({
         <li>{item.farmWidth}</li>
         <li>{item.farmLength}</li>
         <li>{item.farmAddress}</li>
+        <li>
+          <button onClick={(event) => handleViewAreas(event, item.farmId)}>
+            See details
+          </button>
+        </li>
         <li>
           <div
             onClick={(event) => handleShowUpdatePopup(event, item)}

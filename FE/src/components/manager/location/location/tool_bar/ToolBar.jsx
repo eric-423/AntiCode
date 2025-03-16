@@ -17,9 +17,9 @@ const ToolBar = ({ setRefreshData }) => {
   const handleDeleteLocation = async () => {
     try {
       let id = ''
-      Array.isArray(selectedArea) &&
-        selectedArea.forEach((element, index) => {
-          if (index === selectedArea.length - 1) {
+      Array.isArray(selectedLocation) &&
+        selectedLocation.forEach((element, index) => {
+          if (index === selectedLocation.length - 1) {
             id += element
           } else {
             id += element
@@ -62,7 +62,7 @@ const ToolBar = ({ setRefreshData }) => {
           className="plant-button new-plant-button"
           onClick={() => handleShowModal()}
         >
-          Create Plant
+          Create Location
         </div>
       </div>
       {showModal && (

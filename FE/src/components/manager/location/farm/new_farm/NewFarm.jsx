@@ -139,7 +139,7 @@ const NewFarm = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
           <Button
-            text="Create Plant"
+            text="Create Farm"
             handleOnClick={handleOnClick}
             className="button-create-plant"
           />

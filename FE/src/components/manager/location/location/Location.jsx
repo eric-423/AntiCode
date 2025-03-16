@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import './Location.css'
 import ToolBar from './tool_bar/ToolBar'
 import Table from './table/Table'
+import { useParams } from 'react-router-dom'
+
 
 const Location = () => {
+  const { areaId } = useParams()
   const [refreshData, setRefreshData] = useState(false)
   const listTitle = [
     {
@@ -39,6 +42,7 @@ const Location = () => {
         listTitle={listTitle}
         refreshData={refreshData}
         setRefreshData={setRefreshData}
+        areaId={areaId}
       />
     </div>
   )

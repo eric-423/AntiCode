@@ -4,7 +4,7 @@ import Header from '../../../../common/table/header/Header'
 import Body from './body/Body'
 import useLocalStorage from 'use-local-storage'
 
-const Table = ({ listTitle, refreshData, setRefreshData }) => {
+const Table = ({ listTitle, refreshData, setRefreshData, areaId }) => {
   const [itemsActive, setItemsActive] = useState([])
   const [selectedLocation, setSelectedLocation] = useLocalStorage(
     'manager_location_selected',
@@ -14,7 +14,7 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
   const handleFetchLocation = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/location`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/location/api/${areaId}`,
         {
           method: 'GET',
           headers: {
@@ -26,7 +26,7 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
         const data = await response.json()
         console.log(data)
 
-        setListItems(data.data)
+        setListItems(data)
       }
     } catch (error) {
       console.log(error)
@@ -40,7 +40,7 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
   }, [itemsActive])
   useEffect(() => {
     handleFetchLocation()
-  }, [refreshData])
+  }, [refreshData, areaId])
   return (
     <>
       <Header listTitle={listTitle} />

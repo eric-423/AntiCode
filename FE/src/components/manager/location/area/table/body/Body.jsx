@@ -3,6 +3,8 @@ import './Body.css'
 import ICONS from '../../../../../../constant/Image'
 import UpdatePlaingLocation from '../../update_area/UpdateArea'
 import useGridColumn from '../../../../../../hook/useGridColumn'
+import { useNavigate } from 'react-router-dom'
+
 
 const Body = ({
   item,
@@ -30,6 +32,12 @@ const Body = ({
     return formattedDate
   }
   const gridColumnTemplate = useGridColumn(listTitle)
+  const navigate = useNavigate()
+  
+  const handleViewAreas = (event, areaId) => {
+    event.stopPropagation()
+    navigate(`/manager/location/api/${areaId}`)
+  }
   return (
     <>
       {showModal && (
@@ -49,6 +57,11 @@ const Body = ({
         <li>{item.areaExtend}</li>
         <li>{item.areaWidth}</li>
         <li>{item.areaLength}</li>
+        <li>
+          <button onClick={(event) => handleViewAreas(event, item.areaId)}>
+            See details
+          </button>
+        </li>
         <li>
           <div
             onClick={(event) => handleShowUpdatePopup(event, item)}

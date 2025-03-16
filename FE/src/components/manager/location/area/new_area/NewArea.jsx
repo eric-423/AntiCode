@@ -165,7 +165,7 @@ const NewPlantingLocation = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
           <Button
-            text="Create Plant"
+            text="Create Area"
             handleOnClick={handleOnClick}
             className="button-create-plant"
           />

@@ -31,6 +31,10 @@ const Farm = () => {
       column: 1.5,
     },
     {
+      name: 'View Areas',
+      column: 1,
+    },
+    {
       name: '',
       column: 1,
     },

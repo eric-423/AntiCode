@@ -152,7 +152,7 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
             UPDATE AREA
           </h4>
           <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">Location</Form.Label>
+            <Form.Label className="text-label-login">Farm</Form.Label>
             <Form.Select
               className="input-login input-addition"
               value={farmId}
@@ -200,7 +200,7 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
               type="number"
               className="input-login input-addition"
               value={areaLength}
-              onChange={(e) => setAreaWidth(e.target.value)}
+              onChange={(e) => setAreaLength(e.target.value)}
               label="Harvest"
             />
           </Form.Group>

@@ -17,9 +17,9 @@ const ToolBar = ({ setRefreshData }) => {
   const handleDeleteFarm = async () => {
     try {
       let id = ''
-      Array.isArray(selectedArea) &&
-        selectedArea.forEach((element, index) => {
-          if (index === selectedArea.length - 1) {
+      Array.isArray(selectedFarm) &&
+        selectedFarm.forEach((element, index) => {
+          if (index === selectedFarm.length - 1) {
             id += element
           } else {
             id += element

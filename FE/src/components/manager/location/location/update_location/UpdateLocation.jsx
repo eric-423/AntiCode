@@ -155,13 +155,13 @@ const UpdateLocation = ({ setShowModal, setRefreshData }) => {
             UPDATE LOCATION
           </h4>
           <Form.Group className="group-3-column-create-plant">
-            <Form.Label className="text-label-login">AREA</Form.Label>
+            <Form.Label className="text-label-login">Area</Form.Label>
             <Form.Select
               className="input-login input-addition"
               value={areaId}
               onChange={(e) => setAreaId(e.target.value)}
             >
-              <option value="">Select AREA</option>
+              <option value="">Select Area</option>
               {areaData.map((area) => (
                 <option key={area.areaId} value={area.areaId}>
                   {area.areaName}
@@ -208,7 +208,7 @@ const UpdateLocation = ({ setShowModal, setRefreshData }) => {
             />
           </Form.Group>
           <Button
-            text="Update Area"
+            text="Update Location"
             className="button-create-plant"
             handleOnClick={handleOnClick}
           />

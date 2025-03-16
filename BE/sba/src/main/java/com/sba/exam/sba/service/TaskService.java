@@ -7,6 +7,7 @@ import com.sba.exam.sba.dto.UserDTO;
 import com.sba.exam.sba.entity.*;
 import com.sba.exam.sba.entity.keys.KeyWaterTask;
 import com.sba.exam.sba.payload.TaskRequest;
+import com.sba.exam.sba.payload.WaterTaskRequest;
 import com.sba.exam.sba.repository.*;
 import com.sba.exam.sba.service.imp.TaskServiceImp;
 import jakarta.transaction.Transactional;
@@ -114,19 +115,33 @@ public class TaskService implements TaskServiceImp {
             task.setDueDate(taskRequest.getDueDate());
             task.setTaskName(taskRequest.getTaskName());
             taskRepository.save(task);
-//            Water water = waterRepository.findWaterById(taskRequest.getWaterTaskRequest().getWaterId());
-//            WaterTask waterTask = new WaterTask();
-//            if(taskRequest.getWaterTaskRequest().getVolumn() > water.getVolumeAvailable())
-//                throw new RuntimeException(water.getWaterName() + " has " + water.getVolumeAvailable() + " left");
-//            if(taskRequest.getWaterTaskRequest().getVolumn() < 0)
-//                throw new RuntimeException("Water volume must be positive");
-//            waterTask.setId(new KeyWaterTask(task.getId(), water.getId()));
-//            waterTask.setWater(water);
-//            waterTask.setTask(task);
-//            waterTask.setVolumeAvailable(taskRequest.getWaterTaskRequest().getVolumn());
-//            waterTaskRepository.save(waterTask);
-//            water.setVolumeAvailable(water.getVolumeAvailable() - waterTask.getVolumeAvailable());
-//            waterRepository.save(water);
+            //Add water task
+//            List<Water> waters = waterRepository.findAll();
+//            if(taskRequest.getWaterTaskRequest() != null && !taskRequest.getWaterTaskRequest().isEmpty()) {
+//                for (WaterTaskRequest waterTaskRequest : taskRequest.getWaterTaskRequest()) {
+//                    Water water = waters.stream()
+//                            .filter(w -> w.getId() == waterTaskRequest.getWaterId())
+//                            .findFirst()
+//                            .orElse(null);
+//
+//                    if (water != null) {
+//                        if (waterTaskRequest.getVolumn() > water.getVolumeAvailable())
+//                            throw new RuntimeException("Not enough water!");
+//                        if (waterTaskRequest.getVolumn() < 0)
+//                            throw new RuntimeException("Water cannot be negative!");
+//                        WaterTask waterTask = new WaterTask();
+//                        waterTask.setTask(task);
+//                        waterTask.setVolumeAvailable(waterTaskRequest.getVolumn());
+//                        waterTask.setWater(water);
+//                        waterTask.setId(new KeyWaterTask(task.getId(), water.getId()));
+//
+//                        waterTaskRepository.save(waterTask);
+//
+//                        water.setVolumeAvailable(water.getVolumeAvailable() - waterTask.getVolumeAvailable());
+//                        waterRepository.save(water);
+//                    }
+//                }
+//            }
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
             return taskDTO;
