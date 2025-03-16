@@ -45,10 +45,10 @@ const Table = ({ listTitle, refreshData, setRefreshData, areaId }) => {
     <>
       <Header listTitle={listTitle} />
       <div className="container-table-body">
-        {listItems &&
+        {listItems && listItems.length > 0 ? (
           listItems.map((item, index) => (
             <Body
-              key={index}
+              key={item.areaId}
               handleSelectItem={handleSelectItem}
               itemsActive={itemsActive}
               item={item}
@@ -56,7 +56,9 @@ const Table = ({ listTitle, refreshData, setRefreshData, areaId }) => {
               setRefreshData={setRefreshData}
               listTitle={listTitle}
             />
-          ))}
+          ))):(
+            <div>No data</div>
+          )}
       </div>
     </>
   )

@@ -25,6 +25,7 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
       if (response.ok) {
         const data = await response.json()
         setListItems(data)
+        console.log(data);
         
       }
     } catch (error) {
@@ -44,7 +45,7 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
     <>
       <Header listTitle={listTitle} />
       <div className="container-table-body">
-        {listItems &&
+        {listItems && listItems.length > 0 ? (
           listItems.map((item, index) => (
             <Body
               key={item.areaId}
@@ -55,7 +56,9 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
               setRefreshData={setRefreshData}
               listTitle={listTitle}
             />
-          ))}
+          ))):(
+            <div>No data</div>
+          )}
       </div>
     </>
   )
