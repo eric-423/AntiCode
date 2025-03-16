@@ -55,7 +55,7 @@ public class TaskTypeService implements TaskTypeImp {
     public TaskTypeDTO addTaskType(TaskTypeDTO taskTypeDTO) {
         try{
             TaskType taskType = new TaskType();
-            if(taskTypeDTO.getTaskTypeName().isEmpty()) throw new Exception("Task type name is empty");
+            if(taskTypeDTO.getTaskTypeName().trim().isEmpty()) throw new Exception("Task type name is empty");
             taskType.setTypeName(taskTypeDTO.getTaskTypeName());
             taskType.setTypeDescription(taskTypeDTO.getTaskTypeDesc());
             taskType.setDeleted(false);
@@ -73,7 +73,7 @@ public class TaskTypeService implements TaskTypeImp {
     public TaskTypeDTO updateTaskType(TaskTypeDTO taskTypeDTO) {
         try{
             TaskType taskType = taskTypeRepository.findTaskTypeById(taskTypeDTO.getTaskTypeId());
-            if(taskTypeDTO.getTaskTypeName().isEmpty()) throw new Exception("Task type name is empty");
+            if(taskTypeDTO.getTaskTypeName().trim().isEmpty()) throw new Exception("Task type name is empty");
             taskType.setTypeName(taskTypeDTO.getTaskTypeName());
             taskType.setTypeDescription(taskTypeDTO.getTaskTypeDesc());
             taskType.setDeleted(taskTypeDTO.isDeleted());
