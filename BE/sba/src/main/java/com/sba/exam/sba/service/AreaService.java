@@ -104,6 +104,7 @@ public class AreaService implements AreaServiceImp {
             List<Area> areaList = areaRepository.findAreaByFarm_FarmId(farmId);
             List<AreaDTO> areaDTOList = new ArrayList<>();
             for(Area area:areaList){
+                if(!area.isDeleted())
                 areaDTOList.add(transferDTO(area));
             }
             return areaDTOList;

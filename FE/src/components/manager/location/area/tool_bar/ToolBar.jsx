@@ -25,6 +25,7 @@ const ToolBar = ({ setRefreshData }) => {
             id += element
           }
         })
+console.log(id);
 
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/area/${id}`,
@@ -34,8 +35,9 @@ const ToolBar = ({ setRefreshData }) => {
             'Content-Type': 'application/json',
           },
         }
-      )
+      )   
     } catch (error) {
+      console.log(error);      
     } finally {
       setSelectedArea([])
       setRefreshData((prev) => !prev)
