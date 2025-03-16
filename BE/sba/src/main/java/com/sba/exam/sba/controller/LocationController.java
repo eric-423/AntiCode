@@ -70,7 +70,7 @@ public class LocationController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
-    @GetMapping("/api/{id}")
+    @GetMapping("/area/{id}")
     public ResponseEntity<?> getLocationByAreaId(@PathVariable int id) {
         return new ResponseEntity<>(locationServiceImp.getLocationByArea_AreaId(id), HttpStatus.OK);
     }

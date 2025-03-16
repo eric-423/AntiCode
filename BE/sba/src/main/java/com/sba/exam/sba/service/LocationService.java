@@ -63,9 +63,8 @@ public class LocationService implements LocationServiceImp {
             location.setLocationWidth(locationRequest.getLocationWidth());
             location.setLocationLength(locationRequest.getLocationLength());
             location.setArea(area);
-
+            location.setPlanted(false);
             locationRepository.save(location);
-
             return getLocationById(location.getLocationId());
         } catch (Exception e) {
             return null;

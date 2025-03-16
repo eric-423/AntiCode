@@ -98,7 +98,7 @@ public class AreaController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
-    @GetMapping("/api/{id}")
+    @GetMapping("/farm/{id}")
     public ResponseEntity<?> getAreaByFarm_FarmId(@PathVariable int id){
         return new ResponseEntity<>(areaServiceImp.getAreaByFarm_FarmId(id), HttpStatus.OK);
     }
