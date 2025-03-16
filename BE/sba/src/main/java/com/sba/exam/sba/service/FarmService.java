@@ -1,9 +1,11 @@
 package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.FarmDTO;
+import com.sba.exam.sba.entity.Area;
 import com.sba.exam.sba.entity.Farm;
 import com.sba.exam.sba.payload.ResponseData;
 import com.sba.exam.sba.payload.request.FarmRequest;
+import com.sba.exam.sba.repository.AreaRepository;
 import com.sba.exam.sba.repository.FarmRepository;
 import com.sba.exam.sba.service.imp.FarmServiceImp;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,8 @@ public class FarmService implements FarmServiceImp {
 
     @Autowired
     FarmRepository farmRepository;
+    @Autowired
+    private AreaRepository areaRepository;
 
     @Override
     public List<FarmDTO> getFarmList() {
@@ -89,11 +93,13 @@ public class FarmService implements FarmServiceImp {
     public FarmDTO deleteFarm(int id) {
         try {
             Farm farm = farmRepository.findByFarmId(id);
+            List<Area> areas = areaRepository.getAreasByIsDeletedAndFarm_FarmId(false, farm.getFarmId());
+            if(!areas.isEmpty()) throw new Exception("Have Area!");
             farm.setDeleted(true);
             farmRepository.save(farm);
             return transferDTO(farm);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 }

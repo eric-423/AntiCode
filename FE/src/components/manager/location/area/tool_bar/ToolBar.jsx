@@ -4,12 +4,25 @@ import SearchBar from '../../../../common/search_bar/SearchBar'
 import Filter from '../../../../common/filter/Filter'
 import NewArea from '../new_area/NewArea'
 import useLocalStorage from 'use-local-storage'
+import { toast } from "react-toastify/unstyled";
 
 const ToolBar = ({ setRefreshData }) => {
   const [selectedArea, setSelectedArea] = useLocalStorage(
     'manager_area_selected',
     ''
   )
+  const showToastMessageSuccess = (message) => {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
+    const showToastMessageFail = (message) => {
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
   const [showModal, setShowModal] = useState(false)
   const handleShowModal = () => {
     setShowModal((prev) => !prev)
@@ -25,7 +38,6 @@ const ToolBar = ({ setRefreshData }) => {
             id += element
           }
         })
-console.log(id);
 
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/area/${id}`,
@@ -35,9 +47,11 @@ console.log(id);
             'Content-Type': 'application/json',
           },
         }
-      )   
+      )
+      if (!response || response.status !== 200) throw new Error();
+      showToastMessageSuccess("Area was deleted!");   
     } catch (error) {
-      console.log(error);      
+      showToastMessageFail("Area can not delete!");     
     } finally {
       setSelectedArea([])
       setRefreshData((prev) => !prev)

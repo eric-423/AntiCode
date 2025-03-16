@@ -79,12 +79,13 @@ public class AreaService implements AreaServiceImp {
     public AreaDTO deleteArea(int id) {
         try {
             Area area = areaRepository.findByAreaId(id);
+            if(!area.getLocationList().isEmpty()) throw new RuntimeException("Have Location");
             area.setDeleted(true);
             AreaDTO areaDTO = transferDTO(area);
             areaRepository.save(area);
             return areaDTO;
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

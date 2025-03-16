@@ -14,4 +14,6 @@ public interface AreaRepository extends JpaRepository<Area,Integer> {
     List<Area> findByIsDeleted(boolean isDeleted);
 
     List<Area> findAreaByFarm_FarmId(int farmId);
+
+    List<Area> getAreasByIsDeletedAndFarm_FarmId(boolean isDeleted, int farmFarmId);
 }

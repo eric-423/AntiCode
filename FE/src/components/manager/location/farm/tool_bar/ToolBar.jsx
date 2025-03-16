@@ -4,12 +4,25 @@ import SearchBar from '../../../../common/search_bar/SearchBar'
 import Filter from '../../../../common/filter/Filter'
 import NewFarm from '../new_farm/NewFarm'
 import useLocalStorage from 'use-local-storage'
+import { toast } from "react-toastify/unstyled";
 
 const ToolBar = ({ setRefreshData }) => {
   const [selectedFarm, setSelectedFarm] = useLocalStorage(
-    'manager_area_selected',
+    'manager_farm_selected',
     ''
   )
+  const showToastMessageSuccess = (message) => {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
+    const showToastMessageFail = (message) => {
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
   const [showModal, setShowModal] = useState(false)
   const handleShowModal = () => {
     setShowModal((prev) => !prev)
@@ -35,7 +48,10 @@ const ToolBar = ({ setRefreshData }) => {
           },
         }
       )
+      if (!response || response.status !== 200) throw new Error();
+      showToastMessageSuccess("Farm was deleted!");   
     } catch (error) {
+      showToastMessageFail("Farm can not delete!");    
     } finally {
       setSelectedFarm([])
       setRefreshData((prev) => !prev)

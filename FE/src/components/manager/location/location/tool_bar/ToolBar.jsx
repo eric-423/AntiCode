@@ -4,12 +4,25 @@ import SearchBar from '../../../../common/search_bar/SearchBar'
 import Filter from '../../../../common/filter/Filter'
 import NewLocation from '../new_location/NewLocation'
 import useLocalStorage from 'use-local-storage'
+import { toast } from "react-toastify/unstyled";
 
 const ToolBar = ({ setRefreshData }) => {
   const [selectedLocation, setSelectedLocation] = useLocalStorage(
     'manager_location_selected',
     ''
   )
+  const showToastMessageSuccess = (message) => {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
+    const showToastMessageFail = (message) => {
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 1000,
+      });
+    };
   const [showModal, setShowModal] = useState(false)
   const handleShowModal = () => {
     setShowModal((prev) => !prev)
@@ -35,8 +48,10 @@ const ToolBar = ({ setRefreshData }) => {
           },
         }
       )
+      if (!response || response.status !== 200) throw new Error();
+      showToastMessageSuccess("Location was deleted!");   
     } catch (error) {
-      console.log(error)
+      showToastMessageFail("Location can not delete!");    
     } finally {
       setSelectedLocation([])
       setRefreshData((prev) => !prev)
