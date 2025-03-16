@@ -1,35 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useRoutes } from "react-router-dom";
-import ContainerLocation from "./container/ContainerLocation";
+import { useParams } from "react-router-dom";
 import "./Location.css";
 import axios from "axios";
 import BASE from "../../../../../constant/base";
-import ContainerArea from "./container/ContainerArea";
-import Button from "../../../../common/button/Button";
+import StepPlant from "./StepPlant";
+import StepPlansTask from "./StepPlansTask";
 
 const Location = () => {
   const { id } = useParams();
   const [activePlant, setActivePlant] = useState();
   const [plants, setPlants] = useState([]);
 
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const draggableRef = useRef(null);
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setStartX(e.pageX - draggableRef.current.offsetLeft);
-  };
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const x = e.pageX - draggableRef.current.offsetLeft;
-    const walk = (x - startX) * 1;
-    draggableRef.current.scrollLeft = scrollLeft - walk;
-  };
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setScrollLeft(draggableRef.current.scrollLeft);
-  };
+  const [areaChoose, setAreaChoose] = useState();
+
+  const [isPlansTask, setIsPlansTask] = useState(false);
 
   const handleActivePlant = (plantId) => {
     setActivePlant(plantId);
@@ -48,55 +32,21 @@ const Location = () => {
   }, []);
 
   return (
-    <div className="plant-container">
-      <div className="plant-choose-container">
-        <h5>Choose Plant To Planting</h5>
-        <div
-          className="plant-planting-choose-container"
-          ref={draggableRef}
-          draggable={false}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onDragLeave={handleMouseUp}
-        >
-          {plants &&
-            plants.map((item) => (
-              <div
-                key={item?.plantId}
-                className="card-plant-planting-choose-container"
-                style={{
-                  backgroundColor:
-                    activePlant === item.plantId ? "#fef7ef" : null,
-                }}
-                draggable={false}
-                onClick={() => handleActivePlant(item.plantId)}
-              >
-                <h6
-                  style={{
-                    color: activePlant === item.plantId ? "#f28705" : null,
-                  }}
-                >
-                  {item.plantName}
-                </h6>
-                <p
-                  style={{
-                    color: activePlant === item.plantId ? "#EDA650" : null,
-                  }}
-                >
-                  {item.description}
-                </p>
-              </div>
-            ))}
-        </div>
-      </div>
-      <ContainerArea />
-      <ContainerLocation />
-      <div className="button-location-planting-container">
-        <Button text={"Next"} />
-      </div>
-    </div>
+    <>
+      {isPlansTask ? (
+        <StepPlansTask />
+      ) : (
+        <StepPlant
+          farmId={id}
+          activePlant={activePlant}
+          plants={plants}
+          areaChoose={areaChoose}
+          handleActivePlant={handleActivePlant}
+          setAreaChoose={setAreaChoose}
+          setIsPlansTask={setIsPlansTask}
+        />
+      )}
+    </>
   );
 };
 
