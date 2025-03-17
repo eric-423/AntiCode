@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
 import ReactDOM from "react-dom";
+import Button from "../../../../../common/button/Button";
+import ICONS from "../../../../../../constant/Image";
+import axios from "axios";
 
-const Tasks = () => {
+const Tasks = ({setShowModalAddTasks, setPhase, phase, index}) => {
   const modalRoot = document.body;
   const [taskDescription, setTaskDescription] = useState();
   const [taskType, setTaskType] = useState();
@@ -15,11 +19,27 @@ const Tasks = () => {
       );
       if (response.status === 200) {
         setTaskTypesData(response.data);
+        setTaskType(response.data[0]?.taskTypeId)
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleAddTask = () => {
+    const task = {
+      taskName,
+      taskDescription,
+      taskType: taskTypesData.filter((item) => Number(item.taskTypeId) === Number(taskType))[0]
+    }
+    let listPhase = [...phase]
+    let phaseIndexTasks = listPhase[index]?.tasks || [];
+    phaseIndexTasks = [...phaseIndexTasks,task]
+    listPhase[index].tasks = phaseIndexTasks
+    setPhase(listPhase)
+    setShowModalAddTasks(false)
+  }
+
   useEffect(() => {
     handleFetchDataTaskType();
   }, []);
@@ -65,11 +85,11 @@ const Tasks = () => {
             </Form.Select>
           </Form.Group>
 
-          <Button text="Create Task" className="button-create-plant" />
+          <Button text="Create Task" handleOnClick={() => handleAddTask()} className="button-create-plant" />
         </Form>
         <img
           className="icon-close"
-          onClick={() => handleClickClose()}
+          onClick={() => setShowModalAddTasks(false)}
           src={ICONS.icon_close}
           alt=""
         />

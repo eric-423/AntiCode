@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import "./StepPlansTask.css";
 import { Form } from "react-bootstrap";
+import Tasks from "./tasks/Tasks";
+import CardTasks from "./tasks/CardTasks";
+import Phase from "./phase/Phase";
+import useFormattedDate from "../../../../../hook/useFormatDate";
+import Button from "../../../../common/button/Button";
 
 const StepPlansTask = () => {
+  const [showModalAddTasks, setShowModalAddTasks] = useState(false);
+  const [showModalAddPhase, setShowModalAddPhase] = useState(false);
+  const [phase, setPhase] = useState([]);
+  const [index, setIndex] = useState();
+
   return (
     <div className="step-plans-tasks-container">
       <div className="step-plans-tasks">
-        <h4 className="step-plans-tasks-h4">Plan Informations</h4>
+        <div className="header-plans-information">
+          <h4 className="step-plans-tasks-h4">Plan Informations</h4>
+          <div className="container-create-plans-button">
+            <Button text={"Create Plan"} />
+          </div>
+        </div>
         <div className="information-plant-area-location">
           <label>Plant</label>
           <span>Apple Tree</span>
@@ -40,25 +55,64 @@ const StepPlansTask = () => {
           </Form.Group>
         </div>
         <div className="step-plans-tasks-plans">
-          <div className="">
-            <label className="text-label-plans-tasks">Tasks Plans</label>
+          <div className="d-flex justify-content-between align-items-center mb-1">
+            <label
+              className="step-plans-tasks-h4"
+              style={{ marginTop: 10, marginBottom: 0 }}
+            >
+              Tasks Plans
+            </label>
+            <div
+              className="button-create-phase"
+              onClick={() => setShowModalAddPhase(true)}
+            >
+              <div>Create Phase</div>
+            </div>
           </div>
           <div className="step-plans-tasks-plans-guide">
-            <div className="step-plans-tasks-plans-guide-phase">
-              <span>Phase One (First Month)</span>
-              <div className="add-tasks-plans-guide">+</div>
-            </div>
-            <div className="step-plans-tasks-plans-guide-phase">
-              <span>Phase Two (Sencond Month)</span>
-              <div className="add-tasks-plans-guide">+</div>
-            </div>
-            <div className="step-plans-tasks-plans-guide-phase">
-              <span>Phase Three (Third Month)</span>
-              <div className="add-tasks-plans-guide">+</div>
-            </div>
+            {phase &&
+              phase.map((item, index) => (
+                <div className="step-plans-tasks-plans-guide-phase">
+                  <span>
+                    {item.name}
+                    {` (${useFormattedDate(
+                      item.startPhase,
+                      "dd/MM"
+                    )} - ${useFormattedDate(item.endPhase, "dd/MM")})`}
+                  </span>
+                  {item &&
+                    item?.tasks &&
+                    Array.isArray(item?.tasks) &&
+                    item?.tasks.map((task) => <CardTasks task={task} />)}
+                  <div
+                    className="add-tasks-plans-guide"
+                    onClick={() => {
+                      setIndex(index);
+                      setShowModalAddTasks(true);
+                    }}
+                  >
+                    +
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
+      {showModalAddTasks && (
+        <Tasks
+          setShowModalAddTasks={setShowModalAddTasks}
+          setPhase={setPhase}
+          phase={phase}
+          index={index}
+        />
+      )}
+      {showModalAddPhase && (
+        <Phase
+          setPhase={setPhase}
+          phase={phase}
+          setShowModalAddPhase={setShowModalAddPhase}
+        />
+      )}
     </div>
   );
 };
