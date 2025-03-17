@@ -14,7 +14,7 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
   const handleFetchArea = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/area/api/${farmId}`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/area/farm/${farmId}`,
         {
           method: 'GET',
           headers: {

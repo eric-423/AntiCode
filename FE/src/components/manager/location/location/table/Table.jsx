@@ -14,7 +14,7 @@ const Table = ({ listTitle, refreshData, setRefreshData, areaId }) => {
   const handleFetchLocation = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/location/api/${areaId}`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/location/area/${areaId}`,
         {
           method: 'GET',
           headers: {

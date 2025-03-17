@@ -28,7 +28,7 @@ const Body = ({
 
   const handleViewAreas = (event, farmId) => {
     event.stopPropagation()
-    navigate(`/manager/location/area/api/${farmId}`)
+    navigate(`/manager/location/area/farm/${farmId}`)
   }
 
   return (

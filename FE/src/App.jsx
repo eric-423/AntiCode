@@ -167,8 +167,8 @@ function App() {
             <Route key={index} path={item.path} element={item.component} />
           ))}
           <Route path='/manager/menu-plans-planting/:id'  element={<LocationPlansPlanting />}/>
-          <Route path="/manager/location/area/api/:farmId" element={<Area />} />
-          <Route path="/manager/location/api/:areaId" element={<Location />} />
+          <Route path="/manager/location/area/farm/:farmId" element={<Area />} />
+          <Route path="/manager/location/area/:areaId" element={<Location />} />
         </Route>
         <Route path="/worker" element={<Worker />}>
           <Route index element={<Tasks />} />
