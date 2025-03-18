@@ -18,7 +18,8 @@ public class PlantPotTask {
     private PlantPot plantPot;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Task task;
+    @JoinColumn(name = "process_id")
+    private PlantingProcess plantingProcess;
 
     private int quantity;
 }

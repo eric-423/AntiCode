@@ -16,8 +16,8 @@ public class TaskAgriculturalChemical {
     private KeyTaskAgriculturalChemical id;
 
     @ManyToOne
-    @JoinColumn(name = "task_id", insertable = false, updatable = false)
-    private Task task;
+    @JoinColumn(name = "process_id", insertable = false, updatable = false)
+    private PlantingProcess plantingProcess;
 
     @ManyToOne
     @JoinColumn(name = "chemical_id", insertable = false, updatable = false)

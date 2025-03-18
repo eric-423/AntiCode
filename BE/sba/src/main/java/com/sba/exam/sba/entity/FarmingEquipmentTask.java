@@ -25,7 +25,7 @@ public class FarmingEquipmentTask {
     private FarmingEquipment farmingEquipment;
 
     @ManyToOne
-    @JoinColumn(name = "task_id", insertable = false, updatable = false)
-    private Task task;
+    @JoinColumn(name = "process_id", insertable = false, updatable = false)
+    private PlantingProcess plantingProcess;
 
 }

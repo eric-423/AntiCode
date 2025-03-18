@@ -18,6 +18,6 @@ public class KeyFarmingEquipmentTask {
     @Column(name = "equipment_id")
     private int equipmentId;
 
-    @Column(name = "task_id")
-    private int taskId;
+    @Column(name = "process_id")
+    private int processId;
 }

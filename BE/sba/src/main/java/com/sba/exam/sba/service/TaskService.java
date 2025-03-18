@@ -100,9 +100,7 @@ public class TaskService implements TaskServiceImp {
     @Override
     @Transactional
     public TaskDTO addTask(TaskRequest taskRequest) {
-        try{
-//            if(taskRequest.getCreatedAt().after(taskRequest.getCompletedAt())) throw new Exception("Invalid date");
-            Task task = new Task();
+        try{Task task = new Task();
             TaskType taskType = taskTypeRepository.findTaskTypeById(taskRequest.getTaskType());
             TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(taskRequest.getTaskStatus());
             task.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
@@ -115,33 +113,6 @@ public class TaskService implements TaskServiceImp {
             task.setDueDate(taskRequest.getDueDate());
             task.setTaskName(taskRequest.getTaskName());
             taskRepository.save(task);
-            //Add water task
-//            List<Water> waters = waterRepository.findAll();
-//            if(taskRequest.getWaterTaskRequest() != null && !taskRequest.getWaterTaskRequest().isEmpty()) {
-//                for (WaterTaskRequest waterTaskRequest : taskRequest.getWaterTaskRequest()) {
-//                    Water water = waters.stream()
-//                            .filter(w -> w.getId() == waterTaskRequest.getWaterId())
-//                            .findFirst()
-//                            .orElse(null);
-//
-//                    if (water != null) {
-//                        if (waterTaskRequest.getVolumn() > water.getVolumeAvailable())
-//                            throw new RuntimeException("Not enough water!");
-//                        if (waterTaskRequest.getVolumn() < 0)
-//                            throw new RuntimeException("Water cannot be negative!");
-//                        WaterTask waterTask = new WaterTask();
-//                        waterTask.setTask(task);
-//                        waterTask.setVolumeAvailable(waterTaskRequest.getVolumn());
-//                        waterTask.setWater(water);
-//                        waterTask.setId(new KeyWaterTask(task.getId(), water.getId()));
-//
-//                        waterTaskRepository.save(waterTask);
-//
-//                        water.setVolumeAvailable(water.getVolumeAvailable() - waterTask.getVolumeAvailable());
-//                        waterRepository.save(water);
-//                    }
-//                }
-//            }
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setTaskId(task.getId());
             return taskDTO;

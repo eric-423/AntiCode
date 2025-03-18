@@ -52,17 +52,6 @@ public class Task {
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<UserTask> userTasks;
-  
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = {
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
-    })
-    private Set<FarmingEquipmentTask> farmingEquipmentTasks;
-
-    @OneToMany( mappedBy = "task",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PlantMediumTask> plantMediumTasks;
-
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PlantPotTask> plantPotTasks;
 
     @ManyToMany
     @JoinTable(
@@ -71,8 +60,12 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "planting_location"))
     private List<PlantingLocation> plantLocations;
 
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<WaterTask> waterTasks;
+    @ManyToOne(cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    @JoinColumn(name = "process_id")
+    private PlantingProcess plantingProcess;
+
 
     @Column(name = "is_deleted")
     private boolean isDeleted;

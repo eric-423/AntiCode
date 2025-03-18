@@ -13,13 +13,14 @@ public class WaterTask {
     private KeyWaterTask id;
 
     @ManyToOne
-    @JoinColumn(name = "task_id", insertable = false, updatable = false)
-    private Task task;
+    @JoinColumn(name = "process_id", insertable = false, updatable = false)
+    private PlantingProcess plantingProcess;
 
     @ManyToOne
     @JoinColumn(name = "water_id", insertable = false, updatable = false)
     private Water water;
 
-    @Column(name = "volume_available")
-    private double volumeAvailable;
+
+    @Column(name = "volume")
+    private double volume;
 }

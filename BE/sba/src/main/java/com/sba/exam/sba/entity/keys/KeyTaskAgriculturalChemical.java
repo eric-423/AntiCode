@@ -12,8 +12,8 @@ import java.io.Serializable;
 @Data
 public class KeyTaskAgriculturalChemical implements Serializable {
 
-    @Column(name = "task_id")
-    private int taskId;
+    @Column(name = "process_id")
+    private int process_id;
 
     @Column(name = "chemical_id")
     private int chemicalId;
