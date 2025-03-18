@@ -1,7 +1,7 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { PropTypes } from 'prop-types';
 
-const Farm = ({item}) => {
+const Farm = ({ item }) => {
   const navigate = useNavigate();
   const handleClickFarm = () => {
     navigate(`/manager/menu-plans-planting/${item.farmId}`)
@@ -20,6 +20,10 @@ const Farm = ({item}) => {
       </p>
     </div>
   );
+};
+
+Farm.propTypes = {
+  item: PropTypes.object.isRequired,
 };
 
 export default Farm;

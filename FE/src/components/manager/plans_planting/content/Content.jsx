@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./Content.css";
 import Farm from "./farm/Farm";
 import axios from "axios";
@@ -12,7 +12,9 @@ const Content = () => {
       const response = await axios.get(`${BASE.BASE_URL}/farm`);
       if (!response || response.status !== 200) throw new Error();
       setFarms(response.data.data);
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -24,7 +26,7 @@ const Content = () => {
       <h5>Farms</h5>
       <div className="height-fix-farm-content-plans-planting">
         <div className="farm-content-plans-planting">
-          {farms && farms.map((item) => <Farm item={item} />)}
+          {farms && farms.map((item) => <Farm key={item.farmId} item={item} />)}
         </div>
       </div>
     </div>

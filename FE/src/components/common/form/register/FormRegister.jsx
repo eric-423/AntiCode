@@ -11,6 +11,7 @@ import LOCALSTORAGE from '../../../../constant/localStorage'
 import axios from 'axios'
 
 const FormRegister = () => {
+  
   const [guestRegisterInformation, setGuestRegisterInformation] =
     useLocalStorage(LOCALSTORAGE.GUEST_REGISTER_INFORMATION, '')
   const navigate = useNavigate()

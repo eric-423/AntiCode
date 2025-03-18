@@ -45,7 +45,6 @@ const Chemical = () => {
         <div className="plant-container">
             <ToolBar setRefreshData={setRefreshData} />
             <Table listTitle={listTitle} refreshData={refreshData} />
-            {/* <Chat /> */}
         </div>
     );
 };
