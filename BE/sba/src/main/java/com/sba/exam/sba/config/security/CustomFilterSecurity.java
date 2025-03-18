@@ -53,7 +53,7 @@ public class CustomFilterSecurity {
                 .authorizeHttpRequests(request -> {
                     request
                             .requestMatchers(url).permitAll()
-                            .anyRequest().authenticated();
+                            .anyRequest().permitAll();
                 });
         http.addFilterBefore(jwtCustom, UsernamePasswordAuthenticationFilter.class);
         return http.build();
