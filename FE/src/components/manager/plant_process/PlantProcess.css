@@ -34,11 +34,12 @@
 .container-create-plant-process {
     width: 50%;
     height: fit-content;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.04);
     position: fixed;
-    top: 12%;
+    top: 15%;
     left: 50%;
     transform: translateX(-50%);
+    border-radius: 0.375rem;
 }
 
 .modal-create-plant-process {
