@@ -23,7 +23,7 @@ const WorkerChat = () => {
   const chatRoomIdRef = useRef(chatRoomId);
   const [sizeMes, setSizeMes] = useState(1000);
   const [managerId, setManagerId] = useState(2);
-
+  const [bearerToken, setBearerToken] = useState(atob(auth))
   useEffect(() => {
     handleGetAllChatRoom();
     chatRoomIdRef.current = chatRoomId;
@@ -46,7 +46,10 @@ const WorkerChat = () => {
         `${import.meta.env.VITE_REACT_APP_END_POINT}/chat-room`,
         {
           method: "GET",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${bearerToken}`,
+          },
         }
       );
 
@@ -86,13 +89,13 @@ const WorkerChat = () => {
         size: sizeMes
       });
 
-      console.log(params.toString())
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read?${params}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${bearerToken}`,
           },
         }
       );
@@ -101,9 +104,6 @@ const WorkerChat = () => {
 
       const data = await response.json();
       const messagesContent = data.content;
-      console.log(messagesContent)
-
-
       const userId = jwtDecode(atob(auth)).id;
 
       const formattedMessages = messagesContent.map(msg => ({
@@ -128,18 +128,20 @@ const WorkerChat = () => {
     const newClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 2000,
+      connectHeaders: {
+        "Authorization": `Bearer ${bearerToken}`,
+      }
     });
 
     newClient.onConnect = () => {
-      console.log('Connected to WebSocket');
-      newClient.subscribe("/topic/messages/", (message) => {
+      newClient.subscribe("/topic/messages", (message) => {
+        console.log(message)
         try {
           const messageText = message.body.split("|")[0];
           const senderId = message.body.split("|")[1];
           const receiveId = message.body.split("|")[2];
           const currentUserId = jwtDecode(atob(auth)).id;
 
-          console.log(message);
           if (
             parseInt(receiveId) === parseInt(currentUserId)
             // parseInt(roomId) === parseInt(chatRoomIdRef.current)
@@ -180,6 +182,7 @@ const WorkerChat = () => {
           body: JSON.stringify(body),
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${bearerToken}`,
           },
         }
       );

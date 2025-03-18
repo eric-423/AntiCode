@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/common/header/Header";
 import { Col, Container, Row } from "react-bootstrap";
 import useMediaQuery from "../../hook/useMediaQuery";
 import { Outlet } from "react-router-dom";
+import ICONS from "../../constant/Image";
 
 const Register = () => {
   const isScreenPhone = useMediaQuery("(max-width: 576px)");

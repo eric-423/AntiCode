@@ -47,8 +47,12 @@ const FormLogin = () => {
     setIsLoading(true)
     setErrorMessage('')
     try {
+      const body = {
+        email,
+        password,
+      }
       const response = await axios.post(
-        `${BASE.BASE_URL}/user/signin?email=${email}&password=${password}`
+        `${BASE.BASE_URL}/user/signin`, body
       )
       if (!response || response.status !== 200 || response.data.data === '')
         throw new Error()
@@ -57,6 +61,7 @@ const FormLogin = () => {
       setAccountLoginInformation(btoa(data))
 
       const role = useRole(data)
+      console.log(role)
       if (role.admin) {
         navigate('/admin')
       } else if (role.manager) {

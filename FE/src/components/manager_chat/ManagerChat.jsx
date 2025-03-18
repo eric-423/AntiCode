@@ -23,11 +23,14 @@ const ManagerChat = memo(() => {
 
     const chatRoomIdRef = useRef(chatRoomId);
 
+    const userChatRoomRef = useRef(userChatRoom);
 
+    const [bearerToken, setBearerToken] = useState(atob(auth));
 
     useEffect(() => {
         chatRoomIdRef.current = chatRoomId;
         userChatRoomRef.current = userChatRoom;
+
     }, [chatRoomId, userChatRoom]);
 
 
@@ -69,6 +72,7 @@ const ManagerChat = memo(() => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${bearerToken}`,
                     },
                 }
             );
@@ -77,8 +81,6 @@ const ManagerChat = memo(() => {
 
             const data = await response.json();
             const messagesContent = data.content;
-            console.log(messagesContent)
-
 
             const userId = jwtDecode(atob(auth)).id;
 
@@ -107,7 +109,10 @@ const ManagerChat = memo(() => {
         try {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/chat-room`, {
                 method: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${bearerToken}`,
+                },
             });
 
             if (!response.ok) throw new Error("Failed to fetch chat rooms");
@@ -145,6 +150,7 @@ const ManagerChat = memo(() => {
                     body: JSON.stringify(body),
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${bearerToken}`,
                     },
                 }
             );
@@ -172,11 +178,16 @@ const ManagerChat = memo(() => {
         const newClient = new Client({
             webSocketFactory: () => socket,
             reconnectDelay: 2000,
+            connectHeaders: {
+                "Authorization": `Bearer ${bearerToken}`,
+            }
         });
 
         newClient.onConnect = () => {
             console.log('Connected to WebSocket');
-            newClient.subscribe("/topic/messages/", (message) => {
+            newClient.subscribe("/topic/messages", (message) => {
+                console.log(message)
+
                 const messageText = message.body.split("|")[0];
                 const senderId = message.body.split("|")[1];
                 const receiveId = message.body.split("|")[2];
@@ -211,6 +222,7 @@ const ManagerChat = memo(() => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${bearerToken}`,
                     },
                 }
             );
