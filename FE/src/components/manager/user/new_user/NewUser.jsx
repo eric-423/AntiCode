@@ -41,7 +41,6 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
                 if (!data) throw new Error("No data returned");
                 setListRole(data);
             }
-            console.log(listRole)
         } catch (error) {
             console.error(error);
         }

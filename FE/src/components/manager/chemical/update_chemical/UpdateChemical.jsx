@@ -87,7 +87,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
             if (!response.ok) throw new Error("Failed to create Chemical");
             const data = await response.json();
             if (!data) throw new Error("No data returned");
-            showToastMessageSuccess("Chemical was added!");
+            showToastMessageSuccess("Chemical was updated!");
             setShowModal(false);
 
         } catch (error) {
