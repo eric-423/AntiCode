@@ -45,7 +45,9 @@ public class FarmingEquipment {
     @JoinColumn(name = "type_id")
     EquipmentType equipmentType;
 
-    @OneToMany(mappedBy = "farmingEquipment", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private Set<FarmingEquipmentTask> farmingEquipmentTasks;
+    @OneToMany(mappedBy = "farmingEquipment", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private Set<PlantingProcess> plantingProcesses;
 
 }

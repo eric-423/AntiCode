@@ -15,9 +15,9 @@ public class PlantingProcessDTO implements Serializable {
     private String plantingProcessName;
     private String plantingProcessDescription;
     private Date createdAt;
-    private List<PlantingMediumProcessDTO> plantingMediumProcessDTO;
-    private List<PlantingPotProcessDTO> plantingPotProcessDTO;
-    private List<WaterProcessDTO> waterProcessDTO;
-    private List<ChemicalProcessDTO> chemicalProcessDTO;
-    private List<FarmingEquipmentProcessDTO> farmingEquipmentProcessDTO;
+    private PlantingMediumProcessDTO plantingMediumProcessDTO;
+    private PlantingPotProcessDTO plantingPotProcessDTO;
+    private WaterProcessDTO waterProcessDTO;
+    private ChemicalProcessDTO chemicalProcessDTO;
+    private FarmingEquipmentProcessDTO farmingEquipmentProcessDTO;
 }

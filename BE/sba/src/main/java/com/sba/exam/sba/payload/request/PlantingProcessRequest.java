@@ -8,12 +8,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PlantingProcessRequest {
-    private  int plantId;
+    private  Integer plantId;
     private String name;
     private String description;
-    List<PlantingMediumProcessRequest> plantingMediumProcessRequestList;
-    List<ChemicalProcessRequest> chemicalProcessRequestList;
-    private int plantPotId;
-    List<WaterProcessRequest> waterProcessRequestList;
-    private int farmingEquipmentId;
+    private Integer plantingMediumId;
+    private Float mediumWeight;
+    private Integer chemicalId;
+    private Float chemicalVolumn;
+    private Integer plantPotId;
+    private Integer waterId;
+    private Float waterVolumn;
+    private Integer farmingEquipmentId;
 }

@@ -205,8 +205,42 @@ VALUES ('A heavy-duty plow for breaking up the soil', 1, 0, 0, 'Heavy-Duty Plow'
        ('A spreader for evenly distributing fertilizers', 1, 0, 0, 'Fertilizer Spreader', 6, 6),
        ('A cultivator for preparing the soil before planting', 1, 0, 0, 'Soil Cultivator', 3, 7);
 
-INSERT INTO task (status_id, type_id, complete_at, create_at, due_date, start_date, task_description, is_deleted, task_name)
-VALUES (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Plant A', 0, 'Task 1'),
-       (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Water B', 0, 'Task 2'),
-       (1, 1, '2025-03-05', '2025-03-03', '2025-03-04', '2025-03-03', 'Havest C', 0, 'Task 3');
+-- Quy trình cho cây Apple Tree
+INSERT INTO planting_process (name, description, created_at, plant_medium_id, medium_weight, plant_pot_id, water_id, water_volumn, farming_equipment_id, agricultural_chemical_id, chemical_weight, plant_id)
+VALUES
+    ('Planting Apple Trees', 'Process for planting apple trees.', '2024-03-01', 1, 5.0, 1, 1, 10.0, 1, 1, 0.5, 1),
+    ('Watering Young Apple Trees', 'Regular watering of young apple trees.', '2024-03-15', 1, 5.0, 1, 1, 8.0, 1, 1, 0.3, 1),
+    ('Fertilizing Apple Trees', 'Applying fertilizer to promote growth.', '2024-04-01', 1, 5.0, 1, 1, 12.0, 1, 1, 0.4, 1),
+    ('Pruning Apple Trees', 'Pruning for better fruit production.', '2024-04-15', 1, 5.0, 1, 1, 0.0, 1, 1, 0.0, 1);
 
+-- Quy trình cho cây Rose
+INSERT INTO planting_process (name, description, created_at, plant_medium_id, medium_weight, plant_pot_id, water_id, water_volumn, farming_equipment_id, agricultural_chemical_id, chemical_weight, plant_id)
+VALUES
+    ('Transplanting Roses', 'Transplanting roses to a new garden bed.', '2024-03-05', 2, 3.0, 2, 2, 8.0, 2, 2, 0.3, 2),
+    ('Watering Roses', 'Regular watering of rose plants.', '2024-03-20', 2, 3.0, 2, 2, 6.0, 2, 2, 0.2, 2),
+    ('Fertilizing Roses', 'Applying fertilizer for blooming.', '2024-04-05', 2, 3.0, 2, 2, 10.0, 2, 2, 0.4, 2),
+    ('Pruning Roses', 'Pruning to maintain shape and health.', '2024-04-20', 2, 3.0, 2, 2, 0.0, 2, 2, 0.0, 2);
+
+-- Quy trình cho cây Basil
+INSERT INTO planting_process (name, description, created_at, plant_medium_id, medium_weight, plant_pot_id, water_id, water_volumn, farming_equipment_id, agricultural_chemical_id, chemical_weight, plant_id)
+VALUES
+    ('Sowing Basil Seeds', 'Sowing basil seeds directly into the pot.', '2024-03-10', 3, 2.0, 1, 3, 5.0, 1, 3, 0.2, 3),
+    ('Watering Basil Plants', 'Regular watering for basil growth.', '2024-03-15', 3, 2.0, 1, 3, 4.0, 1, 3, 0.1, 3),
+    ('Harvesting Basil', 'Harvesting basil leaves for use.', '2024-04-01', 3, 2.0, 1, 3, 3.0, 1, 3, 0.0, 3),
+    ('Fertilizing Basil', 'Applying fertilizer to boost growth.', '2024-04-10', 3, 2.0, 1, 3, 6.0, 1, 3, 0.3, 3);
+
+-- Quy trình cho cây Tomato
+INSERT INTO planting_process (name, description, created_at, plant_medium_id, medium_weight, plant_pot_id, water_id, water_volumn, farming_equipment_id, agricultural_chemical_id, chemical_weight, plant_id)
+VALUES
+    ('Planting Tomato Seeds', 'Planting tomato seeds in the garden.', '2024-03-12', 4, 1.5, 2, 2, 7.0, 2, 5, 0.5, 5),
+    ('Watering Tomato Plants', 'Regular watering for tomato plants.', '2024-03-18', 4, 1.5, 2, 2, 8.0, 2, 5, 0.4, 5),
+    ('Fertilizing Tomatoes', 'Applying fertilizer for better yield.', '2024-04-05', 4, 1.5, 2, 2, 9.0, 2, 5, 0.6, 5),
+    ('Pruning Tomato Plants', 'Pruning for better air circulation.', '2024-04-15', 4, 1.5, 2, 2, 0.0, 2, 5, 0.0, 5);
+
+-- Quy trình cho cây Oak Tree
+INSERT INTO planting_process (name, description, created_at, plant_medium_id, medium_weight, plant_pot_id, water_id, water_volumn, farming_equipment_id, agricultural_chemical_id, chemical_weight, plant_id)
+VALUES
+    ('Planting Oak Seedlings', 'Planting oak seedlings in the field.', '2024-03-20', 1, 6.0, 3, 4, 15.0, 3, 4, 0.6, 4),
+    ('Watering Oak Trees', 'Watering established oak trees.', '2024-04-01', 1, 6.0, 3, 4, 20.0, 3, 4, 0.5, 4),
+    ('Mulching Around Oaks', 'Applying mulch to retain moisture.', '2024-04-10', 1, 6.0, 3, 4, 0.0, 3, 4, 0.0, 4),
+    ('Monitoring Oak Growth', 'Regular monitoring of oak growth.', '2024-04-15', 1, 6.0, 3, 4, 0.0, 3, 4, 0.0, 4);

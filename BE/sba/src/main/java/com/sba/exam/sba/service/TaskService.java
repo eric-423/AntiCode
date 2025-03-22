@@ -5,9 +5,7 @@ import com.sba.exam.sba.dto.TaskStatusDTO;
 import com.sba.exam.sba.dto.TaskTypeDTO;
 import com.sba.exam.sba.dto.UserDTO;
 import com.sba.exam.sba.entity.*;
-import com.sba.exam.sba.entity.keys.KeyWaterTask;
 import com.sba.exam.sba.payload.TaskRequest;
-import com.sba.exam.sba.payload.WaterTaskRequest;
 import com.sba.exam.sba.repository.*;
 import com.sba.exam.sba.service.imp.TaskServiceImp;
 import jakarta.transaction.Transactional;
@@ -19,7 +17,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService implements TaskServiceImp {
@@ -51,8 +48,6 @@ public class TaskService implements TaskServiceImp {
     @Autowired
     private RecentActivityRepository recentActivityRepository;
 
-    @Autowired
-    private WaterTaskRepository waterTaskRepository;
 
     @Autowired
     private WaterRepository waterRepository;

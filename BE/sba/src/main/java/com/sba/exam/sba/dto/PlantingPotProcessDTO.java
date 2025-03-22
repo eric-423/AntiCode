@@ -9,6 +9,5 @@ public class PlantingPotProcessDTO {
     private int plantingPotId;
     private Integer processId;
     private String plantingPotSize;
-    private Integer plantingPotQuantity;
     private String plantingPotMaterial;
 }

@@ -41,9 +41,9 @@ public class AgriculturalChemical {
     @Column(name = "is_deleted")
     private boolean deleted;
 
-
-    @OneToMany(mappedBy = "agriculturalChemical")
-    private Set<TaskAgriculturalChemical> taskAgriculturalChemicals;
+    @OneToMany(mappedBy = "agriculturalChemical", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<PlantingProcess> plantingProcessList;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "type_id")
