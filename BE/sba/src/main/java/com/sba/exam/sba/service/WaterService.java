@@ -2,10 +2,8 @@ package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.WaterDTO;
 import com.sba.exam.sba.entity.Water;
-import com.sba.exam.sba.entity.WaterTask;
 import com.sba.exam.sba.payload.WaterRequest;
 import com.sba.exam.sba.repository.WaterRepository;
-import com.sba.exam.sba.repository.WaterTaskRepository;
 import com.sba.exam.sba.service.imp.WaterServiceImp;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +17,6 @@ public class WaterService implements WaterServiceImp {
 
     @Autowired
     private WaterRepository waterRepository;
-    @Autowired
-    private WaterTaskRepository waterTaskRepository;
 
     @Override
     public List<WaterDTO> getWaterList() {
@@ -95,18 +91,13 @@ public class WaterService implements WaterServiceImp {
     }
 
     @Override
-    @Transactional
     public boolean deleteWaters(List<Integer> listWaterId) {
         try{
             List<Water> waterList = waterRepository.findAllById(listWaterId);
-            List<WaterTask> waterTaskList = waterTaskRepository.getWaterTaskByWaterIdIn(listWaterId);
             for(Water water : waterList) {
                 water.setDeleted(true);
+                waterRepository.save(water);
             }
-            if (!waterTaskList.isEmpty()) {
-                waterTaskRepository.deleteAllInBatch(waterTaskList);
-            }
-            waterRepository.saveAll(waterList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

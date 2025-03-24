@@ -25,6 +25,8 @@ public class PlantPot {
     @Column(name = "pot_quantity_available")
     private int potQuantityAvailable;
 
-    @OneToMany(mappedBy = "plantPot", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PlantPotTask> plantPotTasks;
+    @OneToMany(mappedBy = "plantPot", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private List<PlantingProcess> plantingProcessList;
 }
