@@ -15,7 +15,7 @@ public class FarmingEquipmentController {
     @Autowired
     FarmingEquipmentServiceImp farmingEquipmentServiceImp;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> getFarmingEquipments() {
         try {
             return ResponseEntity.ok(farmingEquipmentServiceImp.getFarmingEquipments());

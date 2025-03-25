@@ -59,4 +59,9 @@ public class Plant {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<PlantingLocation> plantingLocationList;
+
+    @OneToMany(mappedBy = "plant", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private List<PlantingProcess> plantingProcesses;
 }

@@ -26,6 +26,9 @@ public class PlantMedium {
     @Column(name = "medium_weight_avallable")
     private int mediumWeightAvailable;
 
-    @OneToMany(mappedBy = "plantMedium", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PlantMediumTask> plantMediumTasks;
+
+    @OneToMany(mappedBy = "plantMedium", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private List<PlantingProcess> plantingProcessList;
 }

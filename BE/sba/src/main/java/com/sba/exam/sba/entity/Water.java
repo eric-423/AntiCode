@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "water")
@@ -27,4 +29,10 @@ public class Water {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+   @OneToMany(mappedBy = "water", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private List<PlantingProcess> plantingProcessList;
+
 }

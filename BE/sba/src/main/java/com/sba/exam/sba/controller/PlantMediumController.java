@@ -32,9 +32,9 @@ public class PlantMediumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePlantMedium(@PathVariable int id,@RequestBody PlantMediumRequest plantMediumRequest) {
+    public ResponseEntity<?> updatePlantMedium(@PathVariable int id, @RequestBody PlantMediumRequest plantMediumRequest) {
         ResponseData responseData = new ResponseData();
-        responseData.setData(plantMediumServiceImp.update(plantMediumRequest,id));
+        responseData.setData(plantMediumServiceImp.update(plantMediumRequest, id));
         responseData.setStatus(200);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
