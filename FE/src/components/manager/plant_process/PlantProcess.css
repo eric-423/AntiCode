@@ -33,18 +33,19 @@
 
 .container-create-plant-process {
     width: 50%;
-    height: fit-content;
+    height: 85vh;
     background-color: rgba(0, 0, 0, 0.04);
     position: fixed;
-    top: 15%;
+    top: 8%;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 0.375rem;
+    z-index: 1000;
 }
 
 .modal-create-plant-process {
     min-width: 35vw;
-    max-height: 90vh;
+    max-height: 85vh;
     height: fit-content;
     position: relative;
     background-color: #FFFFFF;

@@ -10,7 +10,22 @@ const PlanProcess = () => {
     const [showModalCreatePlantProcess, setShowModalCreatePlantProcess] = useState(false)
     const [plantData, setPlantData] = useState([]);
     const [plantSelectId, setPlantSelectId] = useState('');
-    const [processDataFromPlantId, setProcessDataFromPlantId] = useState([]);
+
+    const [plantMedium, setPlantMedium] = useState([])
+    const [plantMediumSelectId, setPlantMediumSelectId] = useState('')
+    const [plantPot, setPlantPot] = useState([])
+    const [plantPotSelectId, setPlantPotSelectId] = useState('')
+    const [plantChemical, setPlantChemical] = useState([])
+    const [selectedPlantChemical, setSelectedPlantChemical] = useState('')
+    const [plantWater, setPlantWater] = useState([])
+    const [selectedPlantWater, setSelectedPlantWater] = useState('')
+    const [farmingEquipment, setFarmingEquipment] = useState([])
+    const [selectedFarmingEquipment, setSelectedFarmingEquipment] = useState('')
+    const [nameProcess, setNameProcess] = useState('')
+    const [descriptionProcess, setDescriptionProcess] = useState('')
+    const [mediumWeight, setMediumWeight] = useState(0)
+    const [chemicalVolumn, setChemicalVolumn] = useState(0)
+    const [waterVolumn, setWaterVolumn] = useState(0)
 
     useEffect(() => {
         setToken(atob(auth));
@@ -18,47 +33,14 @@ const PlanProcess = () => {
 
 
     useEffect(() => {
-        // fetchPlantProcess()
-        fetchPlantData()
+        fetchPlantData();
+        fetchPlantMedium();
+        fetchPlantPot();
+        fetchPlantChemical();
+        fetchPlantWater();
+        fetchPlantEquipment();
     }, [])
 
-
-
-    const fetchPlantProcess = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-process`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            const data = await response.json()
-            console.log(data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-
-
-    const handleCreatePlantProcess = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-process`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    name: 'Plant Process'
-                })
-            })
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
 
     const handleShowModalCreatePlantProcess = (e) => {
@@ -71,11 +53,31 @@ const PlanProcess = () => {
         setShowModalCreatePlantProcess(false)
     }
 
-
-
     const fetchPlantData = async () => {
         try {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant`, {
+                method: 'GET',
+
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json()
+            setPlantData(data.data);
+        } catch (error) {
+            console.log("Lỗi khi fetch data:", error.message)
+        }
+    }
+
+    const fetchPlantMedium = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-medium`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,39 +85,129 @@ const PlanProcess = () => {
                 }
             })
             const data = await response.json()
-            console.log(data.data)
-            setPlantData(data.data);
+            setPlantMedium(data.data)
         } catch (error) {
             console.log(error)
         }
     }
 
-
-    const handleSelectPlantId = async (id) => {
+    const fetchPlantPot = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-process/${id}`, {
-                method: 'POST',
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-pot`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             })
 
-            if (response.ok) {
+            if (response) {
                 const data = await response.json()
-                setProcessDataFromPlantId(data.data)
+                setPlantPot(data.data)
             }
-
         } catch (error) {
             console.log(error)
         }
     }
 
-    //
+    const fetchPlantChemical = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/chemical`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response) {
+                const data = await response.json()
+                setPlantChemical(data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const fetchPlantWater = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/water`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response) {
+                const data = await response.json()
+                setPlantWater(data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const fetchPlantEquipment = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/farming-equipment`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response) {
+                const data = await response.json()
+                setFarmingEquipment(data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const handleCreatePlantProcess = async () => {
+        const body = {
+            plantId: plantSelectId,
+            name: nameProcess,
+            description: descriptionProcess,
+            plantingMediumId: plantMediumSelectId,
+            plantPotId: plantPotSelectId,
+            chemicalId: selectedPlantChemical,
+            waterId: selectedPlantWater,
+            farmingEquipmentId: selectedFarmingEquipment,
+            mediumWeight: mediumWeight,
+            chemicalVolumn: chemicalVolumn,
+            waterVolumn: waterVolumn,
+
+        }
+
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/planting-process`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            })
+
+            if (response) {
+                setShowModalCreatePlantProcess(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     return (
         <div className='plant-process-container'>
+
             <div
                 className="plant-process-button new-plant-process-button"
                 onClick={(e) => handleShowModalCreatePlantProcess(e)}
@@ -127,12 +219,30 @@ const PlanProcess = () => {
                     plantData={plantData}
                     setShowModalCreatePlantProcess={setShowModalCreatePlantProcess}
                     onClose={handleCloseModalCreatePlantProcess}
-                    handleSelectPlantId={handleSelectPlantId}
-                    processDataFromPlantId={processDataFromPlantId}
+                    setPlantSelectId={setPlantSelectId}
+                    plantMedium={plantMedium}
+                    setPlantMediumSelectId={setPlantMediumSelectId}
+                    plantPot={plantPot}
+                    setPlantPotSelectId={setPlantPotSelectId}
+                    plantChemical={plantChemical}
+                    setSelectedPlantChemical={setSelectedPlantChemical}
+                    plantWater={plantWater}
+                    setSelectedPlantWater={setSelectedPlantWater}
+                    farmingEquipment={farmingEquipment}
+                    setSelectedFarmingEquipment={setSelectedFarmingEquipment}
+                    setNameProcess={setNameProcess}
+                    setDescriptionProcess={setDescriptionProcess}
+                    handleCreatePlantProcess={handleCreatePlantProcess}
+                    setMediumWeight={setMediumWeight}
+                    setChemicalVolumn={setChemicalVolumn}
+                    setWaterVolumn={setWaterVolumn}
                 />
             )}
         </div>
     )
 }
+
+
+
 
 export default PlanProcess
