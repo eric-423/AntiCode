@@ -22,8 +22,8 @@ const Navigation = () => {
     handleWidthBaseOnWindow();
   }, []);
   return (
-    <Row className="manager">
-      <Col xl={2} lg={3} md={4} className="navigation-manager">
+    <Row className="manager" >
+      <Col xl={2} lg={3} md={4} className="navigation-manager" style={{ overflow: "auto" }}>
         <Logo />
         <Menu list={NAVIGATION.LISTS_MENU_NAVIGATION} />
       </Col>
@@ -36,7 +36,7 @@ const Navigation = () => {
         <Row className="header-manager-container">
           <Header />
         </Row>
-        <Row  className="content-manager-container ">
+        <Row className="content-manager-container ">
           <Outlet />
         </Row>
       </Col>

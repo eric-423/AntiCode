@@ -45,14 +45,11 @@ const ToolBar = ({ setRefreshData }) => {
                     },
                 }
             );
+
             if (response.ok) {
                 showToastMessageSuccess("Delete user successfully");
             } else {
-                if (response.status === 400) {
-                    showToastMessageFail("Delete failed: Bad Request");
-                } else {
-                    showToastMessageFail("Delete failed: An unexpected error occurred");
-                }
+                showToastMessageFail("Delete failed: Cannot delete manager or admin");
             }
 
         } catch (error) {

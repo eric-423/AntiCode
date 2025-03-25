@@ -32,6 +32,7 @@ import Water from './components/manager/water/Water'
 import ManagerChat from './components/manager_chat/ManagerChat'
 import PlansPlanting from './components/manager/plans_planting/PlansPlanting'
 import LocationPlansPlanting from './components/manager/plans_planting/content/location/Location'
+import PlanProcess from './components/manager/plant_process/PlanProcess'
 function App() {
   const listComponent = [
     {
@@ -120,6 +121,9 @@ function App() {
     }, {
       name: NAVIGATION.COMPONENTS.PLANS_PLANTING,
       component: <PlansPlanting />,
+    }, {
+      name: NAVIGATION.COMPONENTS.PLANT_PROCESS,
+      component: <PlanProcess />,
     }
   ]
   const listRouteNavigation = []

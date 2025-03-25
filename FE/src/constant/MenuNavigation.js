@@ -23,6 +23,7 @@ const COMPONENTS = {
   USER: "User",
   WATER: "Water",
   CHAT: "Manager Chat",
+  PLANT_PROCESS: "Plant Process",
 };
 
 const listMenu = [
@@ -185,7 +186,6 @@ const listMenu = [
         component: COMPONENTS.DASHBOARD,
         path: "menu-dashboard",
       },
-
       {
         nameMenu: "Manager Chat",
         image: ICONS.icon_chat,
@@ -195,22 +195,18 @@ const listMenu = [
         path: "chat",
         subItems: [],
       },
+      {
+        nameMenu: "Plant Process",
+        image: ICONS.icon_plant,
+        imageActive: ICONS.icon_plant_active,
+        sortItem: 5,
+        subItems: [],
+        component: COMPONENTS.PLANT_PROCESS,
+        path: "plant-process",
+      },
     ].sort((a, b) => a.sortItem - b.sortItem),
   },
-  // {
-  //   title: "Settings",
-  //   data: [
-  //     {
-  //       nameMenu: "Settings",
-  //       image: ICONS.icon_setting,
-  //       imageActive: ICONS.icon_setting_active,
-  //       sortItem: 0,
-  //       subItems: [],
-  //       component: COMPONENTS.SETTINGS,
-  //       path: "settings",
-  //     },
-  //   ].sort((a, b) => a.sortItem - b.sortItem),
-  // },
+
 ];
 
 const NAVIGATION = {

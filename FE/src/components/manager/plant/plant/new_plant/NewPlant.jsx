@@ -52,8 +52,8 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
   const handleOnClick = async () => {
     const plant_type = plantType
       ? plantTypesData.find(
-          (item) => Number(item.plantTypeId) === Number(plantType)
-        )
+        (item) => Number(item.plantTypeId) === Number(plantType)
+      )
       : plantTypesData[0];
     const plant = {
       plantName: name,

@@ -5,12 +5,12 @@ import { Form } from "react-bootstrap";
 import Button from "../../../../../common/button/Button";
 import "./Phase.css";
 
-const Phase = ({phase,setPhase, setShowModalAddPhase }) => {
+const Phase = ({ phase, setPhase, setShowModalAddPhase }) => {
   const modalRoot = document.body;
 
-  const [namePhase,setNamePhase] = useState();
-  const [startPhase,setStartPhase] = useState();
-  const [endPhase,setEndPhase] = useState()
+  const [namePhase, setNamePhase] = useState();
+  const [startPhase, setStartPhase] = useState();
+  const [endPhase, setEndPhase] = useState()
 
   const handleAddPhase = () => {
     const phaseData = {
@@ -19,7 +19,7 @@ const Phase = ({phase,setPhase, setShowModalAddPhase }) => {
       endPhase: endPhase,
       tasks: []
     }
-    setPhase([...phase,phaseData])
+    setPhase([...phase, phaseData])
     setShowModalAddPhase(false)
   }
 

@@ -66,6 +66,12 @@ const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
       name: name,
       description: description,
     };
+    if (!name) {
+      return showToastMessageFail("Please fill all required fields");
+    }
+    if (!description) {
+      return showToastMessageFail("Please fill all required fields");
+    }
     try {
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_END_POINT}/equipment-type/`,

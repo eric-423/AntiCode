@@ -41,6 +41,7 @@ const ToolBar = ({ setRefreshData }) => {
         } catch (error) {
             throw new error
         } finally {
+            window.location.reload();
             setRefreshData(prev => !prev)
         }
     }
