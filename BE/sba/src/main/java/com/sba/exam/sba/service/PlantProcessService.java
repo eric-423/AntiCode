@@ -134,12 +134,13 @@ public class PlantProcessService implements PlantProcessServiceImp {
         plantingProcess.setDescription(plantProcessRequest.getDescription());
         plantingProcess.setCreatedAt(new Date());
 
-        plantingProcessRepository.save(plantingProcess);
-
         if (plantProcessRequest.getPlantingMediumId() != null) {
             PlantMedium plantMedium = plantMediumRepository.findByMediumId(plantProcessRequest.getPlantingMediumId());
             plantingProcess.setPlantMedium(plantMedium);
             plantingProcess.setMediumWeight(plantProcessRequest.getMediumWeight());
+            plantMedium.setMediumWeightAvailable(plantMedium.getMediumWeightAvailable() - Integer.parseInt("" + plantProcessRequest.getMediumWeight()));
+            plantMediumRepository.save(plantMedium);
+
         }
 
         if (plantProcessRequest.getPlantPotId() != null) {
@@ -151,12 +152,18 @@ public class PlantProcessService implements PlantProcessServiceImp {
             AgriculturalChemical agriculturalChemical = chemicalRepository.findById(plantProcessRequest.getChemicalId()).orElseThrow(() -> new ResourceNotFoundException("Invalid Chemical"));
             plantingProcess.setAgriculturalChemical(agriculturalChemical);
             plantingProcess.setChemicalWeight(plantProcessRequest.getChemicalVolumn());
+            agriculturalChemical.setVolumeAvailable(agriculturalChemical.getVolumeAvailable() - Integer.parseInt("" + plantProcessRequest.getChemicalVolumn()));
+            chemicalRepository.save(agriculturalChemical);
+
         }
 
         if (plantProcessRequest.getWaterId() != null) {
             Water water = waterRepository.findById(plantProcessRequest.getWaterId()).orElseThrow(() -> new ResourceNotFoundException("Invalid Water"));
             plantingProcess.setWater(water);
             plantingProcess.setWaterVolumn(plantProcessRequest.getWaterVolumn());
+            water.setVolumeAvailable(water.getVolumeAvailable() - Integer.parseInt("" + plantProcessRequest.getWaterVolumn()));
+            waterRepository.save(water);
+
         }
 
         if (plantProcessRequest.getFarmingEquipmentId() != null) {

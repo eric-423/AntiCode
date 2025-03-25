@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PlantingProcessRequest {
-    private  Integer plantId;
+    private Integer plantId;
     private String name;
     private String description;
     private Integer plantingMediumId;
