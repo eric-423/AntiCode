@@ -134,13 +134,13 @@ public class PlantProcessService implements PlantProcessServiceImp {
         plantingProcess.setDescription(plantProcessRequest.getDescription());
         plantingProcess.setCreatedAt(new Date());
 
-
         if (plantProcessRequest.getPlantingMediumId() != null) {
             PlantMedium plantMedium = plantMediumRepository.findByMediumId(plantProcessRequest.getPlantingMediumId());
             plantingProcess.setPlantMedium(plantMedium);
             plantingProcess.setMediumWeight(plantProcessRequest.getMediumWeight());
             plantMedium.setMediumWeightAvailable(plantMedium.getMediumWeightAvailable() - Integer.parseInt("" + plantProcessRequest.getMediumWeight()));
             plantMediumRepository.save(plantMedium);
+
         }
 
         if (plantProcessRequest.getPlantPotId() != null) {
@@ -154,6 +154,7 @@ public class PlantProcessService implements PlantProcessServiceImp {
             plantingProcess.setChemicalWeight(plantProcessRequest.getChemicalVolumn());
             agriculturalChemical.setVolumeAvailable(agriculturalChemical.getVolumeAvailable() - Integer.parseInt("" + plantProcessRequest.getChemicalVolumn()));
             chemicalRepository.save(agriculturalChemical);
+
         }
 
         if (plantProcessRequest.getWaterId() != null) {
@@ -162,6 +163,7 @@ public class PlantProcessService implements PlantProcessServiceImp {
             plantingProcess.setWaterVolumn(plantProcessRequest.getWaterVolumn());
             water.setVolumeAvailable(water.getVolumeAvailable() - Integer.parseInt("" + plantProcessRequest.getWaterVolumn()));
             waterRepository.save(water);
+
         }
 
         if (plantProcessRequest.getFarmingEquipmentId() != null) {
