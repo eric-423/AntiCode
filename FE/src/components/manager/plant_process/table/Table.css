@@ -1,0 +1,5 @@
+.container-table-body {
+    margin-top: 10px;
+    display: grid;
+    row-gap: 10px;
+}
