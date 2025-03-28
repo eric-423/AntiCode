@@ -1,5 +1,6 @@
 package com.sba.exam.sba.service;
 
+import com.sba.exam.sba.dto.PlansDTO;
 import com.sba.exam.sba.dto.PlantingLocationDTO;
 import com.sba.exam.sba.dto.PlantingProcessDTO;
 import com.sba.exam.sba.entity.*;
@@ -68,6 +69,27 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             }
         }
         return plantingProcessDTOS;
+    }
+
+    @Override
+    public List<PlansDTO> getAllPlans() {
+        List<Long> plans = plantingLocationRepository.getDistinctPlans();
+        List<PlansDTO> plansDTOS = new ArrayList<>();
+        for(Long plan : plans){
+            PlantingLocation plantingLocation = plantingLocationRepository.findFirstByPlans(plan);
+            PlansDTO plansDTO = new PlansDTO();
+            plansDTO.setNamePlans(plantingLocation.getPlant().getPlantName());
+            plansDTO.setStartHarvest(plantingLocation.getStartDate());
+            plansDTO.setEndHarvest(plantingLocation.getEndDate());
+            plansDTO.setPlans(plan);
+            plansDTOS.add(plansDTO);
+        }
+        return plansDTOS;
+    }
+
+    @Override
+    public PlansDTO getByPlans(long plan) {
+        return null;
     }
 
 
@@ -166,4 +188,6 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             return null;
         }
     }
+
+
 }
