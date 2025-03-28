@@ -14,4 +14,5 @@ public class PlansDTO {
     private String farm;
     private String area;
     private List<String> locations;
+    private List<String> tasks;
 }
