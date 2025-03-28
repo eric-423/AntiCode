@@ -6,11 +6,14 @@ import BASE from "../../../../../constant/base";
 import CALENDAR from "../../../../../constant/calendar";
 import useLocalStorage from "use-local-storage";
 import LOCALSTORAGE from "../../../../../constant/localStorage";
+import Button from "../../../../common/button/Button";
 
 const Confirm = ({ plant, area, farm, location }) => {
   const [process, setProcess] = useState();
   const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
   const [token, setToken] = useState('');
+  const [add,setAdd] = useState(false)
+
   useEffect(() => {
     setToken(atob(auth));
   }, [auth])
