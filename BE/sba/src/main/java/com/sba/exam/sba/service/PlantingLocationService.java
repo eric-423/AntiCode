@@ -86,18 +86,17 @@ public class PlantingLocationService implements PlantLocationServiceImp {
     @Transactional
     public PlantingLocationDTO addPlantLocation(PlantingLocationRequest plantLocationRequest) {
         try {
-
             PlantingLocation plantingLocation = new PlantingLocation();
             Plant plant = plantRepository.findByPlantId(plantLocationRequest.getPlantId());
             Location location = locationRepository.findByLocationId(plantLocationRequest.getLocationId());
             plantingLocation.setPlant(plant);
             plantingLocation.setLocation(location);
-            plantingLocation.setStartDate(new Date());
+            plantingLocation.setStartDate(plantLocationRequest.getStartDate());
             plantingLocation.setEndDate(plantLocationRequest.getEndDate());
             plantingLocation.setHarvest(false);
             plantingLocation.setDeleted(false);
+            plantingLocation.setPlans(plantLocationRequest.getPlans());
             plantingLocationRepository.save(plantingLocation);
-
             return getPlantLocationById(plantingLocation.getPlantLocationId());
         }catch (Exception e){
             e.printStackTrace();

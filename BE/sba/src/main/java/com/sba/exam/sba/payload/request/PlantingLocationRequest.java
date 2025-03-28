@@ -13,4 +13,5 @@ public class PlantingLocationRequest {
     private Date startDate;
     private Date endDate;
     private boolean harvest;
+    private long plans;
 }

@@ -36,13 +36,15 @@ const ChooseLocation = ({ setLocation, location, area }) => {
   const handleLocation = (item) => {
     const list = [...location];
     let _list = [];
-    if (list.includes(item)) {
-      _list = list.filter((_item) => _item !== item);
+    if (list.map(_item => _item?.locationId).includes(item?.locationId)) {
+      _list = list.filter((_item) => _item?.locationId !== item?.locationId);
     } else {
       _list = [...list, item];
     }
     setLocation(_list);
   };
+
+
 
   useEffect(() => {
     if (!locationList) {
@@ -59,8 +61,9 @@ const ChooseLocation = ({ setLocation, location, area }) => {
         {locationList &&
           locationList.map((item) => (
             <div
-              className={`plans-location-container ${location && location?.includes(item) ? "is-active" : null
-                }`}
+              className={`plans-location-container ${
+                location && location?.map(_item => _item?.locationId).includes(item?.locationId) ? "is-active" : null
+              }`}
               onClick={() => handleLocation(item)}
             >
               <span
