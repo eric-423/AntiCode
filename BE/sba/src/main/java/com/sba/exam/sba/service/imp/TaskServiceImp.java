@@ -20,4 +20,5 @@ public interface TaskServiceImp {
     List<TaskDTO> getListTaskByUserId(int userId, int statusId);
     boolean deleteUserTask(int taskId, int userId, int doerId);
     boolean deleteTask(List<Integer> listTaskId);
+    List<TaskDTO> createdTaskWithProcessId(TaskRequest taskRequest);
 }

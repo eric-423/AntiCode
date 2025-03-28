@@ -19,10 +19,6 @@ public class TaskRequest implements Serializable {
     private int taskType;
     private boolean isDeleted;
     private String taskName;
-    private int equipmentId;
-    private PlantPotTaskRequest plantPotTask;
-    private PlantMediumTaskRequest plantMediumTask;
-    private ChemicalTaskRequest chemicalTaskRequest;
-    private List<WaterTaskRequest> waterTaskRequest;
-
+    private int plantingLocationId;
+    private List<Integer> plantingProcessIdList;
 }

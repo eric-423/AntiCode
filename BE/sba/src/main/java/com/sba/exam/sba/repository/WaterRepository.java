@@ -12,4 +12,8 @@ public interface WaterRepository extends JpaRepository<Water, Integer> {
     Water findWaterById(int id);
 
     Water getWaterById(int id);
+
+    List<Water> findByIsDeleted(boolean isDeleted);
+
+
 }

@@ -23,7 +23,7 @@ public class ChemicalService implements ChemicalServiceImp {
 
     @Override
     public List<ChemicalDTO> findAll() {
-        List<AgriculturalChemical> Chemicals = chemicalRepository.findAll();
+        List<AgriculturalChemical> Chemicals = chemicalRepository.findByDeletedFalse();
         List<ChemicalDTO> dtos = new ArrayList<>();
         for (AgriculturalChemical a : Chemicals) {
             if (!a.isDeleted()) {

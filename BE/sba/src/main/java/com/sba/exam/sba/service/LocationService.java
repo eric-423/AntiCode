@@ -32,7 +32,7 @@ public class LocationService implements LocationServiceImp {
 
     @Override
     public List<LocationDTO> getAllLocation() {
-        List<Location> locations = locationRepository.findAll();
+        List<Location> locations = locationRepository.findByIsDeleted(false);
 
         List<LocationDTO> result = new ArrayList<>();
 
@@ -106,7 +106,7 @@ public class LocationService implements LocationServiceImp {
 
     @Override
     public List<LocationDTO> getAllLocationAvailable(Integer id) {
-        List<Location> locations = locationRepository.findAll();
+        List<Location> locations = locationRepository.findByIsDeleted(false);
         List<LocationDTO> result = new ArrayList<>();
         for(Location location : locations){
             if(id!=null){

@@ -25,7 +25,7 @@ public class EquipmentTypeService implements EquipmentTypeImp {
         List<EquipmentTypeDTO> dtos = new ArrayList<>();
 
         try {
-            List<EquipmentType> list = equipmentTypeRepository.findAll();
+            List<EquipmentType> list = equipmentTypeRepository.findByIsDeletedFalse();
             for (EquipmentType equipmentType : list) {
                 EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
 
