@@ -127,15 +127,14 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
       taskStatus: task_status.taskStatusId,
       taskType: task_type.taskTypeId,
     };
-    console.log(task);
 
     try {
-      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, {
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`,task, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-      }, task);
+      } );
       console.log(response.data);
 
 

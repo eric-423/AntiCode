@@ -10,21 +10,31 @@ import Button from "../../../../common/button/Button";
 
 const Confirm = ({ plant, area, farm, location }) => {
   const [process, setProcess] = useState();
-  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
-  const [token, setToken] = useState('');
-  const [add,setAdd] = useState(false)
+  const [auth, setAuth] = useLocalStorage(
+    LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
+    ""
+  );
+  const [token, setToken] = useState("");
+  const [add, setAdd] = useState(false);
+  const [startHavert, setStartHavert] = useState();
+  const [endHavert, setEndHavert] = useState();
+  const [newTask, setNewTask] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setToken(atob(auth));
-  }, [auth])
+  }, [auth]);
   const handleFetchProcess = async () => {
     try {
-      const res = await axios.get(`${BASE.BASE_URL}/planting-process/plant/${plant?.plantId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+      const res = await axios.get(
+        `${BASE.BASE_URL}/planting-process/plant/${plant?.plantId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       if (!res || res.status !== 200) throw new Error();
       const list = res.data;
       let _list = [];
@@ -68,6 +78,7 @@ const Confirm = ({ plant, area, farm, location }) => {
   };
 
   const handleCreatePlans = async () => {
+    setLoading(true);
     try {
       const plansID = new Date().getTime();
       await Promise.all(
@@ -93,9 +104,10 @@ const Confirm = ({ plant, area, farm, location }) => {
       );
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
-
 
   useEffect(() => {
     handleFetchProcess();
@@ -201,6 +213,7 @@ const Confirm = ({ plant, area, farm, location }) => {
             text={"Create"}
             textColor="#FFFFFF"
             handleOnClick={() => handleCreatePlans()}
+            isLoading={loading}
           />
         </div>
       </div>
