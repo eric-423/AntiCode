@@ -118,7 +118,7 @@ const CardTask = ({
     >
       <div className="header-card-task-container">
         <div className="task-name">
-          <span>{item.taskTypeName}</span>
+          <span>{item?.taskTypeName}</span>
         </div>
         <img
           src={ICONS.icon_menu}
@@ -128,7 +128,7 @@ const CardTask = ({
         />
       </div>
       <div className="body-card-task-container">
-        <span>{item.taskDescription}</span>
+        <span>{item?.taskName}</span>
       </div>
       <div className="footer-card-task-container">
         <div className="due-date-group">

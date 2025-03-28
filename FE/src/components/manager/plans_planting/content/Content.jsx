@@ -92,10 +92,9 @@ const Content = () => {
             <div>
               <span>Task Coming Up:</span>
               <div>
-                <p>1 - HHHHHHHHHHH</p>
-                <p>1 - HHHHHHHHHHH</p>
-                <p>1 - HHHHHHHHHHH</p>
-                <p>1 - HHHHHHHHHHH</p>
+                {planDetail?.tasks?.map((item, index) => (
+                  <p>{`${index + 1} - ${item}`}</p>
+                ))}
               </div>
             </div>
           </div>

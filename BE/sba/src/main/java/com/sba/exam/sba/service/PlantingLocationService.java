@@ -109,12 +109,22 @@ public class PlantingLocationService implements PlantLocationServiceImp {
         List<String> locations = new ArrayList<>();
         for(PlantingLocation plantingLocation : plantingLocationList){
             locations.add(plantingLocation.getLocation().getLocationName());
+
         }
+        List<String> tasks = new ArrayList<>();
+        for(PlantingLocationTask plantingLocationTask :  plantingLocationList.getFirst().getPlantingLocationTasks()){
+            tasks.add(plantingLocationTask.getTask().getTaskName());
+            if(tasks.size() > 4) break;
+        }
+        plansDTO.setTasks(tasks);
         plansDTO.setLocations(locations);
         List<Area> area = areaRepository.getAreaByLocationListContains(List.of(plantingLocationList.getFirst().getLocation()));
         plansDTO.setArea(area.getFirst().getAreaName());
         Farm farm = farmRepository.getFarmByAreaListContains(List.of(area.getFirst()));
         plansDTO.setFarm(farm.getFarmName());
+
+
+
 
         return plansDTO;
     }
