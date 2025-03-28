@@ -20,7 +20,7 @@ public class PlantMediumService implements PlantMediumServiceImp {
     @Override
     public List<PlantMediumDTO> findAllPlantMedium() {
         List<PlantMediumDTO> result = new ArrayList<>();
-        List<PlantMedium> plantMediums = plantMediumRepository.findAll();
+        List<PlantMedium> plantMediums = plantMediumRepository.findByIsDeleted(false);
         for (PlantMedium plantMedium : plantMediums) {
             result.add(transferDTO(plantMedium));
         }

@@ -38,6 +38,11 @@ public class TaskController {
         return new ResponseEntity<>(taskServiceImp.addTask(taskRequest), HttpStatus.CREATED);
     }
 
+    @PostMapping("/process")
+    public ResponseEntity<?> addTaskWithProcessId(@RequestBody TaskRequest taskRequest) {
+        return new ResponseEntity<>(taskServiceImp.createdTaskWithProcessId(taskRequest), HttpStatus.CREATED);
+    }
+
     @PutMapping()
     @SendTo("/topic/tasks")
     public ResponseEntity<?> updateTask(@RequestBody TaskRequest taskRequest) {

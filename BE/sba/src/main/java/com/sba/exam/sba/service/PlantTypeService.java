@@ -17,7 +17,7 @@ public class PlantTypeService implements PlantTypeServiceImp {
 
     @Override
     public List<PlantType> getAllPlantTypes() {
-        return plantTypeRepository.findAll();
+        return plantTypeRepository.findByIsDeleted(false);
     }
 
     @Override

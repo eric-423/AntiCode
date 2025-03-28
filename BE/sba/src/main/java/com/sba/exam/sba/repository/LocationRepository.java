@@ -13,4 +13,7 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
 
     List<Location> findLocationByArea_AreaId(int areaId);
 
+    List<Location> findByIsDeleted(boolean isDeleted);
+
+
 }

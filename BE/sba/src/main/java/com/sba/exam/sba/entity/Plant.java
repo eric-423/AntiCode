@@ -50,6 +50,9 @@ public class Plant {
     @Column(name = "heat_zones")
     private String heatZones;
 
+    @Column(name = "is_deleted")
+    private boolean deleted;
+
     @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "plant_type_id")

@@ -1,15 +1,10 @@
 package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.PlantingLocationDTO;
-import com.sba.exam.sba.entity.Area;
-import com.sba.exam.sba.entity.Location;
-import com.sba.exam.sba.entity.Plant;
-import com.sba.exam.sba.entity.PlantingLocation;
+import com.sba.exam.sba.dto.PlantingProcessDTO;
+import com.sba.exam.sba.entity.*;
 import com.sba.exam.sba.payload.request.PlantingLocationRequest;
-import com.sba.exam.sba.repository.AreaRepository;
-import com.sba.exam.sba.repository.LocationRepository;
-import com.sba.exam.sba.repository.PlantRepository;
-import com.sba.exam.sba.repository.PlantingLocationRepository;
+import com.sba.exam.sba.repository.*;
 import com.sba.exam.sba.service.imp.PlantLocationServiceImp;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +29,12 @@ public class PlantingLocationService implements PlantLocationServiceImp {
     @Autowired
     LocationRepository locationRepository;
 
+    @Autowired
+    PlantingProcessRepository plantingProcessRepository;
+
+    @Autowired
+    PlantProcessService plantProcessService;
+
     @Override
     public List<PlantingLocationDTO> getPlantLocationList() {
         List<PlantingLocation> plantingLocationList = plantingLocationRepository.findByIsDeleted(false);
@@ -45,6 +46,30 @@ public class PlantingLocationService implements PlantLocationServiceImp {
         }
         return result;
     }
+
+    @Override
+    public List<PlantingProcessDTO> getAllProcessNotInTask(int plantingLocationId) {
+        PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(plantingLocationId);
+
+        List<PlantingProcess> plantingProcesses = plantingProcessRepository.findByPlant_PlantId(plantingLocation.getPlant().getPlantId());
+        List<Task> taskList = plantingLocation.getTasks();
+        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
+        for(PlantingProcess plantingProcess : plantingProcesses){
+            boolean check = false;
+            for(Task task : taskList){
+                if(plantingProcess.getId() == task.getPlantingProcess().getId()){
+                    plantingProcesses.remove(plantingProcess);
+                    check = true;
+                }
+                if(!check){
+                    PlantingProcessDTO plantingProcessDTO = plantProcessService.toDTO(plantingProcess);
+                    plantingProcessDTOS.add(plantingProcessDTO);
+                }
+            }
+        }
+        return plantingProcessDTOS;
+    }
+
 
     private PlantingLocationDTO transferDTO(PlantingLocation plantingLocation){
         PlantingLocationDTO plantingLocationDTO = new PlantingLocationDTO();

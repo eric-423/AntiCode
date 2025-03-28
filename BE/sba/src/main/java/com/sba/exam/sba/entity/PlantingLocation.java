@@ -43,5 +43,8 @@ public class PlantingLocation {
     @Column(name = "is_deleted")
     private boolean isDeleted;
 
+    @OneToMany(mappedBy = "plantingLocation", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    private List<PlantingLocationTask> plantingLocationTasks;
+
 
 }

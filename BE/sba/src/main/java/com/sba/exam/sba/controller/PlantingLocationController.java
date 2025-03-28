@@ -31,6 +31,14 @@ public class PlantingLocationController {
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
+    @GetMapping("/process-not-in-task/{id}")
+    public ResponseEntity<?> getAllProcessNotInTask(@PathVariable int id) {
+        ResponseData responseData = new ResponseData();
+        responseData.setData(plantLocationServiceImp.getAllProcessNotInTask(id));
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+
+
     @PostMapping
     public ResponseEntity<?> createPlantingLocation(@RequestBody PlantingLocationRequest plantingLocationRequest) {
         ResponseData responseData = new ResponseData();

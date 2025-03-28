@@ -101,7 +101,7 @@ public class FarmingEquipmentService implements FarmingEquipmentServiceImp {
     public List<FarmingEquipmentDTO> getFarmingEquipments() {
         List<FarmingEquipmentDTO> farmingEquipmentDTOList = new ArrayList<>();
         try {
-            List<FarmingEquipment> farmingEquipments = farmingEquipmentRepository.findAll();
+            List<FarmingEquipment> farmingEquipments = farmingEquipmentRepository.findByEquipmentType_IsDeleted(false);
             for (FarmingEquipment farmingEquipment : farmingEquipments) {
                 FarmingEquipmentDTO farmingEquipmentDTO = new FarmingEquipmentDTO();
                 farmingEquipmentDTO.setId(farmingEquipment.getId());

@@ -5,40 +5,40 @@ VALUES ('Manager');
 INSERT INTO role (role_name)
 VALUES ('Worker');
 
-INSERT INTO plant_type (plant_type_name, type_description)
-VALUES ('Fruit Trees', 'Trees that produce edible fruits.'),
-       ('Ornamental Plants', 'Plants grown for decorative purposes in homes or gardens.'),
-       ('Medicinal Plants', 'Plants that have healing properties.'),
-       ('Industrial Plants', 'Plants cultivated for industrial raw materials.'),
-       ('Shade Trees', 'Trees planted to provide shade in outdoor spaces.'),
-       ('Herbs', 'Small plants often used in cooking and medicine.'),
-       ('Cereal Crops', 'Plants grown for harvesting grains for food.'),
-       ('Medicinal Herbs', 'Plants used for extracting pharmaceuticals.'),
-       ('Hardwood Trees', 'Trees with large, hard trunks.'),
-       ('Climbing Plants', 'Plants that have the ability to climb on surfaces.');
+INSERT INTO plant_type (plant_type_name, type_description, is_deleted)
+VALUES ('Fruit Trees', 'Trees that produce edible fruits.',0),
+       ('Ornamental Plants', 'Plants grown for decorative purposes in homes or gardens.',0),
+       ('Medicinal Plants', 'Plants that have healing properties.',0),
+       ('Industrial Plants', 'Plants cultivated for industrial raw materials.',0),
+       ('Shade Trees', 'Trees planted to provide shade in outdoor spaces.',0),
+       ('Herbs', 'Small plants often used in cooking and medicine.',0),
+       ('Cereal Crops', 'Plants grown for harvesting grains for food.',0),
+       ('Medicinal Herbs', 'Plants used for extracting pharmaceuticals.',0),
+       ('Hardwood Trees', 'Trees with large, hard trunks.',0),
+       ('Climbing Plants', 'Plants that have the ability to climb on surfaces.',0);
 
 INSERT INTO plant (plant_name, quantity, price, size, is_seed, species, description, characteristics, attracts,
-                   hardiness, heat_zones, plant_type_id)
+                   hardiness, heat_zones, plant_type_id,is_deleted)
 VALUES ('Apple Tree', 15, 50.0, 'Medium', false, 'Malus domestica', 'A fruit tree that produces apples.',
-        'Deciduous, flowering', 'Bees', 'USDA Zone 4-8', 'Heat Zone 5', 1),
+        'Deciduous, flowering', 'Bees', 'USDA Zone 4-8', 'Heat Zone 5', 1,0),
        ('Rose', 30, 20.5, 'Small', false, 'Rosa', 'A beautiful flowering plant.', 'Thorny stems, fragrant',
-        'Butterflies', 'USDA Zone 3-9', 'Heat Zone 6', 2),
+        'Butterflies', 'USDA Zone 3-9', 'Heat Zone 6', 2,0),
        ('Basil', 100, 5.0, 'Small', true, 'Ocimum basilicum', 'A popular culinary herb.', 'Aromatic leaves', 'Bees',
-        'USDA Zone 10-11', 'Heat Zone 7', 3),
+        'USDA Zone 10-11', 'Heat Zone 7', 3,0),
        ('Oak Tree', 5, 200.0, 'Large', false, 'Quercus', 'A large tree known for its strength.',
-        'Deciduous, broad leaves', 'Squirrels', 'USDA Zone 3-9', 'Heat Zone 4', 4),
+        'Deciduous, broad leaves', 'Squirrels', 'USDA Zone 3-9', 'Heat Zone 4', 4,0),
        ('Tomato', 50, 10.0, 'Medium', true, 'Solanum lycopersicum', 'A widely grown vegetable.', 'Juicy, red fruits',
-        'Hummingbirds', 'USDA Zone 10-11', 'Heat Zone 7', 3),
+        'Hummingbirds', 'USDA Zone 10-11', 'Heat Zone 7', 3,0),
        ('Lavender', 25, 15.0, 'Small', false, 'Lavandula', 'A fragrant herb used in aromatherapy.', 'Purple flowers',
-        'Bees', 'USDA Zone 5-9', 'Heat Zone 6', 2),
+        'Bees', 'USDA Zone 5-9', 'Heat Zone 6', 2,0),
        ('Cactus', 20, 30.0, 'Small', false, 'Cactaceae', 'A succulent plant that thrives in dry conditions.',
-        'Spines instead of leaves', 'Hummingbirds', 'USDA Zone 9-11', 'Heat Zone 10', 5),
+        'Spines instead of leaves', 'Hummingbirds', 'USDA Zone 9-11', 'Heat Zone 10', 5,0),
        ('Pine Tree', 10, 150.0, 'Large', false, 'Pinus', 'An evergreen tree that produces cones.', 'Needle-like leaves',
-        'Birds', 'USDA Zone 3-7', 'Heat Zone 4', 4),
+        'Birds', 'USDA Zone 3-7', 'Heat Zone 4', 4,0),
        ('Mint', 75, 8.0, 'Small', true, 'Mentha', 'A refreshing herb used in cooking and teas.', 'Fragrant leaves',
-        'Bees', 'USDA Zone 3-11', 'Heat Zone 6', 3),
+        'Bees', 'USDA Zone 3-11', 'Heat Zone 6', 3,0),
        ('Sunflower', 40, 12.0, 'Medium', true, 'Helianthus annuus', 'A tall plant known for its large flowers.',
-        'Bright yellow petals', 'Bees', 'USDA Zone 2-11', 'Heat Zone 5', 1);
+        'Bright yellow petals', 'Bees', 'USDA Zone 2-11', 'Heat Zone 5', 1,0);
 
 INSERT INTO farm (farm_name, farm_extent, farm_address, farm_length, farm_width, is_deleted)
 VALUES ('Sunny Acres', 50.0, '123 Sunny Lane, Springfield', 10.0, 5.0, false),
@@ -90,19 +90,19 @@ VALUES (1, 1, 1, '2023-01-01', '2023-06-01', false, false),
        (9, 1, 8, '2023-09-01', '2023-10-01', true, false),
        (10, 3, 9, '2023-10-01', '2023-11-01', false, false);
 
-INSERT INTO plant_medium (medium_id, medium_name, description, medium_weight_avallable)
-VALUES (1, 'Coco Peat', 'A natural fiber made from coconut husks.', 50),
-       (2, 'Perlite', 'A volcanic glass that is expanded by heating.', 30),
-       (3, 'Vermiculite', 'A hydrous phyllosilicate mineral that undergoes significant expansion when heated.', 25),
-       (4, 'Soil Mix', 'A blend of soil and organic materials for planting.', 40),
-       (5, 'Hydroponic Medium', 'An inert medium used in hydroponic systems.', 60);
+INSERT INTO plant_medium (medium_id, medium_name, description, medium_weight_avallable,is_deleted)
+VALUES (1, 'Coco Peat', 'A natural fiber made from coconut husks.', 50,0),
+       (2, 'Perlite', 'A volcanic glass that is expanded by heating.', 30,0),
+       (3, 'Vermiculite', 'A hydrous phyllosilicate mineral that undergoes significant expansion when heated.', 25,0),
+       (4, 'Soil Mix', 'A blend of soil and organic materials for planting.', 40,0),
+       (5, 'Hydroponic Medium', 'An inert medium used in hydroponic systems.', 60,0);
 
-INSERT INTO plant_pot (pot_id, pot_size, pot_material, pot_quantity_available)
-VALUES (1, 'Small Pot', 'Plastic', 100),
-       (2, 'Medium Pot', 'Clay', 200),
-       (3, 'Large Pot', 'Ceramic', 300),
-       (4, 'Hanging Pot', 'Metal', 150),
-       (5, 'Square Pot', 'Fiberglass', 250);
+INSERT INTO plant_pot (pot_id, pot_size, pot_material, pot_quantity_available,is_deleted)
+VALUES (1, 'Small Pot', 'Plastic', 100,0),
+       (2, 'Medium Pot', 'Clay', 200,0),
+       (3, 'Large Pot', 'Ceramic', 300,0),
+       (4, 'Hanging Pot', 'Metal', 150,0),
+       (5, 'Square Pot', 'Fiberglass', 250,0);
 
 
 

@@ -14,5 +14,4 @@ public interface PlantingLocationRepository extends JpaRepository<PlantingLocati
     List<PlantingLocation> findByIsDeleted(boolean isDeleted);
 
 
-
 }

@@ -42,7 +42,7 @@ public class PlantProcessService implements PlantProcessServiceImp {
     private WaterRepository waterRepository;
 
 
-    private PlantingProcessDTO toDTO(PlantingProcess plantingProcess) {
+    public PlantingProcessDTO toDTO(PlantingProcess plantingProcess) {
         PlantingProcessDTO plantingProcessDTO = new PlantingProcessDTO();
         plantingProcessDTO.setPlantingProcessId(plantingProcess.getId());
         plantingProcessDTO.setPlantId(plantingProcess.getPlant().getPlantId());
@@ -134,13 +134,12 @@ public class PlantProcessService implements PlantProcessServiceImp {
         plantingProcess.setDescription(plantProcessRequest.getDescription());
         plantingProcess.setCreatedAt(new Date());
 
+        plantingProcessRepository.save(plantingProcess);
+
         if (plantProcessRequest.getPlantingMediumId() != null) {
             PlantMedium plantMedium = plantMediumRepository.findByMediumId(plantProcessRequest.getPlantingMediumId());
             plantingProcess.setPlantMedium(plantMedium);
             plantingProcess.setMediumWeight(plantProcessRequest.getMediumWeight());
-            plantMedium.setMediumWeightAvailable(plantMedium.getMediumWeightAvailable() - Integer.parseInt("" + plantProcessRequest.getMediumWeight()));
-            plantMediumRepository.save(plantMedium);
-
         }
 
         if (plantProcessRequest.getPlantPotId() != null) {
@@ -152,18 +151,12 @@ public class PlantProcessService implements PlantProcessServiceImp {
             AgriculturalChemical agriculturalChemical = chemicalRepository.findById(plantProcessRequest.getChemicalId()).orElseThrow(() -> new ResourceNotFoundException("Invalid Chemical"));
             plantingProcess.setAgriculturalChemical(agriculturalChemical);
             plantingProcess.setChemicalWeight(plantProcessRequest.getChemicalVolumn());
-            agriculturalChemical.setVolumeAvailable(agriculturalChemical.getVolumeAvailable() - Integer.parseInt("" + plantProcessRequest.getChemicalVolumn()));
-            chemicalRepository.save(agriculturalChemical);
-
         }
 
         if (plantProcessRequest.getWaterId() != null) {
             Water water = waterRepository.findById(plantProcessRequest.getWaterId()).orElseThrow(() -> new ResourceNotFoundException("Invalid Water"));
             plantingProcess.setWater(water);
             plantingProcess.setWaterVolumn(plantProcessRequest.getWaterVolumn());
-            water.setVolumeAvailable(water.getVolumeAvailable() - Integer.parseInt("" + plantProcessRequest.getWaterVolumn()));
-            waterRepository.save(water);
-
         }
 
         if (plantProcessRequest.getFarmingEquipmentId() != null) {
@@ -179,7 +172,7 @@ public class PlantProcessService implements PlantProcessServiceImp {
     }
 
     @Override
-    public void updatePlantProcess(int id, PlantingProcessRequest plantProcessRequest) {
+    public PlantingProcessDTO updatePlantProcess(int id, PlantingProcessRequest plantProcessRequest) {
         PlantingProcess plantingProcess = plantingProcessRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invalid Planting Process"));
         plantingProcess.setName(plantProcessRequest.getName());
         plantingProcess.setDescription(plantProcessRequest.getDescription());
@@ -216,6 +209,7 @@ public class PlantProcessService implements PlantProcessServiceImp {
         plantingProcess.setPlant(plantRepository.findByPlantId(plantProcessRequest.getPlantId()));
 
         plantingProcessRepository.save(plantingProcess);
+        return toDTO(plantingProcess);
     }
 
     @Override

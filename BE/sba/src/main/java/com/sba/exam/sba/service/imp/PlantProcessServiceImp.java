@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 public interface PlantProcessServiceImp {
     public PlantingProcessDTO createPlantProcess(PlantingProcessRequest plantProcessRequest);
 
-    public void updatePlantProcess(int id, PlantingProcessRequest plantProcessRequest);
+    public PlantingProcessDTO updatePlantProcess(int id, PlantingProcessRequest plantProcessRequest);
 
     public Page<PlantingProcessDTO> getAllPlantProcesses(int page, int size);
 

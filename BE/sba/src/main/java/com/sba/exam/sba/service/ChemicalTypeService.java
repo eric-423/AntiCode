@@ -25,7 +25,7 @@ public class ChemicalTypeService implements ChemicalTypeImp {
 
         List<ChemicalTypeDTO> list = new ArrayList<>();
 
-        List<ChemicalType> types = chemicalTypeRepository.findAll();
+        List<ChemicalType> types = chemicalTypeRepository.findByIsDeleted(false);
 
         for (ChemicalType type : types) {
             ChemicalTypeDTO dto = new ChemicalTypeDTO();

@@ -20,7 +20,7 @@ public class WaterService implements WaterServiceImp {
 
     @Override
     public List<WaterDTO> getWaterList() {
-        List<Water> waterList = waterRepository.findAll();
+        List<Water> waterList = waterRepository.findByIsDeleted(false);
         List<WaterDTO> waterDTOList = new ArrayList<WaterDTO>();
         for (Water water : waterList) {
             if(water.isDeleted() == false) {
