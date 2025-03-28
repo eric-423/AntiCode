@@ -6,6 +6,7 @@ import SearchBar from "../../common/search_bar/SearchBar";
 import useLocalStorage from "use-local-storage";
 import LOCALSTORAGE from "../../../constant/localStorage";
 import { jwtDecode } from "jwt-decode";
+import WorkerChat from "../../worker_chat/WorkerChat";
 
 const Header = () => {
   const [accountLoginInformation, setAccountLoginInformation] = useLocalStorage(
@@ -18,11 +19,42 @@ const Header = () => {
   };
   const [showProfile, setShowProfile] = useState(false);
   const [account, setAccount] = useState();
+
   useEffect(() => {
     if (!account && accountLoginInformation) {
       setAccount(jwtDecode(atob(accountLoginInformation)));
     }
   }, []);
+  useEffect(() => {
+    fetchAllManager();
+  })
+
+  const [switchManager, setSwitchManager] = useState(false)
+  const [managerId, setManagerId] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const [managerList, setManagerList] = useState([]);
+
+  const fetchAllManager = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/user/manager`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${atob(accountLoginInformation)}`,
+        },
+      });
+      if (response) {
+        const data = await response.json();
+        if (data) {
+          setManagerList(data.data);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching manager data:", error);
+    }
+  }
+
+
   return (
     <div className="header-worker">
       <div className="header-worker-container">
@@ -35,10 +67,36 @@ const Header = () => {
           <li>Tasks</li>
           <li>News</li>
         </ul>
+
         <div className="message-noti">
-          <div style={{ boxShadow: "none", background: "none" }}>
+
+          <div
+            className="avatar"
+            onClick={() => setSwitchManager(!switchManager)}
+          >
             <img src={ICONS.icon_message} alt="" />
+            {switchManager && (
+
+              <ul className="drop-down-profile">
+
+                {managerList &&
+                  managerList.map((manager) => (
+                    <li key={manager.id} onClick={() => {
+                      setManagerId(manager.id);
+                      setIsOpen(!isOpen);
+                    }}>
+                      <img src={ICONS.icon_message} alt="" />
+                      {manager.name}
+                    </li>
+                  ))
+                }
+
+                <li>manager 1</li>
+                <li onClick={() => setIsOpen(!isOpen)}>manager 2</li>
+              </ul>
+            )}
           </div>
+
           <div style={{ boxShadow: "none", background: "none" }}>
             <img src={ICONS.icon_notification} alt="" />
           </div>
@@ -47,9 +105,11 @@ const Header = () => {
             display: "flex",
             columnGap: "10px"
           }}>
+
             <div className="name-role-profile">
               <span>{account && account.name}</span>
             </div>
+
             <div
               className="avatar"
               onClick={() => setShowProfile((prev) => !prev)}
@@ -64,7 +124,16 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+
+
+      {
+        isOpen && (
+          <WorkerChat managerId={managerId} setIsOpen={setIsOpen} isOpen={isOpen} />
+        )
+      }
+
+
+    </div >
   );
 };
 

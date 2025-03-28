@@ -1,4 +1,3 @@
-import React from "react";
 import ToolBar from "./tool_bar/ToolBar";
 import Content from "./content/Content";
 import AddPlans from "./modal/AddPlans";

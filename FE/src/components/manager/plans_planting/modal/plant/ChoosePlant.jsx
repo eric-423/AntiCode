@@ -3,6 +3,8 @@ import { Form } from "react-bootstrap";
 import "./ChoosePlant.css";
 import axios from "axios";
 import BASE from "../../../../../constant/base";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const ChoosePlant = ({ setPlant, plant }) => {
   const [plantList, setPlantList] = useState();

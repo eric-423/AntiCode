@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "./NewTask.css";
@@ -119,6 +120,8 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
           "Authorization": `Bearer ${token}`,
         }
       }, task);
+      console.log(task)
+
       if (!response || response.status !== 201) throw new Error();
       showToastMessageSuccess("Task was added !");
       setShowModal(false);
@@ -130,6 +133,8 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
       setRefreshData((prev) => !prev);
     }
   };
+
+
   return ReactDOM.createPortal(
     <div className="modal-create-plant-container">
       <div className="modal-create-plant">

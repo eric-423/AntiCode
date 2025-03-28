@@ -1,4 +1,3 @@
-import React from "react";
 import SearchBar from "../../../common/search_bar/SearchBar";
 
 const ToolBar = () => {

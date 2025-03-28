@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import LOCALSTORAGE from "../../../constant/localStorage";
 import useLocalStorage from "use-local-storage";
 import { jwtDecode } from "jwt-decode";
+import { set } from 'date-fns';
 
 const Header = () => {
   const location = useLocation();
@@ -31,18 +32,19 @@ const Header = () => {
     }
   }, []);
 
+
   return (
     <div className="header-manager">
       <h6>{title}</h6>
       <div className="account-message-noti">
+
         <div className="message-noti">
           <div>
             <img src={ICONS.icon_message} alt="" />
           </div>
-          <div>
-            <img src={ICONS.icon_notification} alt="" />
-          </div>
         </div>
+
+
         <div className="header-manager-profile">
           <div className="name-role-profile">
             <span>{account && account.name}</span>
@@ -53,7 +55,6 @@ const Header = () => {
           >
             {showProfile && (
               <ul className="drop-down-profile">
-                <li>Profile</li>
                 <li onClick={() => handleLogout()}>Logout</li>
               </ul>
             )}
