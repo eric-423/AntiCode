@@ -31,6 +31,9 @@ public class PlantingLocationService implements PlantLocationServiceImp {
     LocationRepository locationRepository;
 
     @Autowired
+    private FarmRepository farmRepository;
+
+    @Autowired
     PlantingProcessRepository plantingProcessRepository;
 
     @Autowired
@@ -50,25 +53,31 @@ public class PlantingLocationService implements PlantLocationServiceImp {
 
     @Override
     public List<PlantingProcessDTO> getAllProcessNotInTask(int plantingLocationId) {
-        PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(plantingLocationId);
-
-        List<PlantingProcess> plantingProcesses = plantingProcessRepository.findByPlant_PlantId(plantingLocation.getPlant().getPlantId());
-        List<Task> taskList = plantingLocation.getTasks();
-        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
-        for(PlantingProcess plantingProcess : plantingProcesses){
-            boolean check = false;
-            for(Task task : taskList){
-                if(plantingProcess.getId() == task.getPlantingProcess().getId()){
-                    plantingProcesses.remove(plantingProcess);
-                    check = true;
-                }
-                if(!check){
-                    PlantingProcessDTO plantingProcessDTO = plantProcessService.toDTO(plantingProcess);
-                    plantingProcessDTOS.add(plantingProcessDTO);
-                }
-            }
-        }
-        return plantingProcessDTOS;
+//        PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(plantingLocationId);
+//
+//        List<PlantingProcess> plantingProcesses = plantingProcessRepository.findByPlant_PlantId(plantingLocation.getPlant().getPlantId());
+//        List<Task> taskList = new ArrayList<>();
+//
+//        for(PlantingLocationTask task : taskList){
+//
+//        }
+//
+//        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
+//        for(PlantingProcess plantingProcess : plantingProcesses){
+//            boolean check = false;
+//            for(Task task : taskList){
+//                if(plantingProcess.getId() == task.getPlantingProcess().getId()){
+//                    plantingProcesses.remove(plantingProcess);
+//                    check = true;
+//                }
+//                if(!check){
+//                    PlantingProcessDTO plantingProcessDTO = plantProcessService.toDTO(plantingProcess);
+//                    plantingProcessDTOS.add(plantingProcessDTO);
+//                }
+//            }
+//        }
+//        return plantingProcessDTOS;
+        return null;
     }
 
     @Override
@@ -89,7 +98,25 @@ public class PlantingLocationService implements PlantLocationServiceImp {
 
     @Override
     public PlansDTO getByPlans(long plan) {
-        return null;
+
+        PlansDTO plansDTO = new PlansDTO();
+
+        List<PlantingLocation> plantingLocationList = plantingLocationRepository.getPlantingLocationsByPlans(plan);
+        plansDTO.setNamePlans(plantingLocationList.getFirst().getPlant().getPlantName());
+        plansDTO.setStartHarvest(plantingLocationList.getFirst().getStartDate());
+        plansDTO.setEndHarvest(plantingLocationList.getFirst().getEndDate());
+        plansDTO.setPlans(plan);
+        List<String> locations = new ArrayList<>();
+        for(PlantingLocation plantingLocation : plantingLocationList){
+            locations.add(plantingLocation.getLocation().getLocationName());
+        }
+        plansDTO.setLocations(locations);
+        List<Area> area = areaRepository.getAreaByLocationListContains(List.of(plantingLocationList.getFirst().getLocation()));
+        plansDTO.setArea(area.getFirst().getAreaName());
+        Farm farm = farmRepository.getFarmByAreaListContains(List.of(area.getFirst()));
+        plansDTO.setFarm(farm.getFarmName());
+
+        return plansDTO;
     }
 
 
@@ -166,6 +193,7 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             plantingLocation.setStartDate(plantLocationRequest.getStartDate());
             plantingLocation.setEndDate(plantLocationRequest.getEndDate());
             plantingLocation.setHarvest(plantLocationRequest.isHarvest());
+
 
             plantingLocationRepository.save(plantingLocation);
             return getPlantLocationById(plantingLocation.getPlantLocationId());

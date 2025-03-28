@@ -20,7 +20,7 @@ public class RoleController {
     @GetMapping("")
     public ResponseEntity<?> getAllRoles() {
         try {
-            return new ResponseEntity<>(roleService.getRoles(), org.springframework.http.HttpStatus.OK);
+            return new ResponseEntity<>(roleService.getRoles(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }

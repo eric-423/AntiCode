@@ -126,8 +126,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
-
+      );
 
       if (!response || response.status !== 201) throw new Error();
       showToastMessageSuccess("Task was added !");

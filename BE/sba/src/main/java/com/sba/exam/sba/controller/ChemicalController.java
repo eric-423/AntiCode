@@ -17,7 +17,7 @@ public class ChemicalController {
 
     @GetMapping("")
     public ResponseEntity<?> getAllData() {
-        return new ResponseEntity<>(chemicalServiceImp.findAll(), org.springframework.http.HttpStatus.OK);
+        return new ResponseEntity<>(chemicalServiceImp.findAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

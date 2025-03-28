@@ -28,9 +28,6 @@ public class PlantingLocation {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @ManyToMany(mappedBy = "plantLocations")
-    private List<Task> tasks;
-
     @Column(name = "start_date")
     private Date startDate;
 
