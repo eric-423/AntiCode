@@ -114,6 +114,8 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             PlantingLocation plantingLocation = new PlantingLocation();
             Plant plant = plantRepository.findByPlantId(plantLocationRequest.getPlantId());
             Location location = locationRepository.findByLocationId(plantLocationRequest.getLocationId());
+            location.setPlanted(true);
+            locationRepository.save(location);
             plantingLocation.setPlant(plant);
             plantingLocation.setLocation(location);
             plantingLocation.setStartDate(plantLocationRequest.getStartDate());
@@ -125,7 +127,7 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             return getPlantLocationById(plantingLocation.getPlantLocationId());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            throw  new RuntimeException(e);
         }
     }
 

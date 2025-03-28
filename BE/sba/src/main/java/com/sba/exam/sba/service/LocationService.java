@@ -129,9 +129,10 @@ public class LocationService implements LocationServiceImp {
             for(Location location : locationList){
                 result.add(transferDTO(location));
             }
+
             return result;
         }catch(Exception e){
-            return null;
+            throw  new RuntimeException(e);
         }
     }
 

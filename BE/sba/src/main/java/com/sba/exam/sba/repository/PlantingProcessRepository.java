@@ -10,4 +10,5 @@ import java.util.List;
 public interface PlantingProcessRepository extends JpaRepository<PlantingProcess, Integer> {
     List<PlantingProcess> findByPlant_PlantId(int plantId);
 
+    List<PlantingProcess> getPlantingProcessesByPlant_PlantId(int plantPlantId);
 }

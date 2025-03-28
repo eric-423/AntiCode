@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/planting-process")
+@RequestMapping("/planting-process-v2")
 public class PlantingProcessController {
 
     @Autowired

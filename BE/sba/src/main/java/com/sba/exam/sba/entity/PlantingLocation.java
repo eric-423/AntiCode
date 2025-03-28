@@ -46,5 +46,6 @@ public class PlantingLocation {
     @OneToMany(mappedBy = "plantingLocation", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<PlantingLocationTask> plantingLocationTasks;
 
+    private long plans;
 
 }
