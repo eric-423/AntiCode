@@ -96,6 +96,20 @@ public class UserService implements UserServiceImp {
         return dtos;
     }
 
+    @Override
+    public List<UserDTO> getAllManager() {
+        List<Users> users = userRepository.getUsersByRole_Name("Manager");
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (Users user : users) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUserName(user.getUserName());
+            userDTO.setEmail(user.getUserEmail());
+            userDTO.setId(user.getId());
+            userDTOs.add(userDTO);
+        }
+        return userDTOs;
+    }
+
 
     @Transactional
     @Override
@@ -136,7 +150,7 @@ public class UserService implements UserServiceImp {
             user.setUserDateOfBirth(userDTO.getDateOfBirth());
             user.setUserPhoneNumber(userDTO.getPhoneNumber());
             user.setBusy(userDTO.isBusy());
-            if (userDTO.getPassword() != null){
+            if (userDTO.getPassword() != null) {
                 user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
             }
             Role role = roleRepository.findRoleByNameIgnoreCase(userDTO.getRole());

@@ -17,6 +17,8 @@ public interface UserServiceImp {
 
     List<UserDTO> getAllUser();
 
+    List<UserDTO> getAllManager();
+
     UserDTO addUserByAdmin(UserDTO userDTO);
 
     UserDTO updateUser(int id, UserDTO userDTO);

@@ -97,14 +97,14 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const handleOnClick = async () => {
     const task_type = taskType
       ? taskTypesData.find(
-          (item) => Number(item.taskTypeId) === Number(taskType)
-        )
+        (item) => Number(item.taskTypeId) === Number(taskType)
+      )
       : taskTypesData[0];
 
     const task_status = taskStatus
       ? taskStatusData.find(
-          (item) => Number(item.taskStatusId) === Number(taskStatus)
-        )
+        (item) => Number(item.taskStatusId) === Number(taskStatus)
+      )
       : taskStatusData[0];
     const task = {
       taskName: taskName,
@@ -126,8 +126,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
             Authorization: `Bearer ${token}`,
           },
         }
-      }, task);
-      console.log(task)
+      )
 
 
       if (!response || response.status !== 201) throw new Error();
