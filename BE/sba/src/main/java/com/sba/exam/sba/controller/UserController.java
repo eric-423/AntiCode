@@ -110,4 +110,14 @@ public class UserController {
         return null;
     }
 
+    @GetMapping("/managers")
+    public ResponseEntity<?> getAllManager() {
+        try {
+            return new ResponseEntity<>(userServiceImp.getAllManager(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

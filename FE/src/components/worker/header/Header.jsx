@@ -27,7 +27,7 @@ const Header = () => {
   }, []);
   useEffect(() => {
     fetchAllManager();
-  })
+  }, [])
 
   const [switchManager, setSwitchManager] = useState(false)
   const [managerId, setManagerId] = useState(1);
@@ -36,7 +36,7 @@ const Header = () => {
 
   const fetchAllManager = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/user/manager`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/user/managers`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -45,8 +45,9 @@ const Header = () => {
       });
       if (response) {
         const data = await response.json();
+        console.log(data);
         if (data) {
-          setManagerList(data.data);
+          setManagerList(data);
         }
       }
     } catch (error) {
@@ -85,8 +86,7 @@ const Header = () => {
                       setManagerId(manager.id);
                       setIsOpen(!isOpen);
                     }}>
-                      <img src={ICONS.icon_message} alt="" />
-                      {manager.name}
+                      {manager.userName}
                     </li>
                   ))
                 }

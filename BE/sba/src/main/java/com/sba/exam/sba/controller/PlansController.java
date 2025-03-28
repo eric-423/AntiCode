@@ -26,7 +26,7 @@ public class PlansController {
 
     @GetMapping("/plant-id")
     public ResponseEntity<PlansDTO> getPlansByPlan(@Param("id") long plan){
-    return new ResponseEntity<>(plantLocationServiceImp.getByPlans(plan), HttpStatus.OK);
+        return new ResponseEntity<>(plantLocationServiceImp.getByPlans(plan), HttpStatus.OK);
     }
 
 }

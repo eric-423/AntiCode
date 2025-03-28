@@ -8,6 +8,7 @@ import LOCALSTORAGE from "../../constant/localStorage";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ICONS from "../../constant/Image";
+import { parse } from "date-fns";
 
 const WorkerChat = ({ managerId, setIsOpen, isOpen }) => {
   const messagesEndRef = useRef(null);
@@ -140,8 +141,8 @@ const WorkerChat = ({ managerId, setIsOpen, isOpen }) => {
           const currentUserId = jwtDecode(atob(auth)).id;
 
           if (
-            parseInt(receiveId) === parseInt(currentUserId)
-            // parseInt(roomId) === parseInt(chatRoomIdRef.current)
+            parseInt(receiveId) === parseInt(currentUserId) &&
+            parseInt(senderId) === parseInt(managerId)
           ) {
             setMessages((prev) => [
               ...prev,
