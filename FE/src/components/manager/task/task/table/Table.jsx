@@ -110,7 +110,7 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
               handleSelectItem={handleSelectItem}
               itemsActive={itemsActive}
               item={item}
-              key={index}
+              index={index}
               taskTypesData={taskTypesData}
               taskStatusData={taskStatusData}
               setRefreshData={setRefreshData}

@@ -32,6 +32,8 @@ import Water from './components/manager/water/Water'
 import ManagerChat from './components/manager_chat/ManagerChat'
 import PlansPlanting from './components/manager/plans_planting/PlansPlanting'
 import PlanProcess from './components/manager/plant_process/PlanProcess'
+import LocationPlansPlanting from './components/manager/plans_planting copy/content/location/Location'
+
 
 function App() {
   const listComponent = [
@@ -170,6 +172,9 @@ function App() {
           {listRouteNavigation.map((item, index) => (
             <Route key={index} path={item.path} element={item.component} />
           ))}
+          <Route path='/manager/menu-plans-planting/:id' element={<LocationPlansPlanting />} />
+          <Route path="/manager/location/area/farm/:farmId" element={<Area />} />
+          <Route path="/manager/location/area/:areaId" element={<Location />} />
         </Route>
         <Route path="/worker" element={<Worker />}>
           <Route index element={<Tasks />} />

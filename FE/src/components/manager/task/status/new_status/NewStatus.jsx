@@ -47,12 +47,12 @@ const NewStatus = ({ setRefreshData, updateItem, setUpdateItem }) => {
       isDelete: isDelete,
     };
     try {
-      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, taskStatus, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         }
-      }, taskStatus);
+      });
       if (!response || response.status !== 200 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Task status was updated !");
     } catch (error) {
@@ -70,12 +70,12 @@ const NewStatus = ({ setRefreshData, updateItem, setUpdateItem }) => {
       isDelete: isDelete,
     };
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, taskStatus, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         }
-      }, taskStatus);
+      });
       if (!response || response.status !== 201 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Task status was added !");
     } catch (error) {

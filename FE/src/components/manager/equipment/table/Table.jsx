@@ -20,7 +20,7 @@ const Table = ({ listTitle, refreshData }) => {
     const handleFetchPlantData = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_REACT_APP_END_POINT}/farming-equipment/`,
+                `${import.meta.env.VITE_REACT_APP_END_POINT}/farming-equipment`,
                 {
                     method: "GET",
                     headers: {

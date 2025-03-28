@@ -1,0 +1,22 @@
+.area-container-area-to-planting{
+    height: fit-content;
+}
+.area-card-to-planting{
+    width: 150px !important;
+    height: fit-content !important;
+    padding: 15px;
+}
+.area-container-area-to-planting-h6{
+    color: rgba(0, 0, 0, 0.5);
+}
+.area-container-area-to-planting-h6 > h6 {
+    margin: 8px;
+}
+.area-card-to-planting > h6 {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.5);
+}
+.area-card-to-planting > p {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+}
