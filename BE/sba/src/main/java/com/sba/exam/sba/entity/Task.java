@@ -1,6 +1,7 @@
 package com.sba.exam.sba.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sba.exam.sba.enums.TaskFrequency;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -72,4 +73,12 @@ public class Task {
 
     @Column(name = "task_name")
     private String taskName;
+
+    @OneToMany(mappedBy = "task",fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<PlantingLocationTask> plantingLocationTasks;
+
+    @Column(name = "task_frequency")
+    @Enumerated(EnumType.STRING)
+    private TaskFrequency frequency;
 }

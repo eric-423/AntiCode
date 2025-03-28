@@ -24,6 +24,9 @@ public class PlantType {
     @Column(name = "type_description", columnDefinition = "TEXT")
     private String typeDescription;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "plantType", fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })

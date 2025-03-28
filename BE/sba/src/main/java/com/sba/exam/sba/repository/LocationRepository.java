@@ -15,6 +15,9 @@ public interface LocationRepository extends JpaRepository<Location,Integer> {
 
     List<Location> findLocationByArea_AreaId(int areaId);
 
+    List<Location> findByIsDeleted(boolean isDeleted);
+
+
     int countLocationsByArea_AreaId(int areaAreaId);
 
     @Query("select count(*) from Location l WHERE l.isPlanted =:planted and l.area.areaId =:areaId")

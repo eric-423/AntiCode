@@ -11,7 +11,7 @@ import ChooseFarm from "./farm/ChooseFarm";
 import ChooseLocation from "./location/ChooseLocation";
 import Confirm from "./confirm/Confirm";
 
-const AddPlans = () => {
+const AddPlans = ({setShowModal}) => {
   const modalRoot = document.body;
   const [status, setStatus] = useState(STATUS_PLANS.CHOOSE_PLANT);
   const [plant, setPlant] = useState();
@@ -105,12 +105,13 @@ const AddPlans = () => {
             width: "200px",
           }}
         >
-          <Button
-            text={STATUS_PLANS.CONFIRM === status ? "Create" : "Next"}
+          {STATUS_PLANS.CONFIRM !== status && <Button
+            text={ "Next"}
             handleOnClick={() => handleNextStatus()}
-          />
+          /> }
+          
         </div>
-        <img className="icon-close" src={ICONS.icon_close} alt="Close" />
+        <img className="icon-close" src={ICONS.icon_close} alt="Close" onClick={() => setShowModal(false)} />
       </div>
     </div>,
     modalRoot

@@ -25,7 +25,7 @@ public class PlantService implements PlantServiceImp {
     @Override
     public List<PlantDTO> getAllPlant() {
 
-        List<Plant> plants = plantRepository.findAll();
+        List<Plant> plants = plantRepository.findByDeletedFalse();
         List<PlantDTO> result = new ArrayList<>();
 
         for(Plant plant : plants){

@@ -1,15 +1,11 @@
 package com.sba.exam.sba.service;
 
+import com.sba.exam.sba.dto.PlansDTO;
 import com.sba.exam.sba.dto.PlantingLocationDTO;
-import com.sba.exam.sba.entity.Area;
-import com.sba.exam.sba.entity.Location;
-import com.sba.exam.sba.entity.Plant;
-import com.sba.exam.sba.entity.PlantingLocation;
+import com.sba.exam.sba.dto.PlantingProcessDTO;
+import com.sba.exam.sba.entity.*;
 import com.sba.exam.sba.payload.request.PlantingLocationRequest;
-import com.sba.exam.sba.repository.AreaRepository;
-import com.sba.exam.sba.repository.LocationRepository;
-import com.sba.exam.sba.repository.PlantRepository;
-import com.sba.exam.sba.repository.PlantingLocationRepository;
+import com.sba.exam.sba.repository.*;
 import com.sba.exam.sba.service.imp.PlantLocationServiceImp;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +30,12 @@ public class PlantingLocationService implements PlantLocationServiceImp {
     @Autowired
     LocationRepository locationRepository;
 
+    @Autowired
+    PlantingProcessRepository plantingProcessRepository;
+
+    @Autowired
+    PlantProcessService plantProcessService;
+
     @Override
     public List<PlantingLocationDTO> getPlantLocationList() {
         List<PlantingLocation> plantingLocationList = plantingLocationRepository.findByIsDeleted(false);
@@ -45,6 +47,51 @@ public class PlantingLocationService implements PlantLocationServiceImp {
         }
         return result;
     }
+
+    @Override
+    public List<PlantingProcessDTO> getAllProcessNotInTask(int plantingLocationId) {
+        PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(plantingLocationId);
+
+        List<PlantingProcess> plantingProcesses = plantingProcessRepository.findByPlant_PlantId(plantingLocation.getPlant().getPlantId());
+        List<Task> taskList = plantingLocation.getTasks();
+        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
+        for(PlantingProcess plantingProcess : plantingProcesses){
+            boolean check = false;
+            for(Task task : taskList){
+                if(plantingProcess.getId() == task.getPlantingProcess().getId()){
+                    plantingProcesses.remove(plantingProcess);
+                    check = true;
+                }
+                if(!check){
+                    PlantingProcessDTO plantingProcessDTO = plantProcessService.toDTO(plantingProcess);
+                    plantingProcessDTOS.add(plantingProcessDTO);
+                }
+            }
+        }
+        return plantingProcessDTOS;
+    }
+
+    @Override
+    public List<PlansDTO> getAllPlans() {
+        List<Long> plans = plantingLocationRepository.getDistinctPlans();
+        List<PlansDTO> plansDTOS = new ArrayList<>();
+        for(Long plan : plans){
+            PlantingLocation plantingLocation = plantingLocationRepository.findFirstByPlans(plan);
+            PlansDTO plansDTO = new PlansDTO();
+            plansDTO.setNamePlans(plantingLocation.getPlant().getPlantName());
+            plansDTO.setStartHarvest(plantingLocation.getStartDate());
+            plansDTO.setEndHarvest(plantingLocation.getEndDate());
+            plansDTO.setPlans(plan);
+            plansDTOS.add(plansDTO);
+        }
+        return plansDTOS;
+    }
+
+    @Override
+    public PlansDTO getByPlans(long plan) {
+        return null;
+    }
+
 
     private PlantingLocationDTO transferDTO(PlantingLocation plantingLocation){
         PlantingLocationDTO plantingLocationDTO = new PlantingLocationDTO();
@@ -86,22 +133,23 @@ public class PlantingLocationService implements PlantLocationServiceImp {
     @Transactional
     public PlantingLocationDTO addPlantLocation(PlantingLocationRequest plantLocationRequest) {
         try {
-
             PlantingLocation plantingLocation = new PlantingLocation();
             Plant plant = plantRepository.findByPlantId(plantLocationRequest.getPlantId());
             Location location = locationRepository.findByLocationId(plantLocationRequest.getLocationId());
+            location.setPlanted(true);
+            locationRepository.save(location);
             plantingLocation.setPlant(plant);
             plantingLocation.setLocation(location);
-            plantingLocation.setStartDate(new Date());
+            plantingLocation.setStartDate(plantLocationRequest.getStartDate());
             plantingLocation.setEndDate(plantLocationRequest.getEndDate());
             plantingLocation.setHarvest(false);
             plantingLocation.setDeleted(false);
+            plantingLocation.setPlans(plantLocationRequest.getPlans());
             plantingLocationRepository.save(plantingLocation);
-
             return getPlantLocationById(plantingLocation.getPlantLocationId());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            throw  new RuntimeException(e);
         }
     }
 
@@ -140,4 +188,6 @@ public class PlantingLocationService implements PlantLocationServiceImp {
             return null;
         }
     }
+
+
 }

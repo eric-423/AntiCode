@@ -30,5 +30,5 @@ public class TaskDTO {
     private String taskTypeDescription;
     private boolean isDeleted;
     private String taskName;
-
+    private PlantingProcessDTO plantingProcessDTO;
 }

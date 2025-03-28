@@ -22,4 +22,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     List<Task> findTasksByTaskType_Id(int taskTypeId);
 
     List<Task> getTasksByDueDate(LocalDate dueDate);
+
+
 }

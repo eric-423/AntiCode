@@ -20,7 +20,7 @@ public class PlantPotService implements PlantPotServiceImp {
 
     @Override
     public List<PlantPotDTO> findAllPlantPot() {
-        List<PlantPot> plantPots = plantPotRepository.findAll();
+        List<PlantPot> plantPots = plantPotRepository.findByIsDeleted(false);
         List<PlantPotDTO> result = new ArrayList<>();
 
         for(PlantPot plantPot : plantPots){

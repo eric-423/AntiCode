@@ -26,6 +26,9 @@ public class PlantMedium {
     @Column(name = "medium_weight_avallable")
     private int mediumWeightAvailable;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
+
 
     @OneToMany(mappedBy = "plantMedium", fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH

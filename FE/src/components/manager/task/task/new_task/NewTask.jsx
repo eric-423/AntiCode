@@ -11,14 +11,14 @@ import LOCALSTORAGE from "../../../../../constant/localStorage";
 import useLocalStorage from "use-local-storage";
 
 const NewTask = ({ setShowModal, setRefreshData }) => {
-  const [createdAt, setCreatedAt] = useState()
-  const [completedAt, setCompletedAt] = useState()
-  const [taskDescription, setTaskDescription] = useState()
-  const [taskType, setTaskType] = useState()
-  const [taskStatus, setTaskStatus] = useState()
-  const [startDate, setStartDate] = useState()
-  const [dueDate, setDueDate] = useState()
-  const [taskName, setTaskName] = useState()
+  const [createdAt, setCreatedAt] = useState();
+  const [completedAt, setCompletedAt] = useState();
+  const [taskDescription, setTaskDescription] = useState();
+  const [taskType, setTaskType] = useState();
+  const [taskStatus, setTaskStatus] = useState();
+  const [startDate, setStartDate] = useState();
+  const [dueDate, setDueDate] = useState();
+  const [taskName, setTaskName] = useState();
   const modalRoot = document.body;
   const handleClickClose = () => {
     setShowModal(false);
@@ -26,23 +26,27 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const [taskTypesData, setTaskTypesData] = useState();
   const [taskStatusData, setTaskStatusData] = useState();
 
-  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
-  const [token, setToken] = useState('');
+  const [auth, setAuth] = useLocalStorage(
+    LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
+    ""
+  );
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     setToken(atob(auth));
-  }, [auth])
+  }, [auth]);
 
   //GET TASK STATUS DATA
   const handleFetchDataTaskStatus = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
       );
       if (response.status === 200) {
         setTaskStatusData(response.data);
@@ -59,12 +63,13 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const handleFetchDataTaskType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
       );
       if (response.status === 200) {
         setTaskTypesData(response.data);
@@ -84,25 +89,23 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
     });
   };
   const showToastMessageFail = (message) => {
-    toast.error(message.replace(/^.*Exception:\s*/, ''), {
+    toast.error(message.replace(/^.*Exception:\s*/, ""), {
       position: "top-right",
       autoClose: 1000,
     });
   };
   const handleOnClick = async () => {
-
     const task_type = taskType
       ? taskTypesData.find(
-        (item) => Number(item.taskTypeId) === Number(taskType)
-      )
+          (item) => Number(item.taskTypeId) === Number(taskType)
+        )
       : taskTypesData[0];
 
     const task_status = taskStatus
       ? taskStatusData.find(
-        (item) => Number(item.taskStatusId) === Number(taskStatus)
-      )
+          (item) => Number(item.taskStatusId) === Number(taskStatus)
+        )
       : taskStatusData[0];
-
     const task = {
       taskName: taskName,
       createdAt: createdAt,
@@ -114,13 +117,18 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
       taskType: task_type.taskTypeId,
     };
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task`,
+        task,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       }, task);
       console.log(task)
+
 
       if (!response || response.status !== 201) throw new Error();
       showToastMessageSuccess("Task was added !");
@@ -218,7 +226,9 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
               {taskTypesData &&
                 Array.isArray(taskTypesData) &&
                 taskTypesData.map((item, index) => (
-                  <option key={index} value={item.taskTypeId}>{item.taskTypeName}</option>
+                  <option key={index} value={item.taskTypeId}>
+                    {item.taskTypeName}
+                  </option>
                 ))}
             </Form.Select>
           </Form.Group>
