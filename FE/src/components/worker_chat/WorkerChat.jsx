@@ -7,23 +7,20 @@ import { jwtDecode } from "jwt-decode";
 import LOCALSTORAGE from "../../constant/localStorage";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ICONS from "../../constant/Image";
 
-const WorkerChat = () => {
+const WorkerChat = ({ managerId, setIsOpen, isOpen }) => {
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [client, setClient] = useState();
   const [chatRoomId, setChatRoomId] = useState("");
-  const [auth, setAuth] = useLocalStorage(
-    LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
-    ""
-  );
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, "");
   const chatRoomIdRef = useRef(chatRoomId);
   const [sizeMes, setSizeMes] = useState(1000);
-  const [managerId, setManagerId] = useState(2);
   const [bearerToken, setBearerToken] = useState(atob(auth))
+
   useEffect(() => {
     handleGetAllChatRoom();
     chatRoomIdRef.current = chatRoomId;
@@ -208,33 +205,24 @@ const WorkerChat = () => {
     if (!client) {
       handleConnectWebSocket();
     }
-
-    // return () => {
-    //   if (client && client.connected) {
-    //     client.deactivate();
-    //   }
-    // };
   }, []);
 
   return (
     <div className="chat-container">
-      <div className="chat-bubble" onClick={toggleChat}>
-        <svg
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 10H16M8 14H16M21.0039 12C21.0039 16.9706 16.9745 21 12.0039 21C9.9675 21 3.00463 21 3.00463 21C3.00463 21 4.56382 17.2561 3.93982 16.0008C3.34076 14.7956 3.00391 13.4372 3.00391 12C3.00391 7.02944 7.03334 3 12.0039 3C16.9745 3 21.0039 7.02944 21.0039 12Z"
-            stroke="#000000"
-          />
-        </svg>
-      </div>
       {isOpen && (
         <div className="chat-window">
-          <div className="chat-header">Chat With Manager</div>
+
+
+          <div className="chat-header">
+            Chat With Manager
+            <img
+              className="icon-close"
+              onClick={() => setIsOpen(!isOpen)}
+              src={ICONS.icon_close}
+              alt="Close"
+            />
+          </div>
+
           <div ref={messagesEndRef} className="chat-messages">
             {messages.map((msg, index) => (
               <div

@@ -38,6 +38,17 @@
     cursor: pointer;
 }
 
+.message-manager {
+    width: 35px;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: .375rem;
+    cursor: pointer;
+    position: relative;
+}
+
+
+
 .avatar {
     width: 35px;
     height: 35px;
@@ -59,23 +70,26 @@
 .button-logout:active {
     background-color: #aaa;
 }
-.header-manager-profile{
+
+.header-manager-profile {
     display: flex;
     column-gap: 10px;
     align-items: center;
 }
-.name-role-profile > span{
+
+.name-role-profile>span {
     font-size: 15px;
     color: rgba(0, 0, 0, 0.5);
 }
-.drop-down-profile{
+
+.drop-down-profile {
     position: absolute;
-    margin-bottom:0;
+    margin-bottom: 0;
     padding-left: 0;
     padding-inline-start: 0;
     list-style: none;
     right: 0;
-    top:100%;
+    top: 100%;
     background-color: #FFFFFF;
     padding: 10px 5px;
     width: 150px;
@@ -83,7 +97,8 @@
     border-radius: .375rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.drop-down-profile > li{
+
+.drop-down-profile>li {
     font-size: 14px;
     color: rgba(0, 0, 0, 0.5);
     height: 40px;
@@ -91,7 +106,9 @@
     align-items: center;
     padding: 0 15px;
     border-radius: .375rem;
+    z-index: 10000;
 }
-.drop-down-profile > li:hover{
+
+.drop-down-profile>li:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }

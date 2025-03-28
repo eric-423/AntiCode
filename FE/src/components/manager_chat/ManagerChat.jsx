@@ -39,12 +39,6 @@ const ManagerChat = memo(() => {
         if (!client) {
             handleConnectWebSocket();
         }
-        // return () => {
-        //     if (client && client.connected) {
-        //         client.deactivate();
-        //     }
-        // };
-
     }, [auth]);
 
 
@@ -238,22 +232,6 @@ const ManagerChat = memo(() => {
     return (
         <Row className='w-100'>
             <Col md={9} className='Chat'>
-                {/* <div>
-                    <button
-                        className='manager-chat-load-old-message'
-                        onClick={() => {
-                            setSizeMes(prevSize => prevSize + 10); // Tăng số lượng tin nhắn cần load
-                            handleFetchChatMessages(chatRoomIdRef);
-                        }}
-                    >
-                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 4V14M12 14L16 10M12 14L8 10" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4" stroke="#000000" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                        Load more
-                    </button>
-                </div> */}
-
                 <div>
                     <h6 className='manager-chat-room-name'>
                         {userChatRoom.userName}
@@ -299,6 +277,13 @@ const ManagerChat = memo(() => {
                     {
                         workers.map((worker, index) => (
                             <button key={index} className='' onClick={() => handleSetUserChat(worker)}>
+                                <div>
+                                    <img
+                                        src={"https://www.w3schools.com/howto/img_avatar.png"}
+                                        alt=""
+                                        className='manager-chat-avatar'
+                                    />
+                                </div>
                                 <h6 className='m-0'>{worker.userName}</h6>
                             </button>
                         ))

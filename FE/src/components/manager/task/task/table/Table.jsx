@@ -99,7 +99,6 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
   useEffect(() => {
     handleFetchTaskData();
   }, [refreshData]);
-  console.log(listItems);
 
   return (
     <>

@@ -80,7 +80,6 @@
     height: 45px;
     outline: none;
     border: none;
-    background-color: #d5d5d5;
     border-radius: 10px;
     margin-bottom: 3px;
     display: flex;
@@ -89,8 +88,15 @@
     color: rgba(0, 0, 0, 0.4)
 }
 
+.manager-chat-list-users img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
 .manager-chat-list-users button:hover {
-    background-color: #d2d2d2;
+    background-color: #ececec;
     color: rgba(0, 0, 0, 0.5)
 }
 
