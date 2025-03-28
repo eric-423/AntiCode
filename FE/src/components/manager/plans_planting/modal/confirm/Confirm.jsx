@@ -81,6 +81,18 @@ const Confirm = ({ plant, area, farm, location }) => {
     setLoading(true);
     try {
       const plansID = new Date().getTime();
+
+      const _processTaskRequestList = [];
+      process?.map((item) => {
+        const data = {
+          processName: item?.plantingProcessName,
+          taskFrequency: String(item?.type).toLocaleUpperCase(),
+          taskType: 1,
+          startDate: item?.startDate,
+        };
+        _processTaskRequestList.push(data);
+      });
+
       await Promise.all(
         location?.map(async (item) => {
           try {
@@ -90,11 +102,9 @@ const Confirm = ({ plant, area, farm, location }) => {
               startDate: startHavert,
               endDate: endHavert,
               plans: plansID,
+              processTaskRequestList: _processTaskRequestList,
             };
-            const res = await axios.post(
-              `${BASE.BASE_URL}/planting-location`,
-              data
-            );
+            const res = await axios.post(`${BASE.BASE_URL}/task/process`, data);
             if (!res || res.status !== 201) throw new Error();
             console.log(res.data);
           } catch (error) {
@@ -107,6 +117,14 @@ const Confirm = ({ plant, area, farm, location }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleChangeDateTask = (startDate, index) => {
+    const list = [...process];
+    const item = list[index];
+    item.startDate = startDate;
+    list[index] = item;
+    setProcess(list);
   };
 
   useEffect(() => {
@@ -173,14 +191,16 @@ const Confirm = ({ plant, area, farm, location }) => {
                         ))}
                       </Form.Select>
                     </div>
-                    {item.type !== CALENDAR.LIST_TYPE.DAILY && (
-                      <div>
-                        <Form.Control
-                          className="input-login input-addition input-name-create-plant input-select-plant-plans"
-                          type="date"
-                        />
-                      </div>
-                    )}
+
+                    <div>
+                      <Form.Control
+                        className="input-login input-addition input-name-create-plant input-select-plant-plans"
+                        type="date"
+                        onChange={(event) =>
+                          handleChangeDateTask(event.target.value, index)
+                        }
+                      />
+                    </div>
                   </div>
                 ))}
               {add && (
