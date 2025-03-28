@@ -11,6 +11,7 @@ import LOCALSTORAGE from "../../../../constant/localStorage";
 import { jwtDecode } from "jwt-decode";
 import Button from "../../../common/button/Button";
 import ROLES from "../../../../constant/role";
+import { set } from "date-fns/fp";
 
 const NOT_USE = "Not Use";
 
@@ -31,6 +32,11 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const [plantPot, setPlanPot] = useState();
   const [plantMedium, setPlantMedium] = useState();
 
+  const [waterVolumn, setWaterVolumn] = useState();
+  const [chemicalVolumn, setChemicalVolumn] = useState();
+  const [plantPotSize, setPlanPotSize] = useState();
+  const [plantMediumWeight, setPlantMediumWeight] = useState();
+
   const [plantMediumList, setPlantMediumList] = useState();
   const [plantPotList, setPlantPotList] = useState();
   const [waterList, setWaterList] = useState();
@@ -41,12 +47,15 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
     LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
     ""
   );
-  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
-  const [token, setToken] = useState('');
+  const [auth, setAuth] = useLocalStorage(
+    LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
+    ""
+  );
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     setToken(atob(auth));
-  }, [auth])
+  }, [auth]);
 
   const handleFetchTaskStatus = async () => {
     try {
@@ -68,8 +77,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       const response = await axios.get(`${BASE.BASE_URL}/plant-medium`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response || response.status !== 200) throw new Error();
       setPlantMediumList([NOT_USE, ...response.data.data]);
@@ -83,8 +92,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       const response = await axios.get(`${BASE.BASE_URL}/plant-pot`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response || response.status !== 200) throw new Error();
       setPlantPotList([NOT_USE, ...response.data.data]);
@@ -98,8 +107,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       const response = await axios.get(`${BASE.BASE_URL}/water`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response || response.status !== 200) throw new Error();
       setWaterList([NOT_USE, ...response.data]);
@@ -112,8 +121,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       const response = await axios.get(`${BASE.BASE_URL}/farming-equipment/`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response || response.status !== 200) throw new Error();
       setEquiqmentList([NOT_USE, ...response.data]);
@@ -126,8 +135,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       const response = await axios.get(`${BASE.BASE_URL}/chemical`, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response || response.status !== 200) throw new Error();
       setChemicalList([NOT_USE, ...response.data]);
@@ -138,12 +147,13 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleFetchUserAssigned = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/task/users-assigned?taskID=${itemDetail.taskId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+        `${BASE.BASE_URL}/task/users-assigned?taskID=${itemDetail.taskId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
       );
       if (!response || response.status !== 200) throw new Error();
       setWorkerAssigned(response.data);
@@ -155,12 +165,13 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleFetchUserUnAssigned = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/task/users-un-assigned?taskID=${itemDetail.taskId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+        `${BASE.BASE_URL}/task/users-un-assigned?taskID=${itemDetail.taskId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
       );
       if (!response || response.status !== 200) throw new Error();
       setWorkerUnAssigned(response.data);
@@ -172,13 +183,15 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleAssignWorker = async (worker) => {
     try {
       const response = await axios.post(
-        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id
-        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${
+          worker.id
+        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
       );
       if (!response || response.status !== 201) throw new Error();
 
@@ -192,13 +205,15 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleUnAssignWorker = async (worker) => {
     try {
       const response = await axios.delete(
-        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id
-        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${
+          worker.id
+        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
       );
       if (!response || response.status !== 201) throw new Error();
 
@@ -221,11 +236,11 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`,data, {
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response) throw new Error();
       setItemStatus(status);
@@ -246,11 +261,11 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, data,{
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response) throw new Error();
       setStartDate(startDate);
@@ -272,11 +287,11 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`,data, {
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data, {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!response) throw new Error();
       setDueDate(dueDate);
@@ -310,6 +325,50 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
     }
     if (!itemStatus) {
       setItemStatus(itemDetail?.taskStatusId);
+    }
+
+    if (!water) {
+    }
+    if (!equipment) {
+      setEquiqment(
+        itemDetail?.plantingProcessDTO?.farmingEquipmentProcessDTO?.equipmentId
+      );
+    }
+    if (!chemical) {
+      setChemical(
+        itemDetail?.plantingProcessDTO?.chemicalProcessDTO?.chemicalId
+      );
+    }
+    if (!plantPot) {
+      setPlanPot(
+        itemDetail?.plantingProcessDTO?.plantingPotProcessDTO?.plantingPotId
+      );
+    }
+    if (!plantMedium) {
+      setPlantMedium(
+        itemDetail?.plantingProcessDTO?.plantingMediumProcessDTO
+          ?.plantingMediumId
+      );
+    }
+
+    if (!waterVolumn) {
+
+    }
+    if (!chemicalVolumn) {
+      setChemicalVolumn(
+        itemDetail?.plantingProcessDTO?.chemicalProcessDTO?.chemicalVolume
+      );
+    }
+    if (!plantPotSize) {
+      setPlanPotSize(
+        itemDetail?.plantingProcessDTO?.plantingPotProcessDTO?.plantingPotSize
+      );
+    }
+    if (!plantMediumWeight) {
+      setPlantMediumWeight(
+        itemDetail?.plantingProcessDTO?.plantingMediumProcessDTO
+          ?.plantingMediumWeight
+      );
     }
   }, [itemDetail]);
 
@@ -474,6 +533,7 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                   className="input-login input-addition input-name-create-plant input-width-report-modal"
                   type="number"
                   placeholder="Volumn"
+                  value={waterVolumn}
                 />
               </div>
             </div>
@@ -492,6 +552,7 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                   }}
                   className="input-login input-addition input-plant-type-create-plant input-select-schedule-task report-task-input-select"
                 >
+                  {console.log("item", equipment)}
                   {equiqmentList &&
                     Array.isArray(equiqmentList) &&
                     equiqmentList.map((item, indexEquiqment) => (
@@ -530,6 +591,7 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                   className="input-login input-addition input-name-create-plant"
                   type="number"
                   placeholder="Volumn"
+                  value={chemicalVolumn}
                 />
               </div>
             </div>
@@ -556,11 +618,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                       </option>
                     ))}
                 </Form.Select>
-
+                 
                 <Form.Control
                   className="input-login input-addition input-name-create-plant"
-                  type="number"
-                  placeholder="Quantity"
+                  type="text"
+                  placeholder="Size"
+                  value={plantPotSize}
                 />
               </div>
             </div>
@@ -592,6 +655,7 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
                   className="input-login input-addition input-name-create-plant"
                   type="number"
                   placeholder="Medium Weight"
+                  value={plantMediumWeight}
                 />
               </div>
             </div>
