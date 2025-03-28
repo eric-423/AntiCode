@@ -6,8 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify/unstyled";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
-const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
+const NewStatus = ({ setRefreshData, updateItem, setUpdateItem }) => {
   const [taskStatusName, setTaskStatusName] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [taskStatusDescription, setTaskStatusDescription] = useState("");
@@ -29,6 +31,14 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
     setTaskStatusDescription("");
     setIsUpdate("");
   };
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   const handleUpdateTaskStatus = async () => {
     const taskStatus = {
       taskStatusId: updateItem.taskStatusId,
@@ -37,7 +47,12 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
       isDelete: isDelete,
     };
     try {
-      const response = await axios.put( `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, taskStatus);
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }, taskStatus);
       if (!response || response.status !== 200 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Task status was updated !");
     } catch (error) {
@@ -55,7 +70,12 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
       isDelete: isDelete,
     };
     try {
-      const response = await axios.post( `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, taskStatus);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }, taskStatus);
       if (!response || response.status !== 201 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Task status was added !");
     } catch (error) {
@@ -101,8 +121,8 @@ const NewStatus = ({ setRefreshData, updateItem , setUpdateItem}) => {
           onChange={(e) => setTaskStatusDescription(e.target.value)}
         />
       </Form.Group>
-     
-      <Button handleOnClick={isUpdate ? handleUpdateTaskStatus :handleAddTaskStatus} text={isUpdate ? "Update" :"Save"} />
+
+      <Button handleOnClick={isUpdate ? handleUpdateTaskStatus : handleAddTaskStatus} text={isUpdate ? "Update" : "Save"} />
     </Form>
   );
 };

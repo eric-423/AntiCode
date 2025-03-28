@@ -5,6 +5,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../../common/button/Button.jsx";
 import { toast } from "react-toastify";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage.js";
 
 const UpdateEquipment = ({ setShowModal, itemUpdate }) => {
     const [name, setName] = useState(itemUpdate.name || '');
@@ -13,6 +15,12 @@ const UpdateEquipment = ({ setShowModal, itemUpdate }) => {
     const [equipmentType, setEquipmentType] = useState('');
     const [equipmentTypesData, setEquipmentTypesData] = useState([]);
     const modalRoot = document.body;
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth])
 
     const handleClickClose = () => {
         setShowModal(false);
@@ -36,6 +44,8 @@ const UpdateEquipment = ({ setShowModal, itemUpdate }) => {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/equipment-type/`, {
                 method: "GET", headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+
                 },
             });
             if (!response.ok) throw new Error("Failed to fetch equipment types");
@@ -90,6 +100,7 @@ const UpdateEquipment = ({ setShowModal, itemUpdate }) => {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/farming-equipment/${equipmentType}`, {
                 method: "PUT", headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
                 }, body: JSON.stringify(equipment),
             });
 

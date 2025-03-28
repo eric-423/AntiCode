@@ -3,9 +3,18 @@ import { Card } from "react-bootstrap";
 import "./CardPlantType.css";
 import ICONS from "../../../../../../constant/Image";
 import { toast } from "react-toastify/unstyled";
+import { useEffect, useState } from "react";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../../constant/localStorage";
 
 
 const CardPlantType = ({ item, setRefreshData, setUpdateItem }) => {
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
   const showToastMessageSuccess = () => {
     toast.success("Equipment type was deleted !", {
       position: "top-right",
@@ -26,6 +35,7 @@ const CardPlantType = ({ item, setRefreshData, setUpdateItem }) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
         }
       );

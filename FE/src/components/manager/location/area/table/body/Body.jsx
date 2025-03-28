@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Body.css'
 import ICONS from '../../../../../../constant/Image'
 import UpdatePlaingLocation from '../../update_area/UpdateArea'
 import useGridColumn from '../../../../../../hook/useGridColumn'
 import { useNavigate } from 'react-router-dom'
+import useLocalStorage from 'use-local-storage'
+import LOCALSTORAGE from '../../../../../../constant/localStorage'
 
 
 const Body = ({
@@ -16,8 +18,10 @@ const Body = ({
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [itemUpdate, setItemUpdate] = useState()
+
   const isActive =
     Array.isArray(itemsActive) && itemsActive.includes(item.areaId)
+
 
   const handleShowUpdatePopup = (event, item) => {
     setItemUpdate(item)
@@ -33,7 +37,7 @@ const Body = ({
   }
   const gridColumnTemplate = useGridColumn(listTitle)
   const navigate = useNavigate()
-  
+
   const handleViewAreas = (event, areaId) => {
     event.stopPropagation()
     navigate(`/manager/location/area/${areaId}`)

@@ -6,6 +6,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../../common/button/Button";
 import { toast } from "react-toastify";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage.js";
 
 const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
     const [chemicalName, setChemicalName] = useState(itemUpdate.name || '');
@@ -15,6 +17,14 @@ const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
     const [volumeAvailable, setVolumeAvailable] = useState(itemUpdate.volumeAvailable || 0);
     const [chemicalType, setChemicalType] = useState('');
     const [chemicalTypesData, setChemicalTypesData] = useState([]);
+
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth]);
+
 
     const modalRoot = document.body;
 
@@ -32,6 +42,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/chemical-type`, {
                 method: "GET", headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
                 },
             });
             if (!response.ok) throw new Error();
@@ -82,6 +93,7 @@ const UpdateChemical = ({ setShowModal, itemUpdate, refreshData }) => {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/chemical/${chemicalType}`, {
                 method: "PUT", headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
                 }, body: JSON.stringify(chemical),
             });
             if (!response.ok) throw new Error("Failed to create Chemical");

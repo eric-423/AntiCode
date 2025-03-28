@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState, useCallback } from 'react'
 import './PlantProcess.css'
 import Table from './table/Table'
@@ -44,7 +45,6 @@ const PlanProcess = () => {
         fetchPlantWater();
         fetchPlantEquipment();
     }, [])
-
 
 
     const handleShowModalCreatePlantProcess = (e) => {

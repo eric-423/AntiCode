@@ -5,6 +5,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../../../common/button/Button";
 import axios from "axios";
 import { toast } from "react-toastify/unstyled";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from './../../../../../constant/localStorage';
 
 const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const [taskId, setTaskId] = useState()
@@ -29,6 +31,13 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
     setTaskStatus(itemUpdate.taskStatusId)
   }
 
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
@@ -51,7 +60,12 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const handleFetchDataTaskStatus = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      }
       );
       if (response.status === 200) {
         setTaskStatusData(response.data);
@@ -61,15 +75,20 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
     }
   };
   useEffect(() => {
-      handleFetchDataTaskStatus();
-      setDataItem(itemUpdate)
-    },[itemUpdate])
+    handleFetchDataTaskStatus();
+    setDataItem(itemUpdate)
+  }, [itemUpdate])
 
   //GET TASK TYPE DATA
   const handleFetchDataTaskType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      }
       );
       if (response.status === 200) {
         setTaskTypesData(response.data);
@@ -81,20 +100,20 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
   useEffect(() => {
     handleFetchDataTaskType();
     setDataItem(itemUpdate)
-  },[itemUpdate])
+  }, [itemUpdate])
 
   const handleOnClick = async () => {
 
     const task_type = taskType
       ? taskTypesData.find(
-          (item) => Number(item.taskTypeId) === Number(taskType)
-        )
+        (item) => Number(item.taskTypeId) === Number(taskType)
+      )
       : taskTypesData[0];
 
-      const task_status = taskStatus
+    const task_status = taskStatus
       ? taskStatusData.find(
-          (item) => Number(item.taskStatusId) === Number(taskStatus)
-        )
+        (item) => Number(item.taskStatusId) === Number(taskStatus)
+      )
       : taskStatusData[0];
 
     const task = {
@@ -109,17 +128,23 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
       taskType: task_type.taskTypeId,
     };
     console.log(task);
-    
+
     try {
-      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, task);
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      }, task);
       console.log(response.data);
-      
+
+
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Task was updated !");
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail(error.response.data.message||"Task can not update !");
+      showToastMessageFail(error.response.data.message || "Task can not update !");
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);
@@ -133,14 +158,14 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
             UPDATE TASK
           </h4>
           <Form.Group>
-                      <Form.Label className="text-label-login">Name</Form.Label>
-                      <Form.Control
-                        className="input-login input-addition"
-                        type="text"
-                        value={taskName}
-                        onChange={(e) => setTaskName(e.target.value)}
-                      />
-                    </Form.Group>
+            <Form.Label className="text-label-login">Name</Form.Label>
+            <Form.Control
+              className="input-login input-addition"
+              type="text"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+            />
+          </Form.Group>
 
           {/* <Form.Group className="group-3-column-create-plant">
                       <Form.Label className="text-label-login">Created At</Form.Label>
@@ -163,70 +188,70 @@ const UpdateTask = ({ setShowModal, itemUpdate, setRefreshData }) => {
                       />
                     </Form.Group> */}
 
-                    <Form.Group className="group-3-column-create-plant">
-                      <Form.Label className="text-label-login">
-                        Start Date
-                      </Form.Label>
-                      <Form.Control
-                        className="input-login input-addition input-characteristis-create-plant"
-                        type="date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                      />
-                    </Form.Group>
+          <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">
+              Start Date
+            </Form.Label>
+            <Form.Control
+              className="input-login input-addition input-characteristis-create-plant"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </Form.Group>
 
-                    <Form.Group className="group-3-column-create-plant">
-                      <Form.Label className="text-label-login">
-                        Due Date
-                      </Form.Label>
-                      <Form.Control
-                        className="input-login input-addition input-characteristis-create-plant"
-                        type="date"
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
-                      />
-                    </Form.Group>
+          <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">
+              Due Date
+            </Form.Label>
+            <Form.Control
+              className="input-login input-addition input-characteristis-create-plant"
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </Form.Group>
 
-                    <Form.Group>
-                      <Form.Label className="text-label-login">Description</Form.Label>
-                      <Form.Control
-                        className="input-login input-addition"
-                        as={"textarea"}
-                        rows={3}
-                        value={taskDescription}
-                        onChange={(e) => setTaskDescription(e.target.value)}
-                      />
-                    </Form.Group>
-                    
-                    <Form.Group className="group-3-column-create-plant">
-                      <Form.Label className="text-label-login">Task Type</Form.Label>
-                      <Form.Select
-                        onChange={(e) => setTaskType(e.target.value)}
-                        className="input-login input-addition input-plant-type-create-plant"
-                        value={taskType}
-                      >
-                        {taskTypesData &&
-                          Array.isArray(taskTypesData) &&
-                          taskTypesData.map((item) => (
-                            <option value={item.taskTypeId}>{item.taskTypeName}</option>
-                          ))}
-                      </Form.Select>
-                    </Form.Group>
-          
-                    <Form.Group className="group-3-column-create-plant">
-                      <Form.Label className="text-label-login">Task Status</Form.Label>
-                      <Form.Select
-                        onChange={(e) => setTaskStatus(e.target.value)}
-                        className="input-login input-addition input-plant-type-create-plant"
-                        value = {taskStatus}
-                      >
-                        {taskStatusData &&
-                          Array.isArray(taskStatusData) &&
-                          taskStatusData.map((item) => (
-                            <option value={item.taskStatusId}>{item.taskStatusName}</option>
-                          ))}
-                      </Form.Select>
-                    </Form.Group>
+          <Form.Group>
+            <Form.Label className="text-label-login">Description</Form.Label>
+            <Form.Control
+              className="input-login input-addition"
+              as={"textarea"}
+              rows={3}
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">Task Type</Form.Label>
+            <Form.Select
+              onChange={(e) => setTaskType(e.target.value)}
+              className="input-login input-addition input-plant-type-create-plant"
+              value={taskType}
+            >
+              {taskTypesData &&
+                Array.isArray(taskTypesData) &&
+                taskTypesData.map((item) => (
+                  <option value={item.taskTypeId}>{item.taskTypeName}</option>
+                ))}
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="group-3-column-create-plant">
+            <Form.Label className="text-label-login">Task Status</Form.Label>
+            <Form.Select
+              onChange={(e) => setTaskStatus(e.target.value)}
+              className="input-login input-addition input-plant-type-create-plant"
+              value={taskStatus}
+            >
+              {taskStatusData &&
+                Array.isArray(taskStatusData) &&
+                taskStatusData.map((item) => (
+                  <option value={item.taskStatusId}>{item.taskStatusName}</option>
+                ))}
+            </Form.Select>
+          </Form.Group>
           <Button
             text="Update Task"
             handleOnClick={handleOnClick}

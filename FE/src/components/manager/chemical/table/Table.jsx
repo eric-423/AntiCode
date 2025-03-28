@@ -6,12 +6,18 @@ import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
 import { PropTypes } from 'prop-types';
 import { toast } from "react-toastify";
+import LOCALSTORAGE from "../../../../constant/localStorage";
 
 const Table = ({ listTitle, refreshData }) => {
     const [itemsActive, setItemsActive] = useState([]);
     const [selectedChemical, setSelectedChemical] = useLocalStorage("manager_chemical_selected", "");
     const [listItems, setListItems] = useState();
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
 
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth]);
 
     const handleFetchChemicalData = async () => {
         try {
@@ -21,6 +27,7 @@ const Table = ({ listTitle, refreshData }) => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
                     },
                 }
             )

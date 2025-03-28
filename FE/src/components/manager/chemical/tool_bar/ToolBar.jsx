@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import "./ToolBar.css";
 import SearchBar from "../../../common/search_bar/SearchBar.jsx";
@@ -6,10 +6,18 @@ import Filter from "../../../common/filter/Filter.jsx";
 import NewChemical from "../new_chemical/NewChemical.jsx";
 import useLocalStorage from "use-local-storage";
 import { toast } from "react-toastify";
+import LOCALSTORAGE from "../../../../constant/localStorage.js";
 
 const ToolBar = ({ setRefreshData }) => {
     const [selectedChemical, setSelectedChemical] = useLocalStorage("manager_chemical_selected", "");
     const [showModal, setShowModal] = useState(false);
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth]);
+
 
     const handleShowModal = () => {
         setShowModal((prev) => !prev);
@@ -47,6 +55,7 @@ const ToolBar = ({ setRefreshData }) => {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
                     },
                 }
             );

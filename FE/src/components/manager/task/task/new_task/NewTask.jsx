@@ -6,6 +6,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
 import axios from "axios";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
+import useLocalStorage from "use-local-storage";
 
 const NewTask = ({ setShowModal, setRefreshData }) => {
   const [createdAt, setCreatedAt] = useState()
@@ -22,11 +24,24 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   };
   const [taskTypesData, setTaskTypesData] = useState();
   const [taskStatusData, setTaskStatusData] = useState();
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   //GET TASK STATUS DATA
   const handleFetchDataTaskStatus = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (response.status === 200) {
         setTaskStatusData(response.data);
@@ -43,7 +58,12 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
   const handleFetchDataTaskType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (response.status === 200) {
         setTaskTypesData(response.data);
@@ -72,14 +92,14 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
 
     const task_type = taskType
       ? taskTypesData.find(
-          (item) => Number(item.taskTypeId) === Number(taskType)
-        )
+        (item) => Number(item.taskTypeId) === Number(taskType)
+      )
       : taskTypesData[0];
 
-      const task_status = taskStatus
+    const task_status = taskStatus
       ? taskStatusData.find(
-          (item) => Number(item.taskStatusId) === Number(taskStatus)
-        )
+        (item) => Number(item.taskStatusId) === Number(taskStatus)
+      )
       : taskStatusData[0];
 
     const task = {
@@ -93,13 +113,18 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
       taskType: task_type.taskTypeId,
     };
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, task);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/task`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }, task);
       if (!response || response.status !== 201) throw new Error();
       showToastMessageSuccess("Task was added !");
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail(error.response.data.message||"Task can not add !");
+      showToastMessageFail(error.response.data.message || "Task can not add !");
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);
@@ -178,7 +203,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
               onChange={(e) => setTaskDescription(e.target.value)}
             />
           </Form.Group>
-          
+
           <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">Task Type</Form.Label>
             <Form.Select
@@ -187,8 +212,8 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
             >
               {taskTypesData &&
                 Array.isArray(taskTypesData) &&
-                taskTypesData.map((item) => (
-                  <option value={item.taskTypeId}>{item.taskTypeName}</option>
+                taskTypesData.map((item, index) => (
+                  <option key={index} value={item.taskTypeId}>{item.taskTypeName}</option>
                 ))}
             </Form.Select>
           </Form.Group>
@@ -206,7 +231,7 @@ const NewTask = ({ setShowModal, setRefreshData }) => {
                 ))}
             </Form.Select>
           </Form.Group> */}
-          
+
           <Button
             text="Create Task"
             handleOnClick={handleOnClick}

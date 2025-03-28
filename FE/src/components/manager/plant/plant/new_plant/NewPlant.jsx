@@ -6,6 +6,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
 import axios from "axios";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const NewPlant = ({ setShowModal, setRefreshData }) => {
   const [name, setName] = useState();
@@ -24,10 +26,24 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
     setShowModal(false);
   };
   const [plantTypesData, setPlantTypesData] = useState();
+
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   const handleFetchDataPlantType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (response.status === 200) {
         setPlantTypesData(response.data.data);

@@ -3,13 +3,28 @@ import { Form } from "react-bootstrap";
 import BASE from "../../../../../constant/base";
 import axios from "axios";
 import "./ChooseLocation.css";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
+import useLocalStorage from "use-local-storage";
 
 const ChooseLocation = ({ setLocation, location, area }) => {
   const [locationList, setLocationList] = useState();
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleFetchLocationList = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/location/area/${area?.areaId}`
+        `${BASE.BASE_URL}/location/area/${area?.areaId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200) throw new Error();
       setLocationList(response.data);
@@ -44,9 +59,8 @@ const ChooseLocation = ({ setLocation, location, area }) => {
         {locationList &&
           locationList.map((item) => (
             <div
-              className={`plans-location-container ${
-                location && location?.includes(item) ? "is-active" : null
-              }`}
+              className={`plans-location-container ${location && location?.includes(item) ? "is-active" : null
+                }`}
               onClick={() => handleLocation(item)}
             >
               <span

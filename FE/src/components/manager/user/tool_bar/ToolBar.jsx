@@ -6,10 +6,18 @@ import Filter from "../../../common/filter/Filter.jsx";
 import NewUser from "../new_user/NewUser.jsx";
 import useLocalStorage from "use-local-storage";
 import { toast } from "react-toastify/unstyled";
+import LOCALSTORAGE from "../../../../constant/localStorage.js";
 
 const ToolBar = ({ setRefreshData }) => {
     const [selectUser, setSelectUser] = useLocalStorage("manager_user_selected", "");
     const [showModal, setShowModal] = useState(false);
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth])
+
     const handleShowModal = () => {
         setShowModal((prev) => !prev);
     };
@@ -42,6 +50,7 @@ const ToolBar = ({ setRefreshData }) => {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
+                        'Authorization': `Bearer ${token}`,
                     },
                 }
             );

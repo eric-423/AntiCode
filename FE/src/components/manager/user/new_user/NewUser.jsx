@@ -5,6 +5,8 @@ import ICONS from "../../../../constant/Image";
 import { Form } from "react-bootstrap";
 import Button from "../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from './../../../../constant/localStorage';
 
 const NewUser = ({ setShowModal, setRefreshData }) => {
     const [name, setName] = useState("");
@@ -15,6 +17,14 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [role, setRole] = useState("");
     const [listRole, setListRole] = useState([]);
+
+
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth])
 
     const modalRoot = document.body;
 
@@ -33,7 +43,12 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
     const getRole = async () => {
         const baseUrl = `${import.meta.env.VITE_REACT_APP_END_POINT}`;
         try {
-            const response = await fetch(`${baseUrl}/roles`);
+            const response = await fetch(`${baseUrl}/roles`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
             if (!response.ok) {
                 throw new Error("Failed to fetch role")
             } else {
@@ -104,6 +119,7 @@ const NewUser = ({ setShowModal, setRefreshData }) => {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(user),
                 }

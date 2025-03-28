@@ -4,11 +4,19 @@ import ICONS from '../../../../constant/Image'
 import { Form } from 'react-bootstrap'
 import Button from '../../../common/button/Button'
 import { toast } from 'react-toastify/unstyled'
+import useLocalStorage from 'use-local-storage'
+import LOCALSTORAGE from '../../../../constant/localStorage'
 
 const UpdateFarm = ({ setShowModal, setRefreshData }) => {
   const [mediumName, setMediumName] = useState('')
   const [description, setDescription] = useState('')
   const [mediumWeightAvailable, setMediumWeightAvailable] = useState('')
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
 
   const modalRoot = document.body
 
@@ -55,6 +63,7 @@ const UpdateFarm = ({ setShowModal, setRefreshData }) => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify(medium),
         }
@@ -80,13 +89,13 @@ const UpdateFarm = ({ setShowModal, setRefreshData }) => {
         null
       if (!id) return
 
-      const url = `${
-        import.meta.env.VITE_REACT_APP_END_POINT
-      }/plant-medium/${id}`
+      const url = `${import.meta.env.VITE_REACT_APP_END_POINT
+        }/plant-medium/${id}`
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
       })
 
