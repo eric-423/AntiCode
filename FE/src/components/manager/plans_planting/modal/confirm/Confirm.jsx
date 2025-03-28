@@ -20,10 +20,32 @@ const Confirm = ({ plant, area, farm, location }) => {
   const [endHavert, setEndHavert] = useState();
   const [newTask, setNewTask] = useState();
   const [loading, setLoading] = useState(false);
+  const [taskTypesData,setTaskTypesData] = useState()
 
   useEffect(() => {
     setToken(atob(auth));
   }, [auth]);
+
+
+   const handleFetchDataTaskType = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          setTaskTypesData(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
   const handleFetchProcess = async () => {
     try {
       const res = await axios.get(
@@ -62,6 +84,14 @@ const Confirm = ({ plant, area, farm, location }) => {
     setProcess(list);
   };
 
+  const handleChangeTaskType = (taskType, index) => {
+    const list = [...process];
+    const item = list[index];
+    item.taskType = taskType;
+    list[index] = item;
+    setProcess(list);
+  };
+
   const handleEnterNewTask = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -86,8 +116,8 @@ const Confirm = ({ plant, area, farm, location }) => {
       process?.map((item) => {
         const data = {
           processName: item?.plantingProcessName,
-          taskFrequency: String(item?.type).toLocaleUpperCase(),
-          taskType: 1,
+          taskFrequency:item?.type !== CALENDAR.LIST_TYPE.SPECIFIC_DATE ? String(item?.type).toLocaleUpperCase() : "SPECIFIC_DATE",
+          taskType: item?.taskType ? item?.taskType : 1,
           startDate: item?.startDate,
         };
         _processTaskRequestList.push(data);
@@ -129,6 +159,7 @@ const Confirm = ({ plant, area, farm, location }) => {
 
   useEffect(() => {
     handleFetchProcess();
+    handleFetchDataTaskType()
   }, []);
 
   return (
@@ -200,6 +231,18 @@ const Confirm = ({ plant, area, farm, location }) => {
                           handleChangeDateTask(event.target.value, index)
                         }
                       />
+                    </div>
+                    <div>
+                    <Form.Select
+                        onChange={(event) =>
+                          handleChangeTaskType(event.target.value, index)
+                        }
+                        className="input-login input-addition input-plant-type-create-plant input-select-plant-plans"
+                      >
+                        {taskTypesData && taskTypesData.map((item) => (
+                          <option value={item?.taskTypeId}>{item?.taskTypeName}</option>
+                        ))}
+                      </Form.Select>
                     </div>
                   </div>
                 ))}

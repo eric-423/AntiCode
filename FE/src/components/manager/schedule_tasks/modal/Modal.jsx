@@ -221,12 +221,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, {
+      const response = await axios.put(`${BASE.BASE_URL}/task`,data, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         }
-      }, data);
+      });
       if (!response) throw new Error();
       setItemStatus(status);
     } catch (error) {
@@ -246,12 +246,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, {
+      const response = await axios.put(`${BASE.BASE_URL}/task`, data,{
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         }
-      }, data);
+      });
       if (!response) throw new Error();
       setStartDate(startDate);
     } catch (error) {
@@ -272,12 +272,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, {
+      const response = await axios.put(`${BASE.BASE_URL}/task`,data, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         }
-      }, data);
+      });
       if (!response) throw new Error();
       setDueDate(dueDate);
     } catch (error) {
@@ -605,6 +605,8 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
         <img
           className="icon-close"
           src={ICONS.icon_close}
+          width="15px"
+          height="15px"
           alt=""
           onClick={() => handleCloseModalDetail()}
         />
