@@ -59,6 +59,10 @@ const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
     }
   }
   const handleAddPlantType = async () => {
+    if (!name || !description) {
+      showToastMessageFail("Please fill all fields !");
+      return;
+    }
     const plantType = {
       plantTypeName: name,
       typeDescription: description,

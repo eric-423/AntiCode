@@ -74,7 +74,10 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
     setSelectedPlants(itemsActive);
   }, [itemsActive]);
   useEffect(() => {
-    handleFetchPlantData();
+    if (refreshData) {
+      handleFetchPlantData();
+      setRefreshData(false);
+    }
   }, [refreshData]);
   return (
     <>

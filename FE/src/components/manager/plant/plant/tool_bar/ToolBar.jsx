@@ -35,6 +35,7 @@ const ToolBar = ({ setRefreshData }) => {
       position: "top-right",
     });
   };
+  
   const handleDeletePlant = async () => {
     try {
       let param = "";

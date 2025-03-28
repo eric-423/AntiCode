@@ -4,8 +4,8 @@ import ToolBar from "./tool_bar/ToolBar";
 import Table from "./table/Table";
 
 const Plant = () => {
-  const [refreshData,setRefreshData] = useState(false)
-   const listTitle = [
+  const [refreshData, setRefreshData] = useState(false)
+  const listTitle = [
     {
       name: "No.",
       column: 0.5,
@@ -63,7 +63,7 @@ const Plant = () => {
   return (
     <div className="plant-container">
       <ToolBar setRefreshData={setRefreshData} />
-      <Table listTitle={listTitle} refreshData={refreshData} setRefreshData={setRefreshData}/>
+      <Table listTitle={listTitle} refreshData={refreshData} setRefreshData={setRefreshData} />
     </div>
   );
 };
