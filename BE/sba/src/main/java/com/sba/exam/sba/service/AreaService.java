@@ -7,6 +7,7 @@ import com.sba.exam.sba.entity.Location;
 import com.sba.exam.sba.payload.request.AreaRequest;
 import com.sba.exam.sba.repository.AreaRepository;
 import com.sba.exam.sba.repository.FarmRepository;
+import com.sba.exam.sba.repository.LocationRepository;
 import com.sba.exam.sba.service.imp.AreaServiceImp;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class AreaService implements AreaServiceImp {
 
     @Autowired
     FarmRepository farmRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
 
     @Autowired
     FarmService farmService;
@@ -105,12 +109,18 @@ public class AreaService implements AreaServiceImp {
             List<Area> areaList = areaRepository.findAreaByFarm_FarmId(farmId);
             List<AreaDTO> areaDTOList = new ArrayList<>();
             for(Area area:areaList){
-                if(!area.isDeleted())
-                areaDTOList.add(transferDTO(area));
+                if(!area.isDeleted()) {
+                    int locations = locationRepository.countLocationsByArea_AreaId(area.getAreaId());
+                    int locationAvailable = locationRepository.countLocationsByPlantedAndArea_AreaId(false,area.getAreaId());
+                    AreaDTO areaDTO = transferDTO(area);
+                    areaDTO.setLocationAvailable(locationAvailable);
+                    areaDTO.setLocations(locations);
+                    areaDTOList.add(areaDTO);
+                }
             }
             return areaDTOList;
         }catch(Exception e){
-            return null;
+            throw  new RuntimeException(e);
         }
     }
 

@@ -20,5 +20,9 @@ public class AreaDTO implements Serializable {
 
     private float areaLength;
 
+    private int locationAvailable;
+
+    private int locations;
+
     private FarmDTO farm;
 }

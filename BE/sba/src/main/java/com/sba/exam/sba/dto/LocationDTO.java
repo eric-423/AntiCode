@@ -18,5 +18,7 @@ public class LocationDTO implements Serializable {
 
     private float locationWidth;
 
+    private boolean isPlanted;
+
     private AreaDTO area;
 }

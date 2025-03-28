@@ -1,0 +1,7 @@
+.plans-area-card > p{
+    margin: 0;
+    color: rgba(0, 0, 0, 0.5) ;
+}
+.plans-area-card > p > span{
+    color: rgba(0, 0, 0, 0.7);
+}

@@ -1,0 +1,30 @@
+.plans-content-header {
+  padding-inline-start: 0px;
+  list-style: none;
+  display: flex;
+  height: 100px;
+  align-items: center;
+  border-bottom: 1px dotted rgba(0,0,0,0.1);
+  color: rgba(0,0,0,0.4);
+  margin-bottom: 0;
+}
+.plans-content-header > li:first-child {
+  width: 200px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plans-content-cotainer-month {
+  display: flex;
+  width: calc(100% - 200px);
+  height: 100%;
+}
+.plans-content-cotainer-month > li {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

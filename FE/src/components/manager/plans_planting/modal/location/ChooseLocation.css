@@ -1,0 +1,16 @@
+.plans-location-container{
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.plans-location-container > span{
+    font-size: 14px !important;
+}
+.plans-location-container.is-active{
+    background-color: rgba(242, 135, 5, 0.1);
+}
+.plans-location-container.is-active > span{
+    color: #F28705;
+}

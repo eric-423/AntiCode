@@ -1,0 +1,80 @@
+.plans-confirm-plant-farm-area {
+  display: grid;
+  grid-template-columns: 6fr 6fr 6fr;
+  margin-top: 40px;
+  gap: 20px;
+  padding: 0 50px;
+}
+.plans-confirm-plant-farm-area > div {
+  display: flex;
+  flex-direction: column;
+}
+.plans-confirm-plant-farm-area > div > span {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.3);
+}
+.plans-confirm-plant-farm-area > div > p {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+.plans-confirm-grid-column-3 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+.process-plant-plans-container > div{
+    display: grid;
+    column-gap: 20px;
+    height: 80px;
+    align-items: center;
+    position: relative;
+    grid-template-columns: 0.5fr 4fr 2.5fr 5fr;
+}
+.process-plant-plans-container > div::before{
+    content: "";
+    width: 1px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute; 
+    top:50%;
+    z-index: 100;
+    left:14px;
+}
+.process-plant-plans-container > div:last-child::before{
+      background-color: transparent;
+}
+
+.process-plant-plans-container > div > span{
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    z-index: 101;
+    color: rgba(0, 0, 0, 0.5);
+}
+.process-plant-plans-container > div > p {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 15px;
+}
+.input-select-plant-plans{
+  height: fit-content !important;
+  max-width: 200px;
+}
+.add-process-plans{
+  width: 80px;
+  height: 40px;
+  background-color:#F7F7F7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: .375rem; 
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}

@@ -142,7 +142,7 @@ public class LocationService implements LocationServiceImp {
         locationDTO.setLocationExtent(location.getLocationExtent());
         locationDTO.setLocationLength(location.getLocationLength());
         locationDTO.setLocationWidth(location.getLocationWidth());
-
+        locationDTO.setPlanted(location.isPlanted());
         locationDTO.setArea(areaServiceImp.getAreaById(location.getArea().getAreaId()));
         return locationDTO;
     }

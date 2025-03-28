@@ -1,46 +1,12 @@
-.content-plans-planting {
-  height: 100%;
-  position: relative;
+.plans-content-container{
+    background-color: #f7f7f7;
+    width: 100%;
+    height: calc(100vh - 190px);
+    border-radius: .375rem;
+    padding: 0 20px;
 }
-.content-plans-planting > h5 {
-  font-size: 18px;
-  color: rgba(0, 0, 0, 0.7);
-}
-.farm-content-plans-planting {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-  width: 100%;
-}
-.height-fix-farm-content-plans-planting {
-  position: relative;
-  height: calc(100% - 20px);
-}
-.farm-container-content-plans-planting {
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 1px 1px;
-  border-radius: 0.375rem;
-  max-height: 150px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-
-  cursor: pointer;
-}
-.farm-container-content-plans-planting > div > h6 {
-  font-size: 15px;
-  color: rgba(0, 0, 0, 0.5);
-}
-.farm-container-content-plans-planting > div > p {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.4);
-  margin-top: 15px;
-}
-.farm-container-content-plans-planting > p {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.5);
-}
-.farm-container-content-plans-planting > p > span {
-  color: rgba(0, 0, 0, 0.7);
-  font-weight: 500;
+.plans-content-body-container{
+    width: 100%;
+    background-color: white;
+    height: calc(100% - 120px);
 }

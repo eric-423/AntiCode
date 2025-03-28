@@ -44,4 +44,6 @@ public class Location {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<PlantingLocation> plantingLocationList;
+
+
 }

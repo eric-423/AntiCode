@@ -1,0 +1,27 @@
+.scroll-bar-container-choose{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.scroll-bar-container-choose > div{
+  
+    background-color: rgba(0,0,0,0.05);
+    border-radius: .375rem;
+    padding: 10px;
+    cursor: pointer;
+    
+}
+.scroll-bar-container-choose > div > span{
+    font-size: 15px;
+    color: rgba(0,0,0,0.5);
+}
+.scroll-bar-container-choose > div > p{
+    font-size: 14px;
+    margin-top: 5px;
+    max-width: 200px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    color: rgba(0,0,0,0.7);
+}

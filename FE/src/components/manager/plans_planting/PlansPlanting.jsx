@@ -1,13 +1,13 @@
 import React from "react";
-import Report from "./report/Report";
+import ToolBar from "./tool_bar/ToolBar";
 import Content from "./content/Content";
-import './PlansPlanting.css'
-
+import AddPlans from "./modal/AddPlans";
 const PlansPlanting = () => {
   return (
     <div className="plant-container plans-planting-container">
-      <Report />
+      <ToolBar />
       <Content />
+      <AddPlans />
     </div>
   );
 };
