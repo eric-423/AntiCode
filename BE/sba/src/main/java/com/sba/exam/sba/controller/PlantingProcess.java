@@ -14,8 +14,6 @@ public class PlantingProcess {
     @Autowired
     private PlantProcessServiceImp plantProcessServiceImp;
 
-    @Autowired
-    PlantProcessServiceImp plantProcessServiceImp;
 
     @PostMapping
 
@@ -36,6 +34,6 @@ public class PlantingProcess {
 
     @GetMapping("/plant/{plantId}")
     public ResponseEntity<?> getPlantingProcessByPlantId(@PathVariable int plantId) {
-        return new ResponseEntity<>(plantProcessServiceImp.getPlantProcessById(plantId), HttpStatus.OK);
+        return new ResponseEntity<>(plantProcessServiceImp.getAllPlantProcessesByPlantId(plantId), HttpStatus.OK);
     }
 }

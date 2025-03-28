@@ -244,6 +244,20 @@ public class PlantProcessService implements PlantProcessServiceImp {
     }
 
     @Override
+    public List<PlantingProcessDTO> getAllPlantProcessesByPlantId(int id) {
+        List<PlantingProcess> plantingProcessList = plantingProcessRepository.getPlantingProcessesByPlant_PlantId(id);
+        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
+        for(PlantingProcess plantingProcess : plantingProcessList) {
+            PlantingProcessDTO plantingProcessDTO = toDTO(plantingProcess);
+            plantingProcessDTO.setPlantingProcessId(plantingProcess.getId());
+            plantingProcessDTO.setPlantingProcessName(plantingProcess.getName());
+            plantingProcessDTOS.add(plantingProcessDTO);
+        }
+        return plantingProcessDTOS;
+    }
+
+
+    @Override
     public Page<PlantingProcessDTO> findBySearchTerm(String searchTerm, int page, int size) {
         return null;
     }
