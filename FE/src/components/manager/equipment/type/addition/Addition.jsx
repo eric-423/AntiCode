@@ -37,6 +37,15 @@ const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
 
 
   const handleUpdatePlantType = async () => {
+    if (!name) {
+      showToastMessageFail("Please enter name !");
+      return;
+    }
+    if (!description) {
+      showToastMessageFail("Please enter description !");
+      return;
+    }
+
     const plantType = {
       id: updateItem.id,
       name: name,
@@ -71,6 +80,13 @@ const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
 
 
   const handleAddEquipmentType = async () => {
+
+    if (!name) {
+      return showToastMessageFail("Please fill all required fields");
+    }
+    if (!description) {
+      return showToastMessageFail("Please fill all required fields");
+    }
     const plantType = {
       name: name,
       description: description,

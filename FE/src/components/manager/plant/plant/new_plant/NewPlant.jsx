@@ -71,6 +71,22 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
         (item) => Number(item.plantTypeId) === Number(plantType)
       )
       : plantTypesData[0];
+
+    if (
+      !name ||
+      !characteristics ||
+      !species ||
+      !hardiness ||
+      !heatZone ||
+      !size ||
+      !price ||
+      !plantType
+    ) {
+      showToastMessageFail("Please fill all fields !");
+      return;
+    }
+
+
     const plant = {
       plantName: name,
       price: price,
@@ -140,7 +156,7 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
             <Form.Label className="text-label-login">Hardiness</Form.Label>
             <Form.Control
               className="input-login input-addition"
-              type="text"
+              type="number"
               placeholder="5 - 9"
               value={hardiness}
               onChange={(e) => setHardiness(e.target.value)}
@@ -150,7 +166,7 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
             <Form.Label className="text-label-login">Heat Zone</Form.Label>
             <Form.Control
               className="input-login input-addition input-number"
-              type="text"
+              type="number"
               placeholder="1 - 5"
               value={heatZone}
               onChange={(e) => setHeatZone(e.target.value)}
@@ -166,16 +182,22 @@ const NewPlant = ({ setShowModal, setRefreshData }) => {
               onChange={(e) => setAttracts(e.target.value)}
             />
           </Form.Group>
+
+
           <Form.Group className="">
             <Form.Label className="text-label-login">Size</Form.Label>
-            <Form.Control
-              className="input-login input-addition input-price-create-plant input-number"
-              type="text"
-              placeholder="M"
-              value={size}
+            <Form.Select
+              className="input-login input-addition input-plant-type-create-plant"
               onChange={(e) => setSize(e.target.value)}
-            />
+            >
+              <option value="">Select Size</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </Form.Select>
           </Form.Group>
+
 
           <Form.Group className="">
             <Form.Label className="text-label-login">Price</Form.Label>

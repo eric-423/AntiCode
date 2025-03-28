@@ -118,7 +118,7 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   };
   const handleFetchEquipment = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/farming-equipment/`, {
+      const response = await axios.get(`${BASE.BASE_URL}/farming-equipment`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
