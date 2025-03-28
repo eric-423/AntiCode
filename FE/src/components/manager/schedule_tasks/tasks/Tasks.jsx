@@ -24,9 +24,22 @@ const Tasks = () => {
     ""
   );
 
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleFetchTaskStatus = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/task-status`);
+      const response = await axios.get(`${BASE.BASE_URL}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       setStatus(response.data);
     } catch (error) {

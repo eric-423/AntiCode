@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import ICONS from "../../../../../constant/Image.js";
 import UpdateEquipment from "../../update_equipment/UpdateEquipment.jsx";
 import "./Body.css";
 import useGridColumn from "../../../../../hook/useGridColumn.js";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage.js";
 const Body = ({ item, index, itemsActive, listTitle, handleSelectItem }) => {
     const [showModal, setShowModal] = useState(false);
     const [itemUpdate, setItemUpdate] = useState(null);
     const isActive = Array.isArray(itemsActive) && itemsActive.includes(item.id);
     const gridColumnTemplate = useGridColumn(listTitle)
+
 
     const handleShowUpdatePopup = (event, item) => {
         event.stopPropagation();

@@ -14,7 +14,12 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
 
   const [areaData, setAreaData] = useState(null)
   const [farmData, setFarmData] = useState([])
-  const [locationData, setLocationData] = useState([])
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
 
   const modalRoot = document.body
 
@@ -71,6 +76,7 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify(area),
         }
@@ -84,6 +90,7 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
       showToastMessageSuccess('Area was updated!')
       setShowModal(false)
     } catch (error) {
+      console.log(error)
       showToastMessageFail('Area can not be updated!')
       setShowModal(true)
     } finally {
@@ -97,6 +104,7 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
         },
       })
       if (!response.ok) throw new Error('Failed to fetch data')
@@ -118,6 +126,8 @@ const UpdatePlantingLocation = ({ setShowModal, setRefreshData }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+
         },
       })
 

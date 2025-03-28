@@ -4,6 +4,7 @@ import SearchBar from '../../../common/search_bar/SearchBar'
 import Filter from '../../../common/filter/Filter'
 import NewFarm from '../new_plant_medium/NewPlantMedium'
 import useLocalStorage from 'use-local-storage'
+import LOCALSTORAGE from '../../../../constant/localStorage'
 
 const ToolBar = ({ setRefreshData }) => {
   const [selectedPlantMedium, setSelectedPlantMedium] = useLocalStorage(
@@ -11,6 +12,14 @@ const ToolBar = ({ setRefreshData }) => {
     ''
   )
   const [showModal, setShowModal] = useState(false)
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   const handleShowModal = () => {
     setShowModal((prev) => !prev)
   }
@@ -32,6 +41,7 @@ const ToolBar = ({ setRefreshData }) => {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
         }
       )

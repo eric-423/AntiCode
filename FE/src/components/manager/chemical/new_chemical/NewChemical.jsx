@@ -5,6 +5,9 @@ import ICONS from "../../../../constant/Image";
 import { Form } from "react-bootstrap";
 import Button from "../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
+import LOCALSTORAGE from "../../../../constant/localStorage";
+import useLocalStorage from "use-local-storage";
+
 
 const NewChemical = ({ setShowModal, setRefreshData }) => {
     const [name, setName] = useState("");
@@ -14,6 +17,13 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
     const [volumeAvailable, setVolumeAvailable] = useState();
     const [chemicalTypes, setChemicalTypes] = useState([]);
     const [selectedChemicalType, setSelectedChemicalTypeId] = useState("");
+
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth]);
 
     const modalRoot = document.body;
     // const [bearerToken, setBearerToken] = useState(atob(auth))
@@ -30,7 +40,7 @@ const NewChemical = ({ setShowModal, setRefreshData }) => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        // "Authorization": `Bearer ${bearerToken}`,
+                        "Authorization": `Bearer ${token}`,
                     },
                 }
             );

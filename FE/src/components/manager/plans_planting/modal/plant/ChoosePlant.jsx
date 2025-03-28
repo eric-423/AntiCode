@@ -6,9 +6,22 @@ import BASE from "../../../../../constant/base";
 
 const ChoosePlant = ({ setPlant, plant }) => {
   const [plantList, setPlantList] = useState();
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleFetchPlantList = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/plant`);
+      const response = await axios.get(`${BASE.BASE_URL}/plant`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       console.log(response.data.data);
       setPlantList(response.data.data);

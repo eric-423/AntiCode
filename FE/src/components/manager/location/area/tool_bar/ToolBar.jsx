@@ -5,24 +5,33 @@ import Filter from '../../../../common/filter/Filter'
 import NewArea from '../new_area/NewArea'
 import useLocalStorage from 'use-local-storage'
 import { toast } from "react-toastify/unstyled";
+import LOCALSTORAGE from '../../../../../constant/localStorage'
 
 const ToolBar = ({ setRefreshData }) => {
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const [selectedArea, setSelectedArea] = useLocalStorage(
     'manager_area_selected',
     ''
   )
   const showToastMessageSuccess = (message) => {
-      toast.success(message, {
-        position: "top-right",
-        autoClose: 1000,
-      });
-    };
-    const showToastMessageFail = (message) => {
-      toast.error(message, {
-        position: "top-right",
-        autoClose: 1000,
-      });
-    };
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 1000,
+    });
+  };
+  const showToastMessageFail = (message) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 1000,
+    });
+  };
   const [showModal, setShowModal] = useState(false)
   const handleShowModal = () => {
     setShowModal((prev) => !prev)
@@ -45,13 +54,15 @@ const ToolBar = ({ setRefreshData }) => {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
           },
         }
       )
       if (!response || response.status !== 200) throw new Error();
-      showToastMessageSuccess("Area was deleted!");   
+      showToastMessageSuccess("Area was deleted!");
     } catch (error) {
-      showToastMessageFail("Area can not delete!");     
+      console.log(error)
+      showToastMessageFail("Area can not delete!");
     } finally {
       setSelectedArea([])
       setRefreshData((prev) => !prev)

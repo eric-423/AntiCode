@@ -6,11 +6,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify/unstyled";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
+import useLocalStorage from "use-local-storage";
 
-const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
+const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
   const [name, setName] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [description, setDescription] = useState("");
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
       position: "top-right",
@@ -32,7 +42,12 @@ const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
       typeDescription: description,
     };
     try {
-      const response = await axios.put( `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, plantType);
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        }
+      }, plantType);
       if (!response || response.status !== 200 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Plant type was updated !");
     } catch (error) {
@@ -49,7 +64,12 @@ const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
       typeDescription: description,
     };
     try {
-      const response = await axios.post( `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, plantType);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        }
+      }, plantType);
       if (!response || response.status !== 201 || response.data.data === "Failed") throw new Error();
       showToastMessageSuccess("Plant type was added !");
     } catch (error) {
@@ -96,8 +116,8 @@ const Addition = ({ setRefreshData, updateItem , setUpdateItem}) => {
           onChange={(e) => setDescription(e.target.value)}
         />
       </Form.Group>
-     
-      <Button handleOnClick={isUpdate ? handleUpdatePlantType :handleAddPlantType} text={isUpdate ? "Update" :"Save"} />
+
+      <Button handleOnClick={isUpdate ? handleUpdatePlantType : handleAddPlantType} text={isUpdate ? "Update" : "Save"} />
     </Form>
   );
 };

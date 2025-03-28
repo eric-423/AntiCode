@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 import "./Table.css";
 import CardPlantType from "./card/CardPlantType";
 import { PropTypes } from 'prop-types';
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const Table = ({ refreshData, setRefreshData, setUpdateItem }) => {
   const [data, setData] = useState()
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth]);
+
+
   const handleFetchData = async () => {
     try {
       const response = await fetch(
@@ -14,6 +24,7 @@ const Table = ({ refreshData, setRefreshData, setUpdateItem }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
         }
       )

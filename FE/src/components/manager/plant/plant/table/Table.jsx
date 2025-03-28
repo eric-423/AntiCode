@@ -5,6 +5,7 @@ import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
 import axios from "axios";
 import PropTypes from "prop-types";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const Table = ({ listTitle, refreshData, setRefreshData }) => {
   const [itemsActive, setItemsActive] = useState([]);
@@ -14,10 +15,22 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
   );
   const [plantTypesData, setPlantTypesData] = useState();
   const [listItems, setListItems] = useState();
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleFetchPlantData = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant`, {
+        'Content-Type': 'application/json',
+        'Authentication': `Bearer ${token}`,
+      }
       );
       if (response && response.status === 200) {
         setListItems(response.data.data);
@@ -30,8 +43,13 @@ const Table = ({ listTitle, refreshData, setRefreshData }) => {
   const handleFetchDataPlantType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`
-      );
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authentication': `Bearer ${token}`,
+        }
+      });
+
       if (response.status === 200) {
         setPlantTypesData(response.data.data);
       }

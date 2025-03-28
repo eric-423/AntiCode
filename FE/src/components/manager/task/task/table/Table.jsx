@@ -4,8 +4,9 @@ import Header from "../../../../common/table/header/Header";
 import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
 import axios from "axios";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
-const Table = ({ listTitle, refreshData , setRefreshData}) => {
+const Table = ({ listTitle, refreshData, setRefreshData }) => {
   const [itemsActive, setItemsActive] = useState([]);
   const [selectedPlants, setSelectedPlants] = useLocalStorage(
     "manager_task_selected",
@@ -14,11 +15,23 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   const [taskTypesData, setTaskTypesData] = useState();
   const [taskStatusData, setTaskStatusData] = useState();
   const [listItems, setListItems] = useState();
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleFetchTaskData = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task`
-      );
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (response && response.status === 200) {
         setListItems(response.data);
       }
@@ -30,9 +43,14 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   const handleFetchDataTaskType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
-      
+
       if (response.status === 200) {
         setTaskTypesData(response.data);
       }
@@ -44,9 +62,14 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   const handleFetchDataTaskStatus = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
-      
+
       if (response.status === 200) {
         setTaskStatusData(response.data);
       }
@@ -66,10 +89,10 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
   };
   useEffect(() => {
     handleFetchDataTaskType()
-  },[])
+  }, [])
   useEffect(() => {
     handleFetchDataTaskStatus()
-  },[])
+  }, [])
   useEffect(() => {
     setSelectedPlants(itemsActive);
   }, [itemsActive]);
@@ -77,7 +100,7 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
     handleFetchTaskData();
   }, [refreshData]);
   console.log(listItems);
-  
+
   return (
     <>
       <Header listTitle={listTitle} />
@@ -88,7 +111,7 @@ const Table = ({ listTitle, refreshData , setRefreshData}) => {
               handleSelectItem={handleSelectItem}
               itemsActive={itemsActive}
               item={item}
-              index={index}
+              key={index}
               taskTypesData={taskTypesData}
               taskStatusData={taskStatusData}
               setRefreshData={setRefreshData}

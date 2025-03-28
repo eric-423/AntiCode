@@ -97,7 +97,7 @@ const AddPlans = () => {
             />
           )}
           {status && status === STATUS_PLANS.CONFIRM && (
-           <Confirm plant={plant} area={area} farm={farm} location={location}/>
+            <Confirm plant={plant} area={area} farm={farm} location={location} />
           )}
         </Form>
         <div

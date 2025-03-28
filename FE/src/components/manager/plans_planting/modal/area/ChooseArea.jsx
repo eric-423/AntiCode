@@ -3,13 +3,27 @@ import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import BASE from "../../../../../constant/base";
 import "./ChooseArea.css";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const ChooseArea = ({ farm, setArea, area }) => {
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   const [areaList, setAreaList] = useState();
   const handleFetchAreaList = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/area/farm/${farm?.farmId}`
+        `${BASE.BASE_URL}/area/farm/${farm?.farmId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200) throw new Error();
       setAreaList(response.data);
@@ -30,8 +44,9 @@ const ChooseArea = ({ farm, setArea, area }) => {
       </Form.Label>
       <div className="scroll-bar-container-choose mt-3 mb-4">
         {areaList &&
-          areaList.map((item) => (
+          areaList.map((item, index) => (
             <div
+              key={index}
               className="plans-area-card"
               onClick={() => setArea(item)}
               style={{

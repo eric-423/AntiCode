@@ -6,6 +6,7 @@ import NewTask from "../new_task/NewTask";
 import useLocalStorage from "use-local-storage";
 import axios from "axios";
 import { toast } from "react-toastify/unstyled";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const ToolBar = ({ setRefreshData }) => {
   const [selectedTasks, setSelectedTasks] = useLocalStorage(
@@ -13,6 +14,12 @@ const ToolBar = ({ setRefreshData }) => {
     ""
   );
   const [showModal, setShowModal] = useState(false);
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
   const handleShowModal = () => {
     setShowModal((prev) => !prev);
   };
@@ -40,12 +47,17 @@ const ToolBar = ({ setRefreshData }) => {
           }
         });
       const response = await axios.delete(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task?${param}`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task?${param}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Task was deleted !");
     } catch (error) {
-      showToastMessageFail(error.response.data.message||"Task can not delete !");
+      showToastMessageFail(error.response.data.message || "Task can not delete !");
     } finally {
       setRefreshData((prev) => !prev);
     }

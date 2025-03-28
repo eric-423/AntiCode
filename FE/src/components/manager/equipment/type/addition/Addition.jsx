@@ -6,12 +6,19 @@ import Button from "../../../../common/button/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify/unstyled";
 import "react-toastify/dist/ReactToastify.css";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
   const [name, setName] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [description, setDescription] = useState("");
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
 
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
 
   const showToastMessageSuccess = (message) => {
     toast.success(message, {
@@ -42,6 +49,8 @@ const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+
           },
           body: JSON.stringify(plantType),
         }
@@ -79,6 +88,7 @@ const Addition = ({ setRefreshData, updateItem, setUpdateItem }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify(plantType),
         }

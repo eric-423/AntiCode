@@ -5,11 +5,19 @@ import ICONS from '../../../../constant/Image'
 import { Form } from 'react-bootstrap'
 import Button from '../../../common/button/Button'
 import { toast } from 'react-toastify/unstyled'
+import LOCALSTORAGE from '../../../../constant/localStorage'
+import useLocalStorage from 'use-local-storage'
 
 const NewPlantPot = ({ setShowModal, setRefreshData }) => {
   const [potSize, setPotSize] = useState('')
   const [potMaterial, setPotMaterial] = useState('')
   const [potQuantityAvailable, setPotQuantityAvailable] = useState('')
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
 
   const modalRoot = document.body
 
@@ -52,6 +60,7 @@ const NewPlantPot = ({ setShowModal, setRefreshData }) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify(plantPot),
         }

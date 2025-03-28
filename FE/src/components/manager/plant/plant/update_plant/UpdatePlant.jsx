@@ -5,6 +5,8 @@ import { Form } from "react-bootstrap";
 import Button from "../../../../common/button/Button";
 import axios from "axios";
 import { toast } from "react-toastify/unstyled";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
+import useLocalStorage from "use-local-storage";
 
 const UpdatePlant = ({ setShowModal, itemUpdate, setRefreshData }) => {
   const [name, setName] = useState();
@@ -46,10 +48,25 @@ const UpdatePlant = ({ setShowModal, itemUpdate, setRefreshData }) => {
     setShowModal(false);
   };
   const [plantTypesData, setPlantTypesData] = useState();
+
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleFetchDataPlantType = async () => {
     try {
-      const  response = await axios.get(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`);
-      if(response.status === 200){
+      const response = await axios.get(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant-type`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
+      if (response.status === 200) {
         setPlantTypesData(response.data.data)
       }
     } catch (error) {
@@ -59,7 +76,9 @@ const UpdatePlant = ({ setShowModal, itemUpdate, setRefreshData }) => {
   useEffect(() => {
     handleFetchDataPlantType();
     setDataItem(itemUpdate)
-  },[itemUpdate])
+  }, [itemUpdate])
+
+
   const handleOnClick = async () => {
     const plant_type = plantType
       ? plantTypesData.find((item) => Number(item.plantTypeId) === Number(plantType))
@@ -80,7 +99,12 @@ const UpdatePlant = ({ setShowModal, itemUpdate, setRefreshData }) => {
     };
     console.log(plant)
     try {
-      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant`, plant);
+      const response = await axios.put(`${import.meta.env.VITE_REACT_APP_END_POINT}/plant`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
+      }, plant);
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Plant was updated !");
       setShowModal(false);
@@ -92,6 +116,7 @@ const UpdatePlant = ({ setShowModal, itemUpdate, setRefreshData }) => {
       setRefreshData((prev) => !prev);
     }
   };
+
   return ReactDOM.createPortal(
     <div className="modal-create-plant-container">
       <div className="modal-create-plant">

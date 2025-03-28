@@ -4,11 +4,19 @@ import "./Table.css";
 import Header from "../../../common/table/header/Header";
 import Body from "./body/Body";
 import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage";
 
 const Table = ({ listTitle, refreshData }) => {
     const [itemsActive, setItemsActive] = useState([]);
     const [selectedUser, setSelectedUser] = useLocalStorage("manager_user_selected", "");
     const [listItems, setListItems] = useState();
+
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth])
 
     const handleFetchPlantData = async () => {
         try {
@@ -18,6 +26,7 @@ const Table = ({ listTitle, refreshData }) => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
+                        'Authorization': `Bearer ${token}`,
                     },
                 }
             )

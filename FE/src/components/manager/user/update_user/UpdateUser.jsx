@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import ICONS from "../../../../constant/Image.js";
 import { Form } from "react-bootstrap";
@@ -6,6 +6,8 @@ import Button from "../../../common/button/Button.jsx";
 import { toast } from "react-toastify";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { format } from 'date-fns';
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../constant/localStorage.js";
 
 
 const UpdateUser = ({ setShowModal, itemUpdate }) => {
@@ -17,6 +19,12 @@ const UpdateUser = ({ setShowModal, itemUpdate }) => {
     const [phoneNumber, setPhoneNumber] = useState(itemUpdate.phoneNumber);
     const [role, setRole] = useState(itemUpdate.role);
     const modalRoot = document.body;
+    const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+    const [token, setToken] = useState('');
+
+    useEffect(() => {
+        setToken(atob(auth));
+    }, [auth])
 
     const handleClickClose = () => {
         setShowModal(false);
@@ -64,6 +72,7 @@ const UpdateUser = ({ setShowModal, itemUpdate }) => {
             const response = await fetch(`${import.meta.env.VITE_REACT_APP_END_POINT}/user/${itemUpdate.id}`, {
                 method: "PUT", headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
                 }, body: JSON.stringify(user),
             });
 

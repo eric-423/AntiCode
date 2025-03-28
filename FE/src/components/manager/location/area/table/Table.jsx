@@ -3,6 +3,7 @@ import './Table.css'
 import Header from '../../../../common/table/header/Header'
 import Body from './body/Body'
 import useLocalStorage from 'use-local-storage'
+import LOCALSTORAGE from '../../../../../constant/localStorage'
 
 const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
   const [itemsActive, setItemsActive] = useState([])
@@ -10,6 +11,12 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
     'manager_area_selected',
     ''
   )
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
   const [listItems, setListItems] = useState()
   const handleFetchArea = async () => {
     try {
@@ -19,6 +26,8 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`,
+
           },
         }
       )
@@ -26,7 +35,7 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
         const data = await response.json()
         setListItems(data)
         console.log(data);
-        
+
       }
     } catch (error) {
       console.log(error)
@@ -56,9 +65,9 @@ const Table = ({ listTitle, refreshData, setRefreshData, farmId }) => {
               setRefreshData={setRefreshData}
               listTitle={listTitle}
             />
-          ))):(
-            <div>No data</div>
-          )}
+          ))) : (
+          <div>No data</div>
+        )}
       </div>
     </>
   )

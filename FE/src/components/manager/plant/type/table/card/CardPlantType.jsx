@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import "./CardPlantType.css";
 import ICONS from "../../../../../../constant/Image";
 import { toast } from "react-toastify/unstyled";
 import axios from "axios";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../../constant/localStorage";
 
 const CardPlantType = ({ item, setRefreshData, setUpdateItem }) => {
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
   const showToastMessageSuccess = () => {
     toast.success("Plant type was deleted !", {
       position: "top-right",
@@ -19,9 +29,13 @@ const CardPlantType = ({ item, setRefreshData, setUpdateItem }) => {
   const handleDeleteItem = async (item) => {
     try {
       const response = await axios.delete(
-        `${
-          import.meta.env.VITE_REACT_APP_END_POINT
-        }/plant-type?plantTypeId=${item.plantTypeId}`
+        `${import.meta.env.VITE_REACT_APP_END_POINT
+        }/plant-type?plantTypeId=${item.plantTypeId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authentication': `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200 || response.data === "Failed") throw new Error();
       showToastMessageSuccess();

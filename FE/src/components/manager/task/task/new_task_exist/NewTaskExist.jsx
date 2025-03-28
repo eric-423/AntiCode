@@ -7,6 +7,8 @@ import Button from "../../../../common/button/Button";
 import { toast } from "react-toastify/unstyled";
 import axios from "axios";
 import { set } from "date-fns";
+import useLocalStorage from "use-local-storage";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
   const [taskId, setTaskId] = useState();
@@ -30,17 +32,29 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
     setTaskType(itemExist.taskTypeId)
     setTaskStatus(itemExist.taskStatusId)
   }
-  
+
   const handleClickClose = () => {
     setShowModal(false);
   };
   const [taskTypesData, setTaskTypesData] = useState();
   const [taskStatusData, setTaskStatusData] = useState();
+
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
   //GET TASK STATUS DATA
   const handleFetchDataTaskStatus = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-status`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (response.status === 200) {
         setTaskStatusData(response.data);
@@ -58,7 +72,12 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
   const handleFetchDataTaskType = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/task-type`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (response.status === 200) {
         setTaskTypesData(response.data);
@@ -88,14 +107,14 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
 
     const task_type = taskType
       ? taskTypesData.find(
-          (item) => Number(item.taskTypeId) === Number(taskType)
-        )
+        (item) => Number(item.taskTypeId) === Number(taskType)
+      )
       : taskTypesData[0];
 
-      const task_status = taskStatus
+    const task_status = taskStatus
       ? taskStatusData.find(
-          (item) => Number(item.taskStatusId) === Number(taskStatus)
-        )
+        (item) => Number(item.taskStatusId) === Number(taskStatus)
+      )
       : taskStatusData[0];
 
     const task = {
@@ -115,7 +134,7 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
       setShowModal(false);
     } catch (error) {
       console.log(error);
-      showToastMessageFail(error.response.data.message||"Task can not add !");
+      showToastMessageFail(error.response.data.message || "Task can not add !");
       setShowModal(true);
     } finally {
       setRefreshData((prev) => !prev);
@@ -171,7 +190,7 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
               onChange={(e) => setStartDate(e.target.value)}
             />
           </Form.Group>
-          
+
           <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">
               Due Date
@@ -194,13 +213,13 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
               onChange={(e) => setTaskDescription(e.target.value)}
             />
           </Form.Group>
-          
+
           <Form.Group className="group-3-column-create-plant">
             <Form.Label className="text-label-login">Task Type</Form.Label>
             <Form.Select
               onChange={(e) => setTaskType(e.target.value)}
               className="input-login input-addition input-plant-type-create-plant"
-              value = {taskType}
+              value={taskType}
             >
               {taskTypesData &&
                 Array.isArray(taskTypesData) &&
@@ -215,7 +234,7 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
             <Form.Select
               onChange={(e) => setTaskStatus(e.target.value)}
               className="input-login input-addition input-plant-type-create-plant"
-                value = {taskStatus}
+              value={taskStatus}
             >
               {taskStatusData &&
                 Array.isArray(taskStatusData) &&
@@ -224,7 +243,7 @@ const NewTaskExist = ({ setShowModal, itemExist, setRefreshData }) => {
                 ))}
             </Form.Select>
           </Form.Group>
-          
+
           <Button
             text="Create Task"
             handleOnClick={handleOnClick}

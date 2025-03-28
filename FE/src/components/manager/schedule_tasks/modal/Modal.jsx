@@ -41,6 +41,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
     LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION,
     ""
   );
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
 
   const handleFetchTaskStatus = async () => {
     try {
@@ -59,7 +65,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
 
   const handleFetchPlantMedium = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/plant-medium`);
+      const response = await axios.get(`${BASE.BASE_URL}/plant-medium`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       setPlantMediumList([NOT_USE, ...response.data.data]);
     } catch (error) {
@@ -69,7 +80,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
 
   const handleFetchPlantPot = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/plant-pot`);
+      const response = await axios.get(`${BASE.BASE_URL}/plant-pot`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       setPlantPotList([NOT_USE, ...response.data.data]);
     } catch (error) {
@@ -79,7 +95,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
 
   const handleFetchWater = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/water`);
+      const response = await axios.get(`${BASE.BASE_URL}/water`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       setWaterList([NOT_USE, ...response.data]);
     } catch (error) {
@@ -88,7 +109,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   };
   const handleFetchEquipment = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/farming-equipment/`);
+      const response = await axios.get(`${BASE.BASE_URL}/farming-equipment/`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       setEquiqmentList([NOT_USE, ...response.data]);
     } catch (error) {
@@ -97,7 +123,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   };
   const handleFetchChemical = async () => {
     try {
-      const response = await axios.get(`${BASE.BASE_URL}/chemical`);
+      const response = await axios.get(`${BASE.BASE_URL}/chemical`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response || response.status !== 200) throw new Error();
       setChemicalList([NOT_USE, ...response.data]);
     } catch (error) {
@@ -107,7 +138,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleFetchUserAssigned = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/task/users-assigned?taskID=${itemDetail.taskId}`
+        `${BASE.BASE_URL}/task/users-assigned?taskID=${itemDetail.taskId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200) throw new Error();
       setWorkerAssigned(response.data);
@@ -119,7 +155,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleFetchUserUnAssigned = async () => {
     try {
       const response = await axios.get(
-        `${BASE.BASE_URL}/task/users-un-assigned?taskID=${itemDetail.taskId}`
+        `${BASE.BASE_URL}/task/users-un-assigned?taskID=${itemDetail.taskId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200) throw new Error();
       setWorkerUnAssigned(response.data);
@@ -131,9 +172,13 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleAssignWorker = async (worker) => {
     try {
       const response = await axios.post(
-        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${
-          worker.id
-        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id
+        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 201) throw new Error();
 
@@ -147,9 +192,13 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
   const handleUnAssignWorker = async (worker) => {
     try {
       const response = await axios.delete(
-        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${
-          worker.id
-        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`
+        `${BASE.BASE_URL}/task/users?taskID=${itemDetail.taskId}&userID=${worker.id
+        }&doerId=${jwtDecode(atob(accountLoginInformation))?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 201) throw new Error();
 
@@ -172,12 +221,16 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, data);
+      const response = await axios.put(`${BASE.BASE_URL}/task`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }, data);
       if (!response) throw new Error();
       setItemStatus(status);
     } catch (error) {
       console.log(error);
-    } finally {
     }
   };
 
@@ -193,7 +246,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, data);
+      const response = await axios.put(`${BASE.BASE_URL}/task`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }, data);
       if (!response) throw new Error();
       setStartDate(startDate);
     } catch (error) {
@@ -214,7 +272,12 @@ const Modal = ({ setShowModalDetail, itemDetail, setItemDetail }) => {
       taskType: itemDetail.taskTypeId,
     };
     try {
-      const response = await axios.put(`${BASE.BASE_URL}/task`, data);
+      const response = await axios.put(`${BASE.BASE_URL}/task`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        }
+      }, data);
       if (!response) throw new Error();
       setDueDate(dueDate);
     } catch (error) {

@@ -6,6 +6,7 @@ import NewPlant from "../new_plant/NewPlant";
 import useLocalStorage from "use-local-storage";
 import axios from "axios";
 import { toast } from "react-toastify/unstyled";
+import LOCALSTORAGE from "../../../../../constant/localStorage";
 
 const ToolBar = ({ setRefreshData }) => {
   const [selectedPlants, setSelectedPlants] = useLocalStorage(
@@ -13,6 +14,14 @@ const ToolBar = ({ setRefreshData }) => {
     ""
   );
   const [showModal, setShowModal] = useState(false);
+  const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(atob(auth));
+  }, [auth])
+
+
   const handleShowModal = () => {
     setShowModal((prev) => !prev);
   };
@@ -38,7 +47,12 @@ const ToolBar = ({ setRefreshData }) => {
           }
         });
       const response = await axios.delete(
-        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant?${param}`
+        `${import.meta.env.VITE_REACT_APP_END_POINT}/plant?${param}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authentication': `Bearer ${token}`,
+        }
+      }
       );
       if (!response || response.status !== 200) throw new Error();
       showToastMessageSuccess("Plant was deleted !");
