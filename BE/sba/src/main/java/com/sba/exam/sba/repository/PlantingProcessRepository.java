@@ -11,4 +11,8 @@ public interface PlantingProcessRepository extends JpaRepository<PlantingProcess
     List<PlantingProcess> findByPlant_PlantId(int plantId);
 
     List<PlantingProcess> getPlantingProcessesByPlant_PlantId(int plantPlantId);
+
+    PlantingProcess findByNameIgnoreCase(String name);
+
+
 }

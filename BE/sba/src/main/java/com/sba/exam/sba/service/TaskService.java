@@ -2,8 +2,11 @@ package com.sba.exam.sba.service;
 
 import com.sba.exam.sba.dto.*;
 import com.sba.exam.sba.entity.*;
+import com.sba.exam.sba.enums.TaskFrequency;
 import com.sba.exam.sba.exception.ResourceNotFoundException;
 import com.sba.exam.sba.payload.TaskRequest;
+import com.sba.exam.sba.payload.request.PlantingLocationTaskRequest;
+import com.sba.exam.sba.payload.request.ProcessTaskRequest;
 import com.sba.exam.sba.repository.*;
 import com.sba.exam.sba.service.imp.TaskServiceImp;
 import jakarta.transaction.Transactional;
@@ -57,6 +60,14 @@ public class TaskService implements TaskServiceImp {
 
     @Autowired
     private PlantingLocationTaskRepository plantingLocationTaskRepository;
+
+    @Autowired
+    private PlantRepository plantRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
+
+
 
 
     @Autowired
@@ -144,6 +155,66 @@ public class TaskService implements TaskServiceImp {
                 plantPot.getPotQuantityAvailable() >= 1 &&
                 !(water.getVolumeAvailable() < plantingProcess.getWaterVolumn()) &&
                 !(agriculturalChemical.getVolumeAvailable() < plantingProcess.getChemicalWeight());
+    }
+
+    @Transactional
+    public List<TaskDTO> createdTaskWithProcessName(PlantingLocationTaskRequest plantingLocationTaskRequest){
+        List<TaskDTO> taskDTOS = new ArrayList<>();
+
+        PlantingLocation plantingLocation = new PlantingLocation();
+        Plant plant = plantRepository.findByPlantId(plantingLocationTaskRequest.getPlantId());
+        Location location = locationRepository.findByLocationId(plantingLocationTaskRequest.getLocationId());
+        location.setPlanted(true);
+        locationRepository.save(location);
+        plantingLocation.setPlant(plant);
+        plantingLocation.setLocation(location);
+        plantingLocation.setStartDate(plantingLocationTaskRequest.getStartDate());
+        plantingLocation.setEndDate(plantingLocationTaskRequest.getEndDate());
+        plantingLocation.setHarvest(false);
+        plantingLocation.setDeleted(false);
+        plantingLocation.setPlans(plantingLocationTaskRequest.getPlans());
+        plantingLocationRepository.save(plantingLocation);
+
+        for (ProcessTaskRequest processTaskRequest : plantingLocationTaskRequest.getProcessTaskRequestList()) {
+            PlantingProcess plantingProcess = plantingProcessRepository.findByNameIgnoreCase(processTaskRequest.getProcessName());
+
+            if(plantingProcess == null) {
+                plantProcessService.createPlantingProcessWithDefault(processTaskRequest.getProcessName());
+                plantingProcess = plantingProcessRepository.findByNameIgnoreCase(processTaskRequest.getProcessName());
+            }
+
+            int processId = plantingProcess.getId();
+            if(!checkValidProcess(processId)) {
+                throw new RuntimeException("Not enough resources to create task");
+            }
+
+            Task task = new Task();
+            TaskType taskType = taskTypeRepository.findTaskTypeById(processTaskRequest.getTaskType());
+            TaskStatus taskStatus = taskStatusRepository.findTaskStatusById(1);
+            task.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+            task.setCompletedAt(null);
+            task.setDescription(null);
+            task.setTaskStatus(taskStatus);
+            task.setTaskType(taskType);
+            task.setDeleted(false);
+            task.setStartDate(processTaskRequest.getStartDate());
+            task.setDueDate(null);
+            task.setTaskName(processTaskRequest.getProcessName());
+            task.setPlantingProcess(plantingProcess);
+            task.setFrequency(TaskFrequency.valueOf(processTaskRequest.getTaskFrequency()));
+            taskRepository.save(task);
+
+            PlantingLocationTask plantingLocationTask = new PlantingLocationTask();
+            plantingLocationTask.setPlantingLocation(plantingLocation);
+            plantingLocationTask.setTask(task);
+
+            plantingLocationTaskRepository.save(plantingLocationTask);
+
+            TaskDTO taskDTO = new TaskDTO();
+            taskDTO.setTaskId(task.getId());
+            taskDTOS.add(taskDTO);
+        }
+        return taskDTOS;
     }
 
     @Override

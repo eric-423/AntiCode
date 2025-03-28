@@ -126,6 +126,33 @@ public class PlantProcessService implements PlantProcessServiceImp {
         return plantingMediumProcessDTO;
     }
 
+    public PlantingProcessDTO createPlantingProcessWithDefault(String plantingProcessName) {
+        PlantingProcess plantingProcess = new PlantingProcess();
+        plantingProcess.setName(plantingProcessName);
+        plantingProcess.setDescription(null);
+        plantingProcess.setCreatedAt(new Date());
+
+        plantingProcessRepository.save(plantingProcess);
+        plantingProcess.setPlantMedium(null);
+        plantingProcess.setMediumWeight(0);
+
+        plantingProcess.setPlantPot(null);
+
+        plantingProcess.setAgriculturalChemical(null);
+        plantingProcess.setChemicalWeight(0);
+
+        plantingProcess.setWater(null);
+        plantingProcess.setWaterVolumn(0);
+        plantingProcess.setFarmingEquipment(null);
+
+
+        plantingProcess.setPlant(null);
+
+        plantingProcessRepository.save(plantingProcess);
+
+        return  toDTO(plantingProcess);
+    }
+
 
     @Override
     public PlantingProcessDTO createPlantProcess(PlantingProcessRequest plantProcessRequest) {
@@ -241,7 +268,7 @@ public class PlantProcessService implements PlantProcessServiceImp {
     public List<PlantingProcessDTO> getAllPlantProcessesByPlantId(int id) {
         List<PlantingProcess> plantingProcessList = plantingProcessRepository.getPlantingProcessesByPlant_PlantId(id);
         List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
-        for(PlantingProcess plantingProcess : plantingProcessList) {
+        for (PlantingProcess plantingProcess : plantingProcessList) {
             PlantingProcessDTO plantingProcessDTO = toDTO(plantingProcess);
             plantingProcessDTO.setPlantingProcessId(plantingProcess.getId());
             plantingProcessDTO.setPlantingProcessName(plantingProcess.getName());
