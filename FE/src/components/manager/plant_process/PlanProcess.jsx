@@ -263,8 +263,8 @@ const PlanProcess = () => {
 
             if (response.ok) {
                 const data = await response.json()
-                setListItems(data.data.content)
-                console.log(data.data.content)
+                setListItems(data.content)
+                console.log(data.content)
 
             }
         } catch (error) {

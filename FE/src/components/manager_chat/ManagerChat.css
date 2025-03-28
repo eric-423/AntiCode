@@ -85,7 +85,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(0, 0, 0, 0.4)
+    color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    padding-right: 4rem;
 }
 
 .manager-chat-list-users img {

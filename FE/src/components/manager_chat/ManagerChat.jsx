@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useRef } from 'react';
+import { useEffect, useState, memo, useRef, useCallback } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import './ManagerChat.css';
@@ -7,40 +7,38 @@ import { Client } from '@stomp/stompjs';
 import useLocalStorage from 'use-local-storage'
 import { jwtDecode } from 'jwt-decode';
 import LOCALSTORAGE from '../../constant/localStorage'
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 const ManagerChat = memo(() => {
     const messagesEndRef = useRef(null);
     const [workers, setWorkers] = useState([]);
-    const [client, setClient] = useState();
+    const [client, setClient] = useState(null);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [chatRoomId, setChatRoomId] = useState(null);
-    const [userChatRoom, setUserChatRoom] = useState("");
+    const [userChatRoom, setUserChatRoom] = useState(null);
     const [auth, setAuth] = useLocalStorage(LOCALSTORAGE.ACCOUNT_LOGIN_INFORMATION, '');
-    const [sizeMes, setSizeMes] = useState(1000);
+    const [sizeMes, setSizeMes] = useState(20);
+    const [page, setPage] = useState(0);
+    const [hasMoreMessages, setHasMoreMessages] = useState(true);
+    const [isFetchingMessages, setIsFetchingMessages] = useState(false);
 
     const chatRoomIdRef = useRef(chatRoomId);
-
     const userChatRoomRef = useRef(userChatRoom);
-
-    const [bearerToken, setBearerToken] = useState(atob(auth));
+    const bearerTokenRef = useRef(atob(auth));
 
     useEffect(() => {
         chatRoomIdRef.current = chatRoomId;
         userChatRoomRef.current = userChatRoom;
-
-    }, [chatRoomId, userChatRoom]);
-
+        bearerTokenRef.current = atob(auth);
+    }, [chatRoomId, userChatRoom, auth]);
 
     useEffect(() => {
         getALlWorkersChatRoom();
-        if (!client) {
-            handleConnectWebSocket();
-        }
+        handleConnectWebSocket();
     }, [auth]);
-
 
     useEffect(() => {
         if (messagesEndRef.current) {
@@ -48,25 +46,36 @@ const ManagerChat = memo(() => {
         }
     }, [messages]);
 
-    const handleFetchChatMessages = async () => {
-        try {
-            setMessages([]); // Xóa tin nhắn cũ khi chuyển chat room
+    useEffect(() => {
+        if (userChatRoom) {
+            setMessages([]);
+            setPage(0);
+            setHasMoreMessages(true);
+            handleFetchChatMessages(0, sizeMes);
+        } else {
+            setMessages([]);
+            setChatRoomId(null);
+        }
+    }, [userChatRoom]);
 
+    const handleFetchChatMessages = useCallback(async (currentPage, currentSize) => {
+        if (!userChatRoom) return;
+        setIsFetchingMessages(true);
+        try {
             const params = new URLSearchParams({
                 senderId: parseInt(jwtDecode(atob(auth)).id),
-                receiveId: userChatRoomRef.current.id,
-                page: 0,
-                size: sizeMes
+                receiveId: userChatRoom.id,
+                page: currentPage,
+                size: currentSize
             });
 
-            console.log(params.toString())
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/chat/read?${params}`,
                 {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${bearerToken}`,
+                        "Authorization": `Bearer ${bearerTokenRef.current}`,
                     },
                 }
             );
@@ -75,6 +84,7 @@ const ManagerChat = memo(() => {
 
             const data = await response.json();
             const messagesContent = data.content;
+            const totalElements = data.totalElements;
 
             const userId = jwtDecode(atob(auth)).id;
 
@@ -83,20 +93,17 @@ const ManagerChat = memo(() => {
                 isUserMessage: msg.senderId === userId,
             }));
 
-            setMessages(formattedMessages);
+            setMessages(prevMessages => currentPage === 0 ? formattedMessages : [...prevMessages, ...formattedMessages]);
+            setHasMoreMessages(messages.length + formattedMessages.length < totalElements);
+            setPage(currentPage + 1);
 
         } catch (error) {
             console.error("Error fetching chat messages:", error);
             toast.error("Error fetching chat messages");
+        } finally {
+            setIsFetchingMessages(false);
         }
-    }
-
-    useEffect(() => {
-        if (chatRoomId) {
-            setMessages([]);
-            handleFetchChatMessages();
-        }
-    }, [chatRoomId]);
+    }, [auth, userChatRoom, messages]);
 
     const handleSetUserChat = async (worker) => {
         setUserChatRoom(worker);
@@ -105,7 +112,7 @@ const ManagerChat = memo(() => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${bearerToken}`,
+                    "Authorization": `Bearer ${bearerTokenRef.current}`,
                 },
             });
 
@@ -118,21 +125,23 @@ const ManagerChat = memo(() => {
 
             if (!targetRoom) {
                 toast.error("Không tìm thấy phòng chat");
+                setChatRoomId(null);
                 return;
             }
+
             setChatRoomId(targetRoom.id);
         } catch (error) {
             console.error("Error:", error);
             toast.error("Lỗi khi tải phòng chat");
+            setChatRoomId(null);
         }
     }
 
-
     const handleSend = async () => {
-        if (!input.trim()) return;
+        if (!input.trim() || !userChatRoom || !chatRoomId) return;
         const body = {
-            receiveId: userChatRoom.id, // thí dụ gửi cho thằng 1
-            senderId: jwtDecode(atob(auth)).id, // id của thằng gửi
+            receiveId: userChatRoom.id,
+            senderId: jwtDecode(atob(auth)).id,
             chatRoomId: chatRoomId,
             message: input.trim(),
         };
@@ -144,71 +153,72 @@ const ManagerChat = memo(() => {
                     body: JSON.stringify(body),
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${bearerToken}`,
+                        "Authorization": `Bearer ${bearerTokenRef.current}`,
                     },
                 }
             );
 
-            if (response) {
-                setMessages((prevMessages) => [...prevMessages, {
-                    text: input,
-                    isUserMessage: true,
-                }]);
+            if (response.ok) {
+                setMessages(prevMessages => [...prevMessages, { text: input, isUserMessage: true }]);
                 setInput('');
+            } else {
+                toast.error("Không thể gửi tin nhắn.");
             }
 
-            if (!response.ok) throw new Error("Failed to sedn mess");
-
         } catch (error) {
-            console.error("Error fetching workers:", error);
-            toast.error("Error fetching worker ");
+            console.error("Error sending message:", error);
+            toast.error("Lỗi khi gửi tin nhắn.");
         }
     }
 
-    const handleConnectWebSocket = async () => {
+    const handleConnectWebSocket = useCallback(() => {
         if (client && client.connected) return;
 
         const socket = new SockJS(`${import.meta.env.VITE_REACT_APP_END_POINT}/web-socket`);
         const newClient = new Client({
             webSocketFactory: () => socket,
-            reconnectDelay: 2000,
+            reconnectDelay: 5000, // Increased reconnect delay
             connectHeaders: {
-                "Authorization": `Bearer ${bearerToken}`,
-            }
+                "Authorization": `Bearer ${bearerTokenRef.current}`,
+            },
         });
 
         newClient.onConnect = () => {
             console.log('Connected to WebSocket');
             newClient.subscribe("/topic/messages", (message) => {
-                console.log(message)
+                try {
+                    const parts = message.body.split("|");
+                    const messageText = parts[0];
+                    const senderId = parseInt(parts[1]);
+                    const receiveId = parseInt(parts[2]);
 
-                const messageText = message.body.split("|")[0];
-                const senderId = message.body.split("|")[1];
-                const receiveId = message.body.split("|")[2];
-                console.log(message.body)
-
-                if (
-                    parseInt(receiveId) === parseInt(jwtDecode(atob(auth)).id)
-                    &&
-                    senderId == userChatRoomRef.current.id
-
-                    // &&
-                    // parseInt(roomId) === parseInt(chatRoomIdRef.current)
-                ) {
-                    setMessages(prev => [...prev, {
-                        text: messageText,
-                        isUserMessage: false,
-                    }]);
+                    if (
+                        receiveId === parseInt(jwtDecode(atob(auth)).id) &&
+                        senderId === userChatRoomRef.current?.id
+                    ) {
+                        setMessages(prev => [...prev, { text: messageText, isUserMessage: false }]);
+                    }
+                } catch (error) {
+                    console.error("Error processing WebSocket message:", error);
                 }
             });
         };
 
+        newClient.onDisconnect = () => {
+            console.log('Disconnected from WebSocket');
+            toast.warn("Mất kết nối với máy chủ chat. Đang cố gắng kết nối lại...");
+        };
+
+        newClient.onStompError = (frame) => {
+            console.error('Stomp error:', frame);
+            toast.error(`Lỗi kết nối chat: ${frame.body}`);
+        };
 
         newClient.activate();
         setClient(newClient);
-    };
+    }, [auth]);
 
-    const getALlWorkersChatRoom = async () => {
+    const getALlWorkersChatRoom = useCallback(async () => {
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_REACT_APP_END_POINT}/user/workers`,
@@ -216,7 +226,7 @@ const ManagerChat = memo(() => {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${bearerToken}`,
+                        "Authorization": `Bearer ${bearerTokenRef.current}`,
                     },
                 }
             );
@@ -225,29 +235,36 @@ const ManagerChat = memo(() => {
             setWorkers(data);
         } catch (error) {
             console.error("Error fetching workers:", error);
-            toast.error("Error fetching worker ");
+            toast.error("Lỗi khi tải danh sách nhân viên.");
         }
-    }
+    }, [auth]);
+
+    const handleScroll = (e) => {
+        const scrollTop = e.target;
+        if (scrollTop === 0 && hasMoreMessages && !isFetchingMessages) {
+            handleFetchChatMessages(page, sizeMes);
+        }
+    };
 
     return (
         <Row className='w-100'>
             <Col md={9} className='Chat'>
-                <div>
-                    <h6 className='manager-chat-room-name'>
-                        {userChatRoom.userName}
+                <div className='manager-chat-header'>
+                    <h6>
+                        {userChatRoom ? userChatRoom.userName : ""}
                     </h6>
                 </div>
-
-
-                <div ref={messagesEndRef} className='manager-chat-messages'>
+                <div ref={messagesEndRef} className='manager-chat-messages' onScroll={handleScroll}>
+                    {isFetchingMessages && page === 0 && <div className="loading-indicator"></div>}
+                    {messages.length === 0 && userChatRoom && !isFetchingMessages && <div className="no-messages">no message yêt.</div>}
                     {messages.map((msg, index) => (
                         <div key={index} className={`manager-chat-message ${msg.isUserMessage ? 'manager-message' : 'manager-other-message'}`}>
                             <div>{msg.text}</div>
                         </div>
                     ))}
+                    {isFetchingMessages && page > 0 && <div className="loading-indicator">.</div>}
+                    {!hasMoreMessages && messages.length > 0 && <div className="end-of-messages"></div>}
                 </div>
-
-
                 <div className='manager-chat-input'>
                     <input
                         type="text"
@@ -259,35 +276,28 @@ const ManagerChat = memo(() => {
                                 handleSend();
                             }
                         }}
-                        placeholder="Type a message..."
+                        placeholder={userChatRoom ? "Nhập tin nhắn..." : "Vui lòng chọn nhân viên"}
                     />
-                    <button onClick={handleSend}>
-                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#000000" strokeWidth="2" />
-                        </svg>
+                    <button onClick={handleSend} disabled={!userChatRoom}>
+                        <FontAwesomeIcon icon={faPaperPlane} />
                     </button>
                 </div>
-
             </Col>
             <Col md={3}>
-                <div
-                    className='manager-chat-list-users mt-5'
-                >
-                    <h5>Workers</h5>
-                    {
-                        workers.map((worker, index) => (
-                            <button key={index} className='' onClick={() => handleSetUserChat(worker)}>
-                                <div>
-                                    <img
-                                        src={"https://www.w3schools.com/howto/img_avatar.png"}
-                                        alt=""
-                                        className='manager-chat-avatar'
-                                    />
-                                </div>
-                                <h6 className='m-0'>{worker.userName}</h6>
-                            </button>
-                        ))
-                    }
+                <div className='manager-chat-list-users mt-5'>
+                    <h5>Nhân viên</h5>
+                    {workers.map((worker, index) => (
+                        <button
+                            key={index}
+                            className={`user-item ${userChatRoom?.id === worker.id ? 'active' : ''}`}
+                            onClick={() => handleSetUserChat(worker)}
+                        >
+                            <div className='user-avatar'>
+                                <FontAwesomeIcon icon={faCircleUser} size="lg" />
+                            </div>
+                            <h6 className='user-name'>{worker.userName}</h6>
+                        </button>
+                    ))}
                 </div>
             </Col>
         </Row >
