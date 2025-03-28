@@ -26,7 +26,7 @@ public class PlansController {
 
     @GetMapping("/plant-id")
     public ResponseEntity<PlansDTO> getPlansByPlan(@Param("id") long id){
-
+        return null;
     }
 
 }

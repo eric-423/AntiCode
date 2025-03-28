@@ -54,12 +54,6 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<UserTask> userTasks;
 
-    @ManyToMany
-    @JoinTable(
-            name = "planting_location_task",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "planting_location"))
-    private List<PlantingLocation> plantLocations;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH

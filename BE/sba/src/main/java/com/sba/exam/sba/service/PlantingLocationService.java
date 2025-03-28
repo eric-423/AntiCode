@@ -50,25 +50,31 @@ public class PlantingLocationService implements PlantLocationServiceImp {
 
     @Override
     public List<PlantingProcessDTO> getAllProcessNotInTask(int plantingLocationId) {
-        PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(plantingLocationId);
-
-        List<PlantingProcess> plantingProcesses = plantingProcessRepository.findByPlant_PlantId(plantingLocation.getPlant().getPlantId());
-        List<Task> taskList = plantingLocation.getTasks();
-        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
-        for(PlantingProcess plantingProcess : plantingProcesses){
-            boolean check = false;
-            for(Task task : taskList){
-                if(plantingProcess.getId() == task.getPlantingProcess().getId()){
-                    plantingProcesses.remove(plantingProcess);
-                    check = true;
-                }
-                if(!check){
-                    PlantingProcessDTO plantingProcessDTO = plantProcessService.toDTO(plantingProcess);
-                    plantingProcessDTOS.add(plantingProcessDTO);
-                }
-            }
-        }
-        return plantingProcessDTOS;
+//        PlantingLocation plantingLocation = plantingLocationRepository.findByPlantLocationId(plantingLocationId);
+//
+//        List<PlantingProcess> plantingProcesses = plantingProcessRepository.findByPlant_PlantId(plantingLocation.getPlant().getPlantId());
+//        List<Task> taskList = new ArrayList<>();
+//
+//        for(PlantingLocationTask task : taskList){
+//
+//        }
+//
+//        List<PlantingProcessDTO> plantingProcessDTOS = new ArrayList<>();
+//        for(PlantingProcess plantingProcess : plantingProcesses){
+//            boolean check = false;
+//            for(Task task : taskList){
+//                if(plantingProcess.getId() == task.getPlantingProcess().getId()){
+//                    plantingProcesses.remove(plantingProcess);
+//                    check = true;
+//                }
+//                if(!check){
+//                    PlantingProcessDTO plantingProcessDTO = plantProcessService.toDTO(plantingProcess);
+//                    plantingProcessDTOS.add(plantingProcessDTO);
+//                }
+//            }
+//        }
+//        return plantingProcessDTOS;
+        return null;
     }
 
     @Override
