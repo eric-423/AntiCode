@@ -5,6 +5,7 @@ import com.sba.exam.sba.dto.UserDTO;
 import com.sba.exam.sba.entity.Task;
 import com.sba.exam.sba.entity.UserTask;
 import com.sba.exam.sba.payload.TaskRequest;
+import com.sba.exam.sba.payload.request.PlantingLocationTaskRequest;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface TaskServiceImp {
     boolean deleteUserTask(int taskId, int userId, int doerId);
     boolean deleteTask(List<Integer> listTaskId);
     List<TaskDTO> createdTaskWithProcessId(TaskRequest taskRequest);
+    List<TaskDTO> createdTaskWithProcessName(PlantingLocationTaskRequest plantingLocationTaskRequest);
 }

@@ -2,7 +2,10 @@ package com.sba.exam.sba.controller;
 
 
 import com.sba.exam.sba.dto.TaskDTO;
+import com.sba.exam.sba.entity.PlantingLocation;
 import com.sba.exam.sba.payload.TaskRequest;
+import com.sba.exam.sba.payload.request.PlantingLocationTaskRequest;
+import com.sba.exam.sba.payload.request.ProcessTaskRequest;
 import com.sba.exam.sba.service.imp.TaskServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,8 +42,8 @@ public class TaskController {
     }
 
     @PostMapping("/process")
-    public ResponseEntity<?> addTaskWithProcessId(@RequestBody TaskRequest taskRequest) {
-        return new ResponseEntity<>(taskServiceImp.createdTaskWithProcessId(taskRequest), HttpStatus.CREATED);
+    public ResponseEntity<?> addTaskWithProcessId(@RequestBody PlantingLocationTaskRequest plantingLocationTaskRequest) {
+        return new ResponseEntity<>(taskServiceImp.createdTaskWithProcessName(plantingLocationTaskRequest), HttpStatus.CREATED);
     }
 
     @PutMapping()
