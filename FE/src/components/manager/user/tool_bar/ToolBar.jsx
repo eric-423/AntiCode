@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import "./ToolBar.css";
 import SearchBar from "../../../common/search_bar/SearchBar.jsx";
