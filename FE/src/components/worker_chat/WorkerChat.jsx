@@ -28,10 +28,6 @@ const WorkerChat = ({ managerId, setIsOpen, isOpen }) => {
     handleFetchChatMessages();
   }, [chatRoomId]);
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
-
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
